@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vida/screen/splase/teacher_intro.dart';
 import 'package:vida/utils/color.dart';
 import 'package:vida/utils/constimage.dart';
 
@@ -17,7 +18,7 @@ class _SelectRegisterState extends State<SelectRegister> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.appbackground,
+      backgroundColor: const Color(0xffFFF0DC),
       body: SafeArea(
         child: Column(
           children: [
@@ -55,7 +56,7 @@ class _SelectRegisterState extends State<SelectRegister> {
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(10), topLeft: Radius.circular(10)),
-                  color: AppColor.main,
+                  color: AppColor.appbarcolor,
                   boxShadow: [
                     BoxShadow(
                       color: AppColor.main.withOpacity(.1),
@@ -99,7 +100,7 @@ class _SelectRegisterState extends State<SelectRegister> {
                       ContainerBtn(
                         myfun: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const IntroScreen()));
+                              MaterialPageRoute(builder: (context) => const TeacherIntro()));
                         },
                         text: 'TEACHER',
                         image: AssetImages.teacher,

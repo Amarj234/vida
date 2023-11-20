@@ -26,10 +26,13 @@ class TowButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
             decoration: BoxDecoration(
               border: const GradientBoxBorder(
-                gradient: LinearGradient(colors: [
-                  Color(0xffF5A925),
-                  Color(0xffED6237),
-                ]),
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xffF5A925),
+                      Color(0xffED6237),
+                    ]),
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(50),
@@ -65,10 +68,13 @@ class TowButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
             decoration: BoxDecoration(
               border: const GradientBoxBorder(
-                gradient: LinearGradient(colors: [
-                  Color(0xffF5A925),
-                  Color(0xffED6237),
-                ]),
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xffF5A925),
+                      Color(0xffED6237),
+                    ]),
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(50),

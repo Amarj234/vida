@@ -30,7 +30,8 @@ class TextArea extends StatelessWidget {
           //color: provider.tabval.contains(val) ? Colors.white : AppColor.appbackground2,
           // border: Border.all(color: AppColor.oreng.withOpacity(.5)),
           border: const GradientBoxBorder(
-            gradient: LinearGradient(colors: [
+            gradient:
+                LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
               Color(0xffF5A925),
               Color(0xffED6237),
             ]),
