@@ -38,45 +38,60 @@ class _NotificationScreenState extends State<NotificationScreen> {
             itemCount: 10,
             itemBuilder: (context, index) {
               return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: index / 2 == 2 ? AppColor.textoreng2 : Colors.white,
                     border: const GradientBoxBorder(
-                      gradient: LinearGradient(colors: [
-                        Color(0xffF5A925),
-                        Color(0xffED6237),
-                      ]),
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xffF5A925),
+                            Color(0xffED6237),
+                          ]),
                       width: .5,
                     )),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 30,
-                      child: ListTile(
-                        trailing: Text(
-                          "$index days ago",
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: const Color(0xff9B9B9B)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          flex: 8,
+                          child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            "A parent has recently view your contact ",
+                            style: GoogleFonts.roboto(
+                                fontSize: 16, fontWeight: FontWeight.w500, color: AppColor.main),
+                          ),
                         ),
-                        title: Text(
-                          maxLines: 1,
-                          "A parent has recently view your contact ",
-                          style: GoogleFonts.roboto(
-                              fontSize: 16, fontWeight: FontWeight.w500, color: AppColor.main),
+                        const SizedBox(
+                          width: 8,
                         ),
-                      ),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            "$index days ago",
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: const Color(0xff9B9B9B)),
+                          ),
+                        ),
+                      ],
                     ),
-                    ListTile(
-                      title: Text(
-                        maxLines: 1,
-                        "Lorem ipsum dolor sit amet consectetur adipiscing elit",
-                        style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff707070)),
-                      ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      maxLines: 1,
+                      "Lorem ipsum dolor sit amet consectetur adipiscing elit",
+                      style: GoogleFonts.roboto(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xff707070)),
                     ),
                   ],
                 ),

@@ -5,8 +5,8 @@ import '../provider/filer_provider.dart';
 import 'filter_common.dart';
 
 class SelectPlace extends StatelessWidget {
-  const SelectPlace({Key? key}) : super(key: key);
-
+  const SelectPlace({Key? key, required this.text}) : super(key: key);
+  final String text;
   @override
   Widget build(BuildContext context) {
     return Consumer<FilterProvider>(
@@ -22,7 +22,7 @@ class SelectPlace extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            Heading("I Need A Teacher"),
+            Heading(text),
             const SizedBox(
               height: 15,
             ),

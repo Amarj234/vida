@@ -22,6 +22,8 @@ class NameFields extends StatelessWidget {
               Image.asset(
                 image,
                 color: const Color(0xff707070),
+                height: 21,
+                width: 21,
               ),
               const SizedBox(
                 width: 30,
@@ -35,7 +37,7 @@ class NameFields extends StatelessWidget {
                 width: 30,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width / 1.5,
+                width: MediaQuery.of(context).size.width / 1.52,
                 child: Text(
                   txt,
                   style: GoogleFonts.roboto(
@@ -52,7 +54,8 @@ class NameFields extends StatelessWidget {
           height: 1,
           width: double.infinity,
           decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: [
+            gradient:
+                LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
               Color(0xffF5A925),
               Color(0xffED6237),
             ]),

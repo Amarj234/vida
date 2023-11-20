@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/color.dart';
 import '../commonWidget/app_button.dart';
@@ -8,6 +9,7 @@ import '../commonWidget/gender_select.dart';
 import '../commonWidget/main_appbar.dart';
 import '../commonWidget/register_textfields.dart';
 import '../menu/side_menu.dart';
+import 'provider/student_profile_provider.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -17,24 +19,17 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  TextEditingController name = TextEditingController();
-  TextEditingController location = TextEditingController();
-  TextEditingController landmark = TextEditingController();
-  TextEditingController classs = TextEditingController();
-  TextEditingController subject = TextEditingController();
-  TextEditingController mobile = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    name.text = "Arvind Kumar";
-    location.text = "198/1A ballygunge circuler road Kolkata- 7";
-    landmark.text = "Kasba";
-    classs.text = "XI";
-    subject.text = "Mathematics, Science";
-    mobile.text = "+91 9874561230";
+    studentProfileProvider = Provider.of<StudentProfileProvider>(context, listen: false);
+
+    studentProfileProvider!.setData();
   }
+
+  StudentProfileProvider? studentProfileProvider;
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -69,7 +64,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 RegisterTextfields(
                   isvalid: 0,
-                  mycon: name,
+                  mycon: studentProfileProvider!.name,
                   tcolor: const Color(0xff421200),
                   hint: 'Parent’s Name',
                 ),
@@ -79,7 +74,7 @@ class _EditProfileState extends State<EditProfile> {
                 RegisterTextfields(
                   isicon: true,
                   isvalid: 0,
-                  mycon: location,
+                  mycon: studentProfileProvider!.location,
                   tcolor: const Color(0xff421200),
                   hint: 'Location',
                 ),
@@ -88,7 +83,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 RegisterTextfields(
                   isvalid: 0,
-                  mycon: landmark,
+                  mycon: studentProfileProvider!.landmark,
                   tcolor: const Color(0xff421200),
                   hint: 'Landmark',
                 ),
@@ -96,6 +91,7 @@ class _EditProfileState extends State<EditProfile> {
                   height: 15,
                 ),
                 DropDown(
+                  dropdownState: studentProfileProvider!.dropdownState,
                   hint: 'Board',
                   list: const ["CBSC", "Delhi board"],
                   mayfun: (String val) {},
@@ -105,20 +101,22 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 RegisterTextfields(
                   isvalid: 0,
-                  mycon: classs,
+                  mycon: studentProfileProvider!.classs,
                   tcolor: const Color(0xff421200),
                   hint: 'Class',
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                const GenderSelect(),
+                GenderSelect(
+                  myfun: (int val) {},
+                ),
                 const SizedBox(
                   height: 15,
                 ),
                 RegisterTextfields(
                   isvalid: 0,
-                  mycon: subject,
+                  mycon: studentProfileProvider!.subject,
                   tcolor: const Color(0xff421200),
                   hint: 'Subject',
                 ),
@@ -127,7 +125,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 RegisterTextfields(
                   isvalid: 2,
-                  mycon: mobile,
+                  mycon: studentProfileProvider!.mobile,
                   tcolor: const Color(0xff421200),
                   hint: 'Mobile',
                 ),

@@ -6,12 +6,23 @@ import '../../../utils/color.dart';
 Chip mychip(String txt, bool isselect) {
   return Chip(
     labelStyle: GoogleFonts.roboto(
-        fontSize: 14, fontWeight: FontWeight.w400, color: isselect ? Colors.white : AppColor.main),
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: txt == "Done"
+            ? Colors.white
+            : isselect
+                ? Colors.white
+                : AppColor.main),
     backgroundColor: Colors.white,
     label: Container(
+        margin: EdgeInsets.only(left: txt == "Done" ? 40 : 0),
         decoration: BoxDecoration(
-            color: isselect ? AppColor.radiocolr : Colors.white,
-            borderRadius: BorderRadius.circular(50),
+            color: txt == "Done"
+                ? const Color(0xffF39C28)
+                : isselect
+                    ? AppColor.radiocolr
+                    : Colors.white,
+            borderRadius: txt == "Done" ? BorderRadius.circular(10) : BorderRadius.circular(50),
             border: Border.all(color: const Color(0xffA3A3A3))),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -44,7 +55,7 @@ Widget gBorder() {
     height: 1,
     width: double.infinity,
     decoration: const BoxDecoration(
-        gradient: LinearGradient(colors: [
+        gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
       Color(0xffF5A925),
       Color(0xffED6237),
     ])),

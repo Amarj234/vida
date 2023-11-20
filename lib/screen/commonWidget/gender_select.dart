@@ -7,8 +7,8 @@ import '../../utils/color.dart';
 import '../selectlocation/provider/tabprovider.dart';
 
 class GenderSelect extends StatelessWidget {
-  const GenderSelect({Key? key}) : super(key: key);
-
+  const GenderSelect({Key? key, required this.myfun}) : super(key: key);
+  final Function(int val) myfun;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,7 +18,8 @@ class GenderSelect extends StatelessWidget {
           //color: provider.tabval.contains(val) ? Colors.white : AppColor.appbackground2,
           // border: Border.all(color: AppColor.oreng.withOpacity(.5)),
           border: const GradientBoxBorder(
-            gradient: LinearGradient(colors: [
+            gradient:
+                LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
               Color(0xffF5A925),
               Color(0xffED6237),
             ]),
@@ -39,9 +40,9 @@ class GenderSelect extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              radeoButton("Male", 1),
-              radeoButton("Female", 2),
-              radeoButton("Other", 3),
+              radeoButton("Male", 0),
+              radeoButton("Female", 1),
+              radeoButton("Other", 2),
               Container(
                 width: 50,
               )
@@ -58,6 +59,7 @@ class GenderSelect extends StatelessWidget {
         return InkWell(
           onTap: () {
             provider.SelectRadio(isselect);
+            myfun(isselect);
           },
           child: Row(
             children: [

@@ -30,3 +30,5 @@ TextStyle style20w500w =
 
 TextStyle cstyle20w500w = const TextStyle(
     fontFamily: "Onest", fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white);
+TextStyle cstyle20w500m = const TextStyle(
+    fontFamily: "Onest", fontSize: 20, fontWeight: FontWeight.w500, color: AppColor.main);

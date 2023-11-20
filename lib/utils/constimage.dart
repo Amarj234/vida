@@ -13,11 +13,15 @@ class AssetImages {
   static String appbaricon = "assets/icons/appbaricon.png";
   static String location = "assets/icons/location.png";
   static String menu = "assets/icons/menu.png";
+  static String arrowdown = "assets/icons/arrowdown.png";
+  static String date = "assets/icons/date.png";
   static String menusvg = "assets/icons/menu.svg";
   static String arrowback = "assets/icons/arrowback.png";
   static String home = "assets/icons/home.png";
   static String homesvg = "assets/icons/home.svg";
+  static String lead = "assets/icons/lead.svg";
   static String profile = "assets/icons/profile.png";
+  static String profileimage = "assets/icons/profileimage.png";
   static String profilesvg = "assets/icons/profile.svg";
   static String enquery = "assets/icons/enquery.png";
   static String enquerysvg = "assets/icons/enquery.svg";
@@ -36,11 +40,22 @@ class AssetImages {
   static String call = "assets/icons/call.png";
   static String msg = "assets/icons/msg.png";
   static String email = "assets/icons/email.png";
+  static String whatsapp = "assets/icons/whatsapp.png";
+  static String camera = "assets/icons/camera.png";
   static String appbarsvg = "assets/icons/appbarsvg.svg";
+  static String frontside = "assets/icons/frontside.svg";
+  static String backside = "assets/icons/backside.svg";
+  static String needteacher = "assets/icons/needteacher.png";
+  static String teacherhed = "assets/icons/teacherhed.png";
+  static String course = "assets/icons/course.png";
+  static String cake = "assets/icons/cake.png";
 
   //============
   static String backgroung = "assets/images/background.jpg";
   static String ankita = "assets/images/ankita.png";
+  static String ankitasqu = "assets/images/ankitasqu.png";
+  static String ankitacir = "assets/images/ankitacir.png";
   static String loginbackground = "assets/images/loginbackground.jpg";
   static String otpbackground = "assets/images/otpbackground.jpg";
+  static String teacherintroback = "assets/images/teacherintroback.jpg";
 }

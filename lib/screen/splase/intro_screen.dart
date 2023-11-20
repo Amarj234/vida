@@ -68,7 +68,11 @@ class IntroScreen extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => const SelectLocation()));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SelectLocation(
+                                uid: 1,
+                              )));
                 },
                 child: Text(
                   "Skip",

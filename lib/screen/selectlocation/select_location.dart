@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:vida/commonfun/tab_provider.dart';
 
 import '../../utils/color.dart';
 import '../../utils/constimage.dart';
@@ -8,13 +10,28 @@ import '../otplogin/login_screen.dart';
 import 'widget/buttoncheckbox.dart';
 
 class SelectLocation extends StatefulWidget {
-  const SelectLocation({Key? key}) : super(key: key);
-
+  const SelectLocation({Key? key, required this.uid}) : super(key: key);
+  final int uid;
   @override
   State<SelectLocation> createState() => _SelectLocationState();
 }
 
 class _SelectLocationState extends State<SelectLocation> {
+  List parents = [];
+
+  @override
+  void initState() {
+    final pro = Provider.of<HometabProvider>(context, listen: false);
+
+    pro.changeUid(widget.uid);
+    parents = [];
+    parents = widget.uid == 1
+        ? ["At my place", "At teacher’s place", "In a coaching center", "Online class"]
+        : ["At Student’s place", "At My place", "At My Coaching Center"];
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +53,7 @@ class _SelectLocationState extends State<SelectLocation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "I Need A Teacher",
+                        widget.uid == 1 ? "I Need A Teacher" : "I Need Students",
                         style: GoogleFonts.roboto(
                             fontSize: 19,
                             fontWeight: FontWeight.w500,
@@ -44,33 +61,18 @@ class _SelectLocationState extends State<SelectLocation> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 17,
-                  ),
-                  const ButtonCheckbox(
-                    txt: 'At my place',
-                    val: 1,
-                  ),
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  const ButtonCheckbox(
-                    txt: 'At teacher’s place',
-                    val: 2,
-                  ),
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  const ButtonCheckbox(
-                    txt: 'In a coaching center',
-                    val: 3,
-                  ),
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  const ButtonCheckbox(
-                    txt: 'Online class',
-                    val: 4,
+                  Column(
+                    children: [
+                      for (int i = 0; i < parents.length; i++) ...[
+                        const SizedBox(
+                          height: 17,
+                        ),
+                        ButtonCheckbox(
+                          txt: parents[i],
+                          val: i,
+                        ),
+                      ]
+                    ],
                   ),
                   const SizedBox(
                     height: 15,
@@ -89,7 +91,11 @@ class _SelectLocationState extends State<SelectLocation> {
             AppButton(
               myfun: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginScreen(
+                              uid: widget.uid,
+                            )));
               },
               txt: 'CONTINUE',
               col: AppColor.main,
