@@ -1,15 +1,35 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import 'commonfun/app_provider.dart';
-
+import 'config/firebase_options.dart';
+import 'config/notificationservice.dart';
 import 'screen/onboardingScreen/onboarding_screen.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  Permission.notification.isDenied.then((value) {
+    if (value) {
+      Permission.notification.request();
+    }
+  });
+  NotificationService().initNotification();
+
+  await GetStorage.init();
   runApp(MultiProvider(providers: AppProvider.appProvider.providers(), child: const MyApp()));
 }
 

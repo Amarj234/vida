@@ -31,21 +31,29 @@ class ButtonIcon extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(
-                    width: 20,
+                    width: 22,
                   ),
-                  Image.asset(image),
+                  Image.asset(
+                    image,
+                    height: 25,
+                    width: 25,
+                  ),
                   const SizedBox(
-                    width: 20,
+                    width: 22,
                   ),
                   Text(
                     txt,
                     style: GoogleFonts.roboto(
                         fontSize: 16, fontWeight: FontWeight.w500, color: AppColor.main),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 3,
+                  SizedBox(width: MediaQuery.of(context).size.width / 4),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Icon(Icons.arrow_forward_ios_outlined),
+                    ],
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined),
                   const SizedBox(
                     width: 20,
                   )

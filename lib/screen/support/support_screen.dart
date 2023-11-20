@@ -82,27 +82,27 @@ class _SupportScreenState extends State<SupportScreen> {
               ButtonIcon(
                 image: AssetImages.email,
                 heigth: 36,
-                txt: "Email us    ",
+                txt: "Email us            ",
                 myfun: () {},
               ),
               const SizedBox(
                 height: 20,
               ),
               ButtonIcon(
-                image: AssetImages.call,
+                image: AssetImages.whatsapp,
                 heigth: 36,
-                txt: "Call us        ",
+                txt: "Connect with us",
                 myfun: () {},
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              ButtonIcon(
-                image: AssetImages.msg,
-                heigth: 36,
-                txt: "Message us",
-                myfun: () {},
-              ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              // ButtonIcon(
+              //   image: AssetImages.msg,
+              //   heigth: 36,
+              //   txt: "Message us",
+              //   myfun: () {},
+              // ),
               const SizedBox(
                 height: 30,
               ),

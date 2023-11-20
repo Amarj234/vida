@@ -45,7 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: buttomBar(context),
         body: Consumer<HometabProvider>(
           builder: (context, provider, child) {
-            return provider.myPageList[provider.index];
+            return provider.uid == 1
+                ? provider.myPageList[provider.index]
+                : provider.myPageList2[provider.index];
           },
         ));
   }

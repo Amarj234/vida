@@ -31,11 +31,12 @@ Widget buttomBar(BuildContext context) {
                 backgroundColor: AppColor.appbarcolor),
             BottomNavigationBarItem(
                 activeIcon: SvgPicture.asset(
-                  AssetImages.enquerysvg,
+                  provider.uid == 1 ? AssetImages.enquerysvg : AssetImages.lead,
                   color: Colors.white,
                 ),
-                icon: SvgPicture.asset(AssetImages.enquerysvg),
-                label: 'Enquiry',
+                icon:
+                    SvgPicture.asset(provider.uid == 1 ? AssetImages.enquerysvg : AssetImages.lead),
+                label: provider.uid == 1 ? 'Enquiry' : "Leads",
                 backgroundColor: AppColor.appbarcolor),
             BottomNavigationBarItem(
               activeIcon: SvgPicture.asset(

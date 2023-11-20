@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:vida/utils/color.dart';
 
 import '../commonWidget/app_button.dart';
@@ -10,6 +11,7 @@ import '../commonWidget/register_textfields.dart';
 import '../commonWidget/text_area.dart';
 
 import '../menu/side_menu.dart';
+import 'provider/teacher_enquiry_provider.dart';
 
 class TeacherEnquiry extends StatefulWidget {
   const TeacherEnquiry({Key? key}) : super(key: key);
@@ -19,10 +21,16 @@ class TeacherEnquiry extends StatefulWidget {
 }
 
 class _TeacherEnquiryState extends State<TeacherEnquiry> {
-  TextEditingController classs = TextEditingController();
-  TextEditingController subject = TextEditingController();
-  TextEditingController massege = TextEditingController();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  TeacherEnquiryProvider? teacherEnquiry;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    teacherEnquiry = Provider.of<TeacherEnquiryProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,18 +63,19 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
                   style: GoogleFonts.roboto(
                       fontSize: 20, fontWeight: FontWeight.w500, color: AppColor.main),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "If you do not want to pay the subscription fee then you can send me a requirement and the suitable teachers will contact you.",
-                  style: GoogleFonts.roboto(
-                      fontSize: 16, fontWeight: FontWeight.w400, color: const Color(0xff333333)),
-                ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // Text(
+                //   "If you do not want to pay the subscription fee then you can send me a requirement and the suitable teachers will contact you.",
+                //   style: GoogleFonts.roboto(
+                //       fontSize: 16, fontWeight: FontWeight.w400, color: const Color(0xff333333)),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
                 DropDown(
+                  dropdownState: teacherEnquiry!.dropdownState,
                   hint: 'Board',
                   list: const ["CBSC", "Delhi board"],
                   mayfun: (String val) {},
@@ -76,20 +85,24 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
                 ),
                 RegisterTextfields(
                   isvalid: 0,
-                  mycon: classs,
+                  mycon: teacherEnquiry!.classs,
                   tcolor: const Color(0xff421200),
                   hint: 'Class',
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                const GenderSelect(),
+                GenderSelect(
+                  myfun: (int val) {
+                    teacherEnquiry!.gender = val;
+                  },
+                ),
                 const SizedBox(
                   height: 15,
                 ),
                 RegisterTextfields(
                   isvalid: 0,
-                  mycon: subject,
+                  mycon: teacherEnquiry!.subject,
                   tcolor: const Color(0xff421200),
                   hint: 'Subject',
                 ),
@@ -98,7 +111,7 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
                 ),
                 TextArea(
                   isvalid: 0,
-                  mycon: massege,
+                  mycon: teacherEnquiry!.massege,
                   tcolor: const Color(0xff421200),
                   hint: 'Write your Message',
                 ),
