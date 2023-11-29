@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vida/utils/constimage.dart';
 
+import '../../config/sharedPrefs.dart';
 import '../../utils/style.dart';
+import '../otplogin/login_screen.dart';
 import '../selectlocation/select_location.dart';
 
-class TeacherIntro extends StatelessWidget {
+class TeacherIntro extends StatefulWidget {
   const TeacherIntro({Key? key}) : super(key: key);
 
+  @override
+  State<TeacherIntro> createState() => _TeacherIntroState();
+}
+
+class _TeacherIntroState extends State<TeacherIntro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,12 +34,15 @@ class TeacherIntro extends StatelessWidget {
               Text(
                 "Advantage of Vida - To Teacher",
                 style: GoogleFonts.roboto(
-                    fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white),
+                    fontSize: 28,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
               ),
               const SizedBox(
                 height: 25,
               ),
-              mainHeadin(context, "Get students in and around your preferred location"),
+              mainHeadin(context,
+                  "Get students in and around your preferred location"),
               const SizedBox(
                 height: 35,
               ),
@@ -41,8 +51,8 @@ class TeacherIntro extends StatelessWidget {
               const SizedBox(
                 height: 35,
               ),
-              mainHeadin(
-                  context, "We charge the lowest cost per lead as compared to our competitors."),
+              mainHeadin(context,
+                  "We charge the lowest cost per lead as compared to our competitors."),
               const SizedBox(
                 height: 35,
               ),
@@ -63,11 +73,15 @@ class TeacherIntro extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  final prefe = UserPrefs();
+
+                  await prefe.setData("tintro", "yes");
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SelectLocation(
+                          builder: (context) => const LoginScreen(
                                 uid: 2,
                               )));
                 },

@@ -35,7 +35,7 @@ class SelectTeacher extends StatelessWidget {
                     onTap: () {
                       provider.selectTeacher(e);
                     },
-                    child: mychip(e, provider.teachergen.contains(e)));
+                    child: myChip(e, provider.teachergen.contains(e)));
               }).toList(),
             ),
           ],

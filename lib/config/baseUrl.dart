@@ -1,4 +1,4 @@
 //class Apiurl {
-String baseUrl = "http://15.206.182.76/ceremonial_buddha/api/";
+String baseUrl = "http://dev.aquaninjas.in:8611/";
 //}
-const String baseImgUrl = "http://15.206.182.76/ceremonial_buddha/public/upload/";
+const String baseImgUrl = " http://dev.aquaninjas.in:8611/picture/?filename=";

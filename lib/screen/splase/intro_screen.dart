@@ -3,7 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vida/utils/color.dart';
 import 'package:vida/utils/constimage.dart';
 
+import '../../config/sharedPrefs.dart';
 import '../../utils/style.dart';
+import '../otplogin/login_screen.dart';
 import '../selectlocation/select_location.dart';
 
 class IntroScreen extends StatelessWidget {
@@ -28,7 +30,9 @@ class IntroScreen extends StatelessWidget {
               Text(
                 "Advantage of Vida - To Parents",
                 style: GoogleFonts.roboto(
-                    fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white),
+                    fontSize: 28,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
               ),
               const SizedBox(
                 height: 25,
@@ -66,11 +70,14 @@ class IntroScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  final prefe = UserPrefs();
+
+                  await prefe.setData("pintro", "yes");
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SelectLocation(
+                          builder: (context) => const LoginScreen(
                                 uid: 1,
                               )));
                 },

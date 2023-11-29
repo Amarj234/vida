@@ -30,7 +30,11 @@ class UserPrefs {
   cartclear() {
     box.remove("cart");
   }
+
   //
+  removeVal(String key) {
+    box.remove(key);
+  }
 
   bool checkCart(num id) {
     if (box.read("cart") != null) {
@@ -99,10 +103,6 @@ class UserPrefs {
 
   String? getData(String key) {
     return box.read(key);
-  }
-
-  void saveFCMToken(String value) {
-    box.write(fcmtoken, value);
   }
 
   String? getFCMToken() {

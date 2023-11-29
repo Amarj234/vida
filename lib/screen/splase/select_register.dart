@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vida/screen/otplogin/login_screen.dart';
 import 'package:vida/screen/splase/teacher_intro.dart';
 import 'package:vida/utils/color.dart';
 import 'package:vida/utils/constimage.dart';
 
+import '../../config/sharedPrefs.dart';
 import '../../utils/style.dart';
 import 'intro_screen.dart';
 import 'widget/container_btn.dart';
@@ -15,6 +17,8 @@ class SelectRegister extends StatefulWidget {
 }
 
 class _SelectRegisterState extends State<SelectRegister> {
+  final prefe = UserPrefs();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +30,9 @@ class _SelectRegisterState extends State<SelectRegister> {
               flex: 6,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 13, left: 25, right: 25),
+                    top: MediaQuery.of(context).size.height / 13,
+                    left: 25,
+                    right: 25),
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +61,8 @@ class _SelectRegisterState extends State<SelectRegister> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+                      topRight: Radius.circular(10),
+                      topLeft: Radius.circular(10)),
                   color: AppColor.appbarcolor,
                   boxShadow: [
                     BoxShadow(
@@ -87,8 +94,18 @@ class _SelectRegisterState extends State<SelectRegister> {
                       ),
                       ContainerBtn(
                         myfun: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const IntroScreen()));
+                          if (prefe.getData("pintro") == "yes") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const LoginScreen(uid: 1)));
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const IntroScreen()));
+                          }
                         },
                         text: 'PARENT',
                         image: AssetImages.perent,
@@ -99,8 +116,19 @@ class _SelectRegisterState extends State<SelectRegister> {
                       ),
                       ContainerBtn(
                         myfun: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const TeacherIntro()));
+                          if (prefe.getData("tintro") == "yes") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const LoginScreen(uid: 1)));
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TeacherIntro()));
+                          }
                         },
                         text: 'TEACHER',
                         image: AssetImages.teacher,

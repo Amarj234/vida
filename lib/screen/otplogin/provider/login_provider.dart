@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,12 +10,20 @@ import 'package:provider/provider.dart';
 import 'package:vida/commonfun/tab_provider.dart';
 import '../../../config/baseUrl.dart';
 import '../../../config/sharedPrefs.dart';
+import '../../../model/otp_sent.dart';
+import '../../../model/register_res.dart';
+import '../../../model/verify_otp.dart';
+import '../../commonWidget/costum_snackbar.dart';
+import '../../home_screen.dart';
+import '../../personalDetails/personal_details.dart';
+import '../../personalDetails/teacher_personaldetails.dart';
+import '../../selectlocation/provider/tabprovider.dart';
+import '../../selectlocation/select_location.dart';
 import '../otp_screen.dart';
 
 class LoginProvider extends ChangeNotifier {
   bool isLoading = false;
-  final token = UserPrefs().getToken();
-
+  final otpController = TextEditingController();
   bool success = false;
   String otp = '';
   String error = '';
@@ -44,133 +53,174 @@ class LoginProvider extends ChangeNotifier {
     isLoading = true;
     //final fcmToken = "fghjjkl;';";
     final fcmToken = await FirebaseMessaging.instance.getToken();
-    prefs.saveFCMToken(fcmToken!);
 
-    final url =
-        Uri.parse("${baseUrl}loging-otp-or-register?mobile_number=$mobile&device=$fcmToken");
+    final url = Uri.parse("${baseUrl}otp");
 
     print(url);
-    final pro = Provider.of<HometabProvider>(context, listen: false);
+    final prot = Provider.of<HometabProvider>(context, listen: false);
+
     startTimer();
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OtpScreen(
-                  mobile: mobile,
-                  id: '55',
-                  uid: pro.uid,
-                )));
+    print("objectval ${prot.uid}   $fcmToken");
     try {
-      // final response = await http.post(url);
-      // final pro = Provider.of<HometabProvider>(context, listen: false);
-      // if (response.statusCode == 200) {
-      //   final json = jsonDecode(response.body);
-      //   // print(json);
-      //
-      //   // AuthReponse authReponse = AuthReponse.fromJson(json);
-      //   //
-      //   // if (authReponse.status!) {
-      //   stopTimer();
-      //   //   //
-      //   //   Get.to(OtpScreen(
-      //   //     mobile: mobile,
-      //   //     id: authReponse.responseData!.userId.toString(),
-      //   //   ));
-      //   //
-      //   //   final id = authReponse.responseData!.userId;
-      //   //   userId = id!;
-      //   //   otp.value = authReponse.responseData!.otp!;
-      //   //   print(userId);
-      //   //
-      //   startTimer();
-      //   // }
-      // }
+      final response = await http.post(url, body: {
+        "phone_number": mobile,
+        "type": prot.uid.toString(),
+        "ntoken": fcmToken,
+        "longitude": '1',
+        "latitude": '1',
+      });
+      print(response.body);
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        // print(json);
+
+        OtpSent authReponse = OtpSent.fromJson(json);
+        //
+        if (authReponse.status) {
+          stopTimer();
+          //
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => OtpScreen(
+                        mobile: mobile,
+                        otp: authReponse.d.otp,
+                        uid: prot.uid,
+                      )));
+
+          print(userId);
+          isLoading = false;
+          startTimer();
+        }
+      }
     } catch (e) {
+      print("$e");
       // Get.snackbar('Error', 'An error occurred');
     } finally {
       isLoading = false;
     }
+    notifyListeners();
   }
 
-  void resendCode(String mobile) async {
+  void resendCode(BuildContext context, String mobile) async {
     UserPrefs prefs = UserPrefs();
     isLoading = true;
+    //final fcmToken = "fghjjkl;';";
     final fcmToken = await FirebaseMessaging.instance.getToken();
-    prefs.saveFCMToken(fcmToken!);
-    stopTimer();
+
+    final url = Uri.parse("${baseUrl}otp");
+
+    print(url);
+    final prot = Provider.of<HometabProvider>(context, listen: false);
+    final tab = Provider.of<TabProvider>(context, listen: false);
     startTimer();
-    // final url =
-    //     Uri.parse("${baseUrl}loging-otp-or-register?mobile_number=$mobile&device=$fcmToken");
-    //
-    // final response = await http.post(url);
-    // print(response.body);
-    //
-    // if (response.statusCode == 200) {
-    //   final json = jsonDecode(response.body);
-    //   // AuthReponse authReponse = AuthReponse.fromJson(json);
-    //   // if (authReponse.status!) {
-    //   //   stopTimer();
-    //   //   startTimer();
-    //   //   otp.value = authReponse.responseData!.otp!;
-    //   // }
-    // }
-    isLoading = false;
+    print("objectval ${prot.uid}  ${tab.tabval} $fcmToken");
+    try {
+      final response = await http.post(url, body: {
+        "phone_number": mobile,
+        "type": prot.uid.toString(),
+        "ntoken": fcmToken,
+        "list": tab.tabval.join(","),
+        "longitude": '1',
+        "latitude": '1',
+      });
+      print(response.body);
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        // print(json);
+
+        OtpSent authReponse = OtpSent.fromJson(json);
+        //
+        if (authReponse.status) {
+          stopTimer();
+          //
+          otpController.text = authReponse.d.otp.toString();
+          print(userId);
+          isLoading = false;
+          startTimer();
+        }
+      }
+    } catch (e) {
+      print("$e");
+      // Get.snackbar('Error', 'An error occurred');
+    } finally {
+      isLoading = false;
+    }
+    notifyListeners();
   }
 
-  void verifyCode(String otp, String mobile) async {
+  void verifyCode(
+      String otp, String mobile, int uid, BuildContext context) async {
     isLoading = true;
-
-    final url = Uri.parse("${baseUrl}opt-varifiaction?otp=$otp&user_id=$userId");
-
-    final response = await http.post(url);
+    final prefs = UserPrefs();
+    final url = Uri.parse("${baseUrl}otp-varification");
+    print("url:- $url $mobile $otp");
+    final response =
+        await http.post(url, body: {"phone_number": mobile, "otp": otp});
     if (kDebugMode) {
       print("url:- $url");
       print("status code:- ${response.statusCode}");
       log("responce:- ${response.body}");
     }
     if (response.statusCode == 200) {
-      //final json = jsonDecode(response.body);
-      // OtpResponse otpResponse = OtpResponse.fromJson(json);
-      //
-      // if (otpResponse.status ?? false) {
-      //   final responseCode = otpResponse.code;
-      //   if (responseCode == 2) {
-      //     LoginResponse loginResponse = await getToken(otp, mobile);
-      //     print(" print tocken ${loginResponse.apiTokenPlainText}  $otp $mobile");
-      //     if (loginResponse.status!) {
-      //       //  Get.offAllNamed(NavigationMount.route);
-      //       print("currenttoken ${loginResponse.apiTokenPlainText}");
-      //       prefs.setToken(loginResponse.apiTokenPlainText!);
-      //       prefs.setData("login", "yes");
-      //       prefs.setData("name", loginResponse.responseData!.name.toString());
-      //       prefs.setData("profile", loginResponse.responseData!.image.toString());
-      //       prefs.setData("mobile", mobile);
-      //       print("updateans  ${prefs.getData('updateans')}");
-      //       Future.delayed(const Duration(milliseconds: 50), () {
-      //         if (prefs.getData("updateans") == "yes") {
-      //           Get.off(const HomeScreen());
-      //         } else {
-      //           Get.off(const ReasonOptions());
-      //         }
-      //       });
-      //       // prefs.saveRegStatus();
-      //
-      //       print("Token: ${loginResponse.apiTokenPlainText}");
-      //     } else {
-      //       Get.snackbar("Error", loginResponse.message!);
-      //     }
-      //   } else {
-      //     Get.to(PersonalDetails(
-      //       id: userId.toString(),
-      //       otp: otp.toString(),
-      //       mobile: mobile.toString(),
-      //     ));
-      //     //  Get.offAllNamed(VerifyAdhaar.route);
-      //   }
+      final json = jsonDecode(response.body);
+
+      if (json['d']['code'] == 1) {
+        VerifyOtp otpResponse = VerifyOtp.fromJson(json);
+
+        if (otpResponse.status) {
+          //  responce:- {"status":true,"d":{"id":3,"rid":1,"tid":0},"message":"otp is correct"}
+          prefs.setData("id", otpResponse.d.id.toString());
+          print("updateans  ${prefs.getData('updateans')}");
+
+          if (uid == 1) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SelectLocation(
+                          rid: otpResponse.d.id,
+                          mobile: mobile,
+                          uid: uid,
+                        )));
+          } else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SelectLocation(
+                          rid: otpResponse.d.id,
+                          mobile: mobile,
+                          uid: uid,
+                        )));
+          }
+        } else {}
+      } else {
+        RegisterRes res = RegisterRes.fromJson(json);
+        if (res.status = true) {
+          final prot = Provider.of<HometabProvider>(context, listen: false);
+          prot.changeUid(res.d.data.roleId);
+          prefs.setData("mobile", res.d.data.phoneNo.toString());
+          prefs.setData("rid", res.d.data.roleId.toString());
+          prefs.setData("id", res.d.data.id.toString());
+          prefs.setData("name", res.d.data.name);
+          prefs.setData("token", res.d.token);
+          prefs.setData("login", "yes");
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        } else {
+          CostomSnackbar.show(context, res.message);
+        }
+      }
+      isLoading = false;
+      // prefs.saveRegStatus();
+
+      //   print("Token: ${loginResponse.apiTokenPlainText}");
+
       //   print(responseCode);
-      // } else {
+    } else {
       //   Get.snackbar("Login Failed", otpResponse.message!);
-      // }
     }
     isLoading = false;
   }

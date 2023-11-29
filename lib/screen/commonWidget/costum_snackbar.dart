@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:vida/utils/color.dart';
 
 class CostomSnackbar {
-  static show(BuildContext context, String txt) {
+  static show(BuildContext context, String txt, {Color color = AppColor.main}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: AppColor.main,
-        content: const Text('This is snackbar'),
+        //padding: EdgeInsets.only(top: 50),
+        backgroundColor: color,
+        content: Text(txt),
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).size.height - 100,

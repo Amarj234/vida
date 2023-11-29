@@ -85,7 +85,8 @@ class RegisterTextfields extends StatelessWidget {
                         ? (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter Phone';
-                            } else if (Validations().validatePhone(value) == false) {
+                            } else if (Validations().validatePhone(value) ==
+                                false) {
                               return 'Please enter valid Phone';
                             }
                             return null;
@@ -118,7 +119,8 @@ class RegisterTextfields extends StatelessWidget {
               errorBorder: const UnderlineInputBorder(
                   //  borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   borderSide: BorderSide(width: 1, color: Color(0xffED6237))),
-              contentPadding: const EdgeInsets.only(top: 14, bottom: 1, left: 15),
+              contentPadding:
+                  const EdgeInsets.only(top: 14, bottom: 1, left: 15),
 
               labelStyle: TextStyle(color: tcolor, fontSize: 16.0),
               hintText: hint,

@@ -52,7 +52,8 @@ class CommonTextFields extends StatelessWidget {
                     ? (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter Mobile Number';
-                        } else if (Validations().validatePhone(value!) == false) {
+                        } else if (Validations().validatePhone(value) ==
+                            false) {
                           return 'Please enter valid Mobile Number';
                         }
                         return null;

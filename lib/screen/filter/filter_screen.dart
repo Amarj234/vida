@@ -7,6 +7,7 @@ import '../../commonfun/tab_provider.dart';
 import '../../utils/style.dart';
 import '../commonWidget/app_button.dart';
 import '../commonWidget/cancel_button.dart';
+import '../commonWidget/costum_snackbar.dart';
 import '../commonWidget/main_appbar.dart';
 import '../menu/side_menu.dart';
 import 'provider/filer_provider.dart';
@@ -23,12 +24,18 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   FilterProvider? filter;
+  HometabProvider? home;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     filter = Provider.of<FilterProvider>(context, listen: false);
+    home = Provider.of<HometabProvider>(context, listen: false);
+    filter!.setdata(home!.uid);
+    filter!.setdata(3);
+    filter!.setdata(4);
+    filter!.getFilter();
   }
 
   @override
@@ -84,7 +91,10 @@ class _FilterScreenState extends State<FilterScreen> {
                     const SelectBoard(),
                     const SelectTeacher(),
                     const SelectClass(),
-                    SelectPlace(text: provider.uid == 1 ? "I Need A Teacher" : "I Need A Students"),
+                    SelectPlace(
+                        text: provider.uid == 1
+                            ? "I Need A Teacher"
+                            : "I Need A Students"),
                     const SizedBox(
                       height: 30,
                     ),
@@ -95,7 +105,17 @@ class _FilterScreenState extends State<FilterScreen> {
                         hight: 30,
                         txt: 'APPLY',
                         col: const Color(0xff421200),
-                        myfun: () {
+                        myfun: () async {
+                          if (filter!.slclass.isEmpty ||
+                              filter!.board.isEmpty ||
+                              filter!.place.isEmpty ||
+                              filter!.teachergen.isEmpty) {
+                            CostomSnackbar.show(
+                                context, "Please select all Details",
+                                color: Colors.black);
+                          } else {
+                            await filter!.filterSet();
+                          }
                           // Navigator.push(
                           //     context, MaterialPageRoute(builder: (context) => PersonalDetaild()));
                         },
