@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:vida/screen/otplogin/login_screen.dart';
 import 'package:vida/screen/splase/teacher_intro.dart';
 import 'package:vida/utils/color.dart';
 import 'package:vida/utils/constimage.dart';
 
+import '../../commonfun/customAnimation.dart';
+import '../../commonfun/enums.dart';
+import '../../config/sharedPrefs.dart';
 import '../../utils/style.dart';
 import 'intro_screen.dart';
 import 'widget/container_btn.dart';
@@ -14,7 +18,10 @@ class SelectRegister extends StatefulWidget {
   State<SelectRegister> createState() => _SelectRegisterState();
 }
 
-class _SelectRegisterState extends State<SelectRegister> {
+class _SelectRegisterState extends State<SelectRegister>
+    with TickerProviderStateMixin {
+  final prefe = UserPrefs();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +33,14 @@ class _SelectRegisterState extends State<SelectRegister> {
               flex: 6,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 13, left: 25, right: 25),
+                    top: MediaQuery.of(context).size.height / 13,
+                    left: 25,
+                    right: 25),
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    //SvgPicture.asset(AssetImages.vidasvg),
                     Image.asset(
                       AssetImages.vida,
                       height: 100,
@@ -55,7 +65,8 @@ class _SelectRegisterState extends State<SelectRegister> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+                      topRight: Radius.circular(10),
+                      topLeft: Radius.circular(10)),
                   color: AppColor.appbarcolor,
                   boxShadow: [
                     BoxShadow(
@@ -85,39 +96,73 @@ class _SelectRegisterState extends State<SelectRegister> {
                       const SizedBox(
                         height: 25,
                       ),
-                      ContainerBtn(
-                        myfun: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const IntroScreen()));
-                        },
-                        text: 'PARENT',
-                        image: AssetImages.perent,
-                        col: AppColor.yello,
+                      CustomAnimation(
+                        direction: Direction.right,
+                        duration: const Duration(seconds: 2),
+                        child: ContainerBtn(
+                          myfun: () {
+                            if (prefe.getData("pintro") == "yes") {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen(uid: 1)));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const IntroScreen()));
+                            }
+                          },
+                          text: 'PARENT',
+                          image: AssetImages.perent,
+                          col: AppColor.yello,
+                        ),
                       ),
                       const SizedBox(
                         height: 16,
                       ),
-                      ContainerBtn(
-                        myfun: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const TeacherIntro()));
-                        },
-                        text: 'TEACHER',
-                        image: AssetImages.teacher,
-                        col: AppColor.oreng,
+                      CustomAnimation(
+                        direction: Direction.left,
+                        duration: const Duration(seconds: 2),
+                        child: ContainerBtn(
+                          myfun: () {
+                            // if (prefe.getData("tintro") == "yes") {
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               const LoginScreen(uid: 1)));
+                            // } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TeacherIntro()));
+                            //    }
+                          },
+                          text: 'TEACHER',
+                          image: AssetImages.teacher,
+                          col: AppColor.oreng,
+                        ),
                       ),
                       const SizedBox(
                         height: 30,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            AssetImages.trident,
-                            height: 130,
-                          ),
-                        ],
+                      CustomAnimation(
+                        direction: Direction.up,
+                        duration: const Duration(milliseconds: 1500),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              AssetImages.trident,
+                              height: 130,
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),

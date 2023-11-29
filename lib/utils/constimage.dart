@@ -1,6 +1,7 @@
 class AssetImages {
   static String appmain = "assets/icons/appmain.png";
   static String vida = "assets/icons/vida.png";
+  static String vidasvg = "assets/icons/vidasvg.svg";
   static String teacher = "assets/icons/teacher.png";
   static String perent = "assets/icons/parent.png";
   static String trident = "assets/icons/trident.png";
@@ -49,6 +50,7 @@ class AssetImages {
   static String teacherhed = "assets/icons/teacherhed.png";
   static String course = "assets/icons/course.png";
   static String cake = "assets/icons/cake.png";
+  static String thumbsup = "assets/icons/thumbsup.gif";
 
   //============
   static String backgroung = "assets/images/background.jpg";

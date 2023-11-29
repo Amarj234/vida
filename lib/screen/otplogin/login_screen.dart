@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:vida/utils/color.dart';
+import '../../commonfun/tab_provider.dart';
 import '../../utils/constimage.dart';
 import '../../utils/style.dart';
 import '../commonWidget/app_button.dart';
@@ -17,8 +18,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final mobile = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final prot = Provider.of<HometabProvider>(context, listen: false);
+    prot.changeUid(widget.uid);
+  }
 
+  final mobile = TextEditingController();
+  final key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,81 +45,94 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Consumer<LoginProvider>(
               builder: (context, provider, child) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Enter Your Mobile Number",
-                      style: style20w500w,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "We will send you 4 digit verification code to your register mobile number",
-                      style: GoogleFonts.roboto(
-                          fontSize: 16, fontWeight: FontWeight.w400, color: AppColor.textoreng),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(bottom: 20),
-                          padding: const EdgeInsets.symmetric(vertical: 13.5, horizontal: 15),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: AppColor.darkoreng),
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
+                return provider.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Enter Your Mobile Number",
+                            style: style20w500w,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            "We will send you 4 digit verification code to your registered mobile number",
+                            style: GoogleFonts.roboto(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColor.textoreng),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset(AssetImages.india),
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 23),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 11, horizontal: 15),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: AppColor.darkoreng),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  children: [
+                                    Image.asset(AssetImages.india),
+                                    const SizedBox(
+                                      width: 3,
+                                    ),
+                                    Text(
+                                      "+91",
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColor.textcolor),
+                                    ),
+                                    const SizedBox(
+                                      width: 3,
+                                    ),
+                                    Image.asset(AssetImages.drop)
+                                  ],
+                                ),
+                              ),
                               const SizedBox(
-                                width: 3,
+                                width: 8,
                               ),
-                              Text(
-                                "+91",
-                                style: GoogleFonts.roboto(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColor.textcolor),
-                              ),
-                              const SizedBox(
-                                width: 3,
-                              ),
-                              Image.asset(AssetImages.drop)
+                              Form(
+                                key: key,
+                                child: Expanded(
+                                  child: CommonTextFields(
+                                    isvalid: 2,
+                                    mycon: mobile,
+                                    hint: 'Enter Mobile',
+                                  ),
+                                ),
+                              )
                             ],
                           ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                          child: CommonTextFields(
-                            isvalid: 2,
-                            mycon: mobile,
-                            hint: 'Enter Mobile',
+                          const SizedBox(
+                            height: 1,
                           ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    AppButton(
-                      myfun: () {
-                        provider.sendCode(context, mobile.text);
-                      },
-                      txt: 'SEND OTP',
-                      col: AppColor.main,
-                      hight: 36,
-                    ),
-                  ],
-                );
+                          AppButton(
+                            myfun: () {
+                              if (key.currentState!.validate()) {
+                                provider.sendCode(context, mobile.text);
+                              }
+                            },
+                            txt: 'SEND OTP',
+                            col: AppColor.main,
+                            hight: 36,
+                          ),
+                        ],
+                      );
               },
             ),
           ),

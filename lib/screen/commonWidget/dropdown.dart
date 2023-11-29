@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 
 import '../../../utils/constimage.dart';
+import '../../utils/color.dart';
 
 class DropDown extends StatelessWidget {
   const DropDown(
@@ -23,11 +25,13 @@ class DropDown extends StatelessWidget {
           //color: provider.tabval.contains(val) ? Colors.white : AppColor.appbackground2,
           // border: Border.all(color: AppColor.oreng.withOpacity(.5)),
           border: const GradientBoxBorder(
-            gradient:
-                LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
-              Color(0xffF5A925),
-              Color(0xffED6237),
-            ]),
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xffF5A925),
+                  Color(0xffED6237),
+                ]),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(10)),
@@ -44,6 +48,11 @@ class DropDown extends StatelessWidget {
           }
           return null;
         },
+        style: GoogleFonts.roboto(
+          color: AppColor.main,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+        ),
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.only(top: 10, bottom: 10, left: 15),
           focusedBorder: InputBorder.none,

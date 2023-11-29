@@ -1,13 +1,23 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vida/utils/constimage.dart';
 
+import '../../commonfun/customAnimation.dart';
+import '../../commonfun/enums.dart';
+import '../../config/sharedPrefs.dart';
 import '../../utils/style.dart';
-import '../selectlocation/select_location.dart';
+import '../otplogin/login_screen.dart';
 
-class TeacherIntro extends StatelessWidget {
+class TeacherIntro extends StatefulWidget {
   const TeacherIntro({Key? key}) : super(key: key);
 
+  @override
+  State<TeacherIntro> createState() => _TeacherIntroState();
+}
+
+class _TeacherIntroState extends State<TeacherIntro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,29 +34,52 @@ class TeacherIntro extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                "Advantage of Vida - To Teacher",
-                style: GoogleFonts.roboto(
-                    fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white),
+              CustomAnimation(
+                direction: Direction.up,
+                duration: const Duration(milliseconds: 1500),
+                child: Text(
+                  "Advantage of Vida - To Teacher",
+                  style: GoogleFonts.roboto(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
+                ),
               ),
               const SizedBox(
                 height: 25,
               ),
-              mainHeadin(context, "Get students in and around your preferred location"),
+              CustomAnimation(
+                direction: Direction.right,
+                duration: const Duration(milliseconds: 500),
+                child: mainHeadin(context,
+                    "Get students in and around your preferred location"),
+              ),
               const SizedBox(
                 height: 35,
               ),
-              mainHeadin(context,
-                  "Get the full fees from the parents and no need to share it with anyone."),
+              CustomAnimation(
+                direction: Direction.right,
+                duration: const Duration(milliseconds: 1000),
+                child: mainHeadin(context,
+                    "Get the full fees from the parents and no need to share it with anyone."),
+              ),
               const SizedBox(
                 height: 35,
               ),
-              mainHeadin(
-                  context, "We charge the lowest cost per lead as compared to our competitors."),
+              CustomAnimation(
+                direction: Direction.right,
+                duration: const Duration(milliseconds: 1500),
+                child: mainHeadin(context,
+                    "We charge the lowest cost per lead as compared to our competitors."),
+              ),
               const SizedBox(
                 height: 35,
               ),
-              mainHeadin(context, "Get authentic and genuine parents number"),
+              CustomAnimation(
+                  direction: Direction.right,
+                  duration: const Duration(seconds: 2),
+                  child: mainHeadin(
+                      context, "Get authentic and genuine parents number")),
             ],
           ),
         ),
@@ -63,11 +96,15 @@ class TeacherIntro extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  final prefe = UserPrefs();
+
+                  await prefe.setData("tintro", "yes");
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SelectLocation(
+                          builder: (context) => const LoginScreen(
                                 uid: 2,
                               )));
                 },

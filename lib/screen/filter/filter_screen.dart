@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:vida/screen/filter/widget/select_board.dart';
 import 'package:vida/screen/filter/widget/select_class.dart';
@@ -23,12 +25,18 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   FilterProvider? filter;
+  HometabProvider? home;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     filter = Provider.of<FilterProvider>(context, listen: false);
+    home = Provider.of<HometabProvider>(context, listen: false);
+    filter!.setdata(home!.uid);
+    filter!.setdata(3);
+    filter!.setdata(4);
+    filter!.getFilter();
   }
 
   @override
@@ -61,9 +69,6 @@ class _FilterScreenState extends State<FilterScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
                       child: Row(
@@ -84,7 +89,10 @@ class _FilterScreenState extends State<FilterScreen> {
                     const SelectBoard(),
                     const SelectTeacher(),
                     const SelectClass(),
-                    SelectPlace(text: provider.uid == 1 ? "I Need A Teacher" : "I Need A Students"),
+                    SelectPlace(
+                        text: provider.uid == 1
+                            ? "I Need A Teacher"
+                            : "I Need A Students"),
                     const SizedBox(
                       height: 30,
                     ),
@@ -95,7 +103,10 @@ class _FilterScreenState extends State<FilterScreen> {
                         hight: 30,
                         txt: 'APPLY',
                         col: const Color(0xff421200),
-                        myfun: () {
+                        myfun: () async {
+                          await filter!.filterSet();
+                          Navigator.pop(context, true);
+
                           // Navigator.push(
                           //     context, MaterialPageRoute(builder: (context) => PersonalDetaild()));
                         },

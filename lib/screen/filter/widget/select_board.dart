@@ -11,34 +11,38 @@ class SelectBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<FilterProvider>(
       builder: (context, provider, child) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            gBorder(),
-            const SizedBox(
-              height: 15,
-            ),
-            Heading("Board"),
-            const SizedBox(
-              height: 15,
-            ),
-            Wrap(
-              spacing: -10.0, // gap between lines
-              children: provider.boardvalue.map((e) {
-                return InkWell(
-                    overlayColor: MaterialStateProperty.all(Colors.white),
-                    onTap: () {
-                      provider.selectBoard(e);
-                    },
-                    child: mychip(e, provider.board.contains(e)));
-              }).toList(),
-            ),
-          ],
-        );
+        return provider.isLoding
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  gBorder(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Heading("Board"),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Wrap(
+                    spacing: -15.0, // gap between lines
+                    children: provider.bordlist.map((e) {
+                      return InkWell(
+                          overlayColor: MaterialStateProperty.all(Colors.white),
+                          onTap: () {
+                            provider.selectBoard(e);
+                          },
+                          child: myChip(e, provider.board.contains(e)));
+                    }).toList(),
+                  ),
+                ],
+              );
       },
     );
   }

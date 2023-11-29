@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -34,8 +36,9 @@ Widget buttomBar(BuildContext context) {
                   provider.uid == 1 ? AssetImages.enquerysvg : AssetImages.lead,
                   color: Colors.white,
                 ),
-                icon:
-                    SvgPicture.asset(provider.uid == 1 ? AssetImages.enquerysvg : AssetImages.lead),
+                icon: SvgPicture.asset(provider.uid == 1
+                    ? AssetImages.enquerysvg
+                    : AssetImages.lead),
                 label: provider.uid == 1 ? 'Enquiry' : "Leads",
                 backgroundColor: AppColor.appbarcolor),
             BottomNavigationBarItem(

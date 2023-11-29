@@ -11,7 +11,7 @@ import '../../../model/teacher_enquirylist.dart';
 import '../../commonWidget/costum_snackbar.dart';
 import '../../home_screen.dart';
 
-class TeacherEnquiryProvider extends ChangeNotifier {
+class SubscribeProvider extends ChangeNotifier {
   TextEditingController classs = TextEditingController();
   TextEditingController subject = TextEditingController();
   TextEditingController massege = TextEditingController();

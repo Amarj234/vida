@@ -44,14 +44,14 @@ class GetLocation {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 
-  Future<LocationModel>? getLatLong() async {
+  Future<LocationModel?> getLatLong() async {
     Position data = await _determinePosition();
 
     LocationModel? model = await getAddress(data.latitude, data.longitude);
-    print("get address ${model!.locationname}");
     return model;
   }
 
@@ -61,6 +61,8 @@ class GetLocation {
     //   print("INDEX $i ${placemarks[i]}");
     // }
     return LocationModel(
-        lat: lat, long: long, locationname: placemarks[0].street! + " ," + placemarks[0].locality!);
+        lat: lat,
+        long: long,
+        locationname: "${placemarks[0].street!} ,${placemarks[0].locality!}");
   }
 }

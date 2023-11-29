@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../utils/color.dart';
 
-Chip mychip(String txt, bool isselect) {
+Chip myChip(String txt, bool isselect) {
   return Chip(
+    side: BorderSide.none,
     labelStyle: GoogleFonts.roboto(
         fontSize: 14,
         fontWeight: FontWeight.w400,
@@ -22,10 +23,12 @@ Chip mychip(String txt, bool isselect) {
                 : isselect
                     ? AppColor.radiocolr
                     : Colors.white,
-            borderRadius: txt == "Done" ? BorderRadius.circular(10) : BorderRadius.circular(50),
+            borderRadius: txt == "Done"
+                ? BorderRadius.circular(10)
+                : BorderRadius.circular(50),
             border: Border.all(color: const Color(0xffA3A3A3))),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
           child: Text(txt),
         )),
   );
@@ -41,8 +44,8 @@ Widget Heading(String txt) {
       children: [
         Text(
           txt,
-          style:
-              GoogleFonts.roboto(fontSize: 16, fontWeight: FontWeight.w400, color: AppColor.main),
+          style: GoogleFonts.roboto(
+              fontSize: 16, fontWeight: FontWeight.w400, color: AppColor.main),
         ),
       ],
     ),
@@ -55,9 +58,12 @@ Widget gBorder() {
     height: 1,
     width: double.infinity,
     decoration: const BoxDecoration(
-        gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
-      Color(0xffF5A925),
-      Color(0xffED6237),
-    ])),
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+          Color(0xffF5A925),
+          Color(0xffED6237),
+        ])),
   );
 }

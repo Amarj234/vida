@@ -8,8 +8,9 @@ import 'package:vida/utils/style.dart';
 import '../provider/tabprovider.dart';
 
 class ButtonCheckbox extends StatelessWidget {
-  const ButtonCheckbox({Key? key, required this.val, required this.txt}) : super(key: key);
-  final int val;
+  const ButtonCheckbox({Key? key, required this.val, required this.txt})
+      : super(key: key);
+  final String val;
   final String txt;
 
   @override
@@ -23,7 +24,9 @@ class ButtonCheckbox extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 13),
             decoration: BoxDecoration(
-                color: provider.tabval.contains(val) ? Colors.white : AppColor.appbackground2,
+                color: provider.tabval.contains(val)
+                    ? Colors.white
+                    : AppColor.appbackground2,
                 // border: Border.all(color: AppColor.oreng.withOpacity(.5)),
                 border: const GradientBoxBorder(
                   gradient: LinearGradient(
@@ -42,10 +45,13 @@ class ButtonCheckbox extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(left: 20),
                   decoration: BoxDecoration(
-                      color: provider.tabval.contains(val) ? AppColor.oreng : Colors.white,
+                      color: provider.tabval.contains(val)
+                          ? AppColor.oreng
+                          : Colors.white,
                       border: Border.all(
-                          color:
-                              provider.tabval.contains(val) ? AppColor.oreng : AppColor.textcolor)),
+                          color: provider.tabval.contains(val)
+                              ? AppColor.oreng
+                              : AppColor.textcolor)),
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Image.asset(AssetImages.right),
