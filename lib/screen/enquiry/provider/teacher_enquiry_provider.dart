@@ -84,7 +84,7 @@ class TeacherEnquiryProvider extends ChangeNotifier {
   String formateDate(String date) {
     DateTime parseDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM-dd-yyyy');
+    var outputFormat = DateFormat('dd-MM-yyyy');
     // var outputFormat2 = DateFormat('yyyy-MM-dd');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;

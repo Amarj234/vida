@@ -3,13 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import '../../../commonfun/dropdowndata.dart';
 import '../../../config/baseUrl.dart';
 import '../../../config/sharedPrefs.dart';
-import '../../../model/dropdown_data.dart';
-import '../../../model/teacher_enquirylist.dart';
+import '../../../model/payment_history.dart';
+import '../../../model/your_balance.dart';
 import '../../commonWidget/costum_snackbar.dart';
-import '../../home_screen.dart';
+import '../../paymentsuccess/payment_success.dart';
 
 class SubscribeProvider extends ChangeNotifier {
   TextEditingController classs = TextEditingController();
@@ -23,47 +22,29 @@ class SubscribeProvider extends ChangeNotifier {
   final dropdownState3 = GlobalKey<FormFieldState>();
   bool isLoading = false;
   bool success = false;
-  savaEnquiry(BuildContext context) async {
+  payAmount(BuildContext context) async {
     isLoading = true;
     notifyListeners();
     final prefs = UserPrefs();
-    var id = prefs.getData("id");
-
     var token = prefs.getData("token");
-
     Map<String, String> headers = {
       "x-access-token": "$token",
-      // "Content-type": "application/json"
+      "Content-type": "application/json"
     };
-    final url = Uri.parse("${baseUrl}enquiry/create-enquiry");
-
+    final url = Uri.parse("${baseUrl}pay/make-payment");
+    Map data = {
+      "qty": 4,
+    };
     try {
-      final response = await http.post(url,
-          body: {
-            "userID": id,
-            "board": board.text,
-            "class": classs.text,
-            "teacherPrefarence": gender == 0
-                ? "M"
-                : gender == 1
-                    ? "F"
-                    : "ANY",
-            "subject": subject.text,
-            "description":
-                "This is the auto message that the parent has submited the enquiry."
-          },
-          headers: headers);
-
+      final response =
+          await http.post(url, body: json.encode(data), headers: headers);
+      print(response.body);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
         if (json['status'] == true) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const HomeScreen(
-                        index: 1,
-                      )));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const PaymentSuccess()));
         } else {
           CostomSnackbar.show(context, json['message']);
         }
@@ -79,34 +60,61 @@ class SubscribeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  TeacherEnquirylist? teacherEqList;
+  PaymentHistory? paymentHistory;
 
   String formateDate(String date) {
     DateTime parseDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM-dd-yyyy');
+    var outputFormat = DateFormat('dd-MM-yyyy');
     // var outputFormat2 = DateFormat('yyyy-MM-dd');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
+  }
+
+  YourBalance? yourBalance;
+  getBalance(BuildContext context) async {
+    final prefs = UserPrefs();
+    var token = prefs.getData("token");
+
+    Map<String, String> headers = {
+      "x-access-token": "$token",
+    };
+    final url = Uri.parse("${baseUrl}user/get-user-balance");
+
+    try {
+      final response = await http.post(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+        YourBalance res = YourBalance.fromJson(json);
+        yourBalance = res;
+      }
+    } catch (e) {
+      print("$e");
+
+      CostomSnackbar.show(context, "$e");
+      //Get.snackbar('Error', 'An error occurred');
+    } finally {
+      isLoading = false;
+    }
+    notifyListeners();
   }
 
   getlist(BuildContext context) async {
     isLoading = true;
     final prefs = UserPrefs();
     var token = prefs.getData("token");
-
     Map<String, String> headers = {
       "x-access-token": "$token",
-      "Content-type": "application/json"
     };
-    final url = Uri.parse("${baseUrl}enquiry/get-all-my-enquiry");
+    final url = Uri.parse("${baseUrl}pay/get-payment-list");
 
     try {
-      final response = await http.get(url, headers: headers);
+      final response = await http.post(url, headers: headers);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        TeacherEnquirylist res = TeacherEnquirylist.fromJson(json);
-        teacherEqList = res;
+        PaymentHistory res = PaymentHistory.fromJson(json);
+        paymentHistory = res;
         // if (loginResponse.status!) {
         // } else {
         //   CostomSnackbar.show(context, "ahow");
@@ -120,33 +128,6 @@ class SubscribeProvider extends ChangeNotifier {
     } finally {
       isLoading = false;
     }
-    notifyListeners();
-  }
-
-  List<String> bordlist = [];
-  List<String> classlist = [];
-  List<String> subjectlist = [];
-
-  setdata(int id) async {
-    DropdownData? res = await DropdownDatas().getdata(id);
-
-    if (id == 3) {
-      bordlist = [];
-      for (var element in res!.data) {
-        bordlist.add(element.propsTitle);
-      }
-    } else if (id == 4) {
-      classlist = [];
-      for (var element in res!.data) {
-        classlist.add(element.propsTitle);
-      }
-    } else {
-      subjectlist = [];
-      for (var element in res!.data) {
-        subjectlist.add(element.propsTitle);
-      }
-    }
-
     notifyListeners();
   }
 }

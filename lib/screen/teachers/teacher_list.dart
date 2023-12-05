@@ -35,6 +35,7 @@ class _TeacherListState extends State<TeacherList> {
     appmessageProvider!.getlist(context);
     techerpro = Provider.of<TeacherListProvider>(context, listen: false);
     techerpro!.getAddress();
+    techerpro!.getBalance(context);
     techerpro!.getlist(context);
   }
 
@@ -182,7 +183,11 @@ class _TeacherListState extends State<TeacherList> {
                                 builder: (context) => const SubscribePay()));
                       },
                       subscribe: 'SUBSCRIBE NOW',
-                      balance: '00',
+                      balance: provider.yourBalance == null
+                          ? ""
+                          : provider.yourBalance!.d.data.numberOfView
+                                  .toString() ??
+                              "",
                     ),
                     const SizedBox(
                       height: 20,
@@ -195,7 +200,7 @@ class _TeacherListState extends State<TeacherList> {
                               )
                             : provider.teacherList == null
                                 ? const Center(
-                                    child: Text("List not Found"),
+                                    child: Text("List not Found 2"),
                                   )
                                 : provider.teacherList!.data.isEmpty
                                     ? const Center(
@@ -433,6 +438,7 @@ class _TeacherListState extends State<TeacherList> {
                                                                 child: InkWell(
                                                                     onTap: () {
                                                                       provider.addList(
+                                                                          context,
                                                                           data[index]
                                                                               .id);
                                                                     },

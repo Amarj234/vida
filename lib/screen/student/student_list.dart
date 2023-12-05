@@ -29,6 +29,7 @@ class _StudentListState extends State<StudentList> {
     studentpro = Provider.of<StudentListProvider>(context, listen: false);
     studentpro!.getAddress();
     studentpro!.getlist(context);
+    studentpro!.getBalance(context);
   }
 
   @override
@@ -164,7 +165,11 @@ class _StudentListState extends State<StudentList> {
                                 builder: (context) => const SubscribePay()));
                       },
                       subscribe: 'SUBSCRIBE NOW',
-                      balance: '00',
+                      balance: provider.yourBalance == null
+                          ? "0.0"
+                          : provider.yourBalance!.d.data.numberOfView
+                                  .toString() ??
+                              "",
                     ),
                     const SizedBox(
                       height: 15,
@@ -308,7 +313,12 @@ class _StudentListState extends State<StudentList> {
                                                 data.subject, AssetImages.pen),
                                             buildContainer(
                                                 "Teacher Preference: ",
-                                                data.teacherPrefarence,
+                                                data.teacherPrefarence == "M"
+                                                    ? "Male"
+                                                    : data.teacherPrefarence ==
+                                                            "F"
+                                                        ? "Female"
+                                                        : "ANY",
                                                 AssetImages.teacherhed),
                                             // buildContainer(
                                             //     "Msg from parents: ",
