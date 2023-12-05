@@ -1,6 +1,7 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -40,21 +41,21 @@ class StudentProfileProvider extends ChangeNotifier {
 
     if (id == 3) {
       bordlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         bordlist.add(element.propsTitle);
-      });
+      }
       bordlist.add("Done");
     } else if (id == 4) {
       classlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         classlist.add(element.propsTitle);
-      });
+      }
       classlist.add("Done");
     } else {
       subjectlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         subjectlist.add(element.propsTitle);
-      });
+      }
       subjectlist.add("Done");
     }
     isLoding = false;
@@ -87,15 +88,10 @@ class StudentProfileProvider extends ChangeNotifier {
       "phoneNumber": mobile.text
     };
 
-    print("${url} ${classs.text}");
-
     try {
       final response =
           await http.post(url, body: jsonEncode(data), headers: headers);
-      print(response.body);
       if (response.statusCode == 200) {
-        final json = jsonDecode(response.body);
-        print(jsonDecode(response.body)['status']);
         if (jsonDecode(response.body)['status'] == true) {
           // RegisterRes res = RegisterRes.fromJson(json);
           success = true;
@@ -111,13 +107,10 @@ class StudentProfileProvider extends ChangeNotifier {
                     )));
 
         isLoading = false;
-
-        print(json);
       } else {
         CostomSnackbar.show(context, jsonDecode(response.body)['message'][0]);
       }
     } catch (e) {
-      print("object $e");
       CostomSnackbar.show(context, "$e");
     } finally {
       isLoading = false;
@@ -135,13 +128,11 @@ class StudentProfileProvider extends ChangeNotifier {
       "x-access-token": "$token",
       "Content-type": "application/json"
     };
-    print(url);
     final response = await http.get(url, headers: headers);
     final json = jsonDecode(response.body);
-    print(response.body);
     ParentProfile res = ParentProfile.fromJson(json);
     if (res.status == true) {
-      parentProfile = res!;
+      parentProfile = res;
       isLoading = false;
 
       setData(res.d.data, context);
@@ -150,8 +141,6 @@ class StudentProfileProvider extends ChangeNotifier {
   }
 
   setData(Data data, BuildContext context) {
-    print("data.extraParm4 ${data.extraParm4}");
-
     name.text = data.name;
     location.text = data.location;
     landmark.text = data.extraParm1;
@@ -159,10 +148,10 @@ class StudentProfileProvider extends ChangeNotifier {
     subject.text = data.extraParm5;
     mobile.text = data.phoneNo;
     final pro = Provider.of<TabProvider>(context, listen: false);
-    pro.selectradeo = data.extraParm4 == "M"
+    pro.SelectRadio(data.extraParm4 == "M"
         ? 0
-        : data.extraParm4 == "M"
+        : data.extraParm4 == "F"
             ? 1
-            : 2;
+            : 2);
   }
 }

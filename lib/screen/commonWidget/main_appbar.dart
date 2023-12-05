@@ -9,7 +9,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   const MainAppbar(
-      {Key? key, this.title, this.actions, required this.context, this.leading = false, this.ontap})
+      {Key? key,
+      this.title,
+      this.actions,
+      required this.context,
+      this.leading = false,
+      this.ontap})
       : super(key: key);
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -45,10 +50,12 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
           overlayColor: MaterialStateProperty.all(AppColor.main),
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const NotificationScreen()));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationScreen()));
           },
           child: Padding(
-            padding: const EdgeInsets.only(top: 18.0),
+            padding: const EdgeInsets.only(top: 5.0),
             child: badges.Badge(
               badgeStyle: const BadgeStyle(
                 badgeColor: AppColor.yello,
@@ -80,7 +87,8 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
       ],
       title: Text(
         title ?? "",
-        style: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white),
+        style: GoogleFonts.roboto(
+            fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white),
       ),
       toolbarHeight: 60,
       elevation: 0,

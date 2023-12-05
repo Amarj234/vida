@@ -1,5 +1,7 @@
 /// YApi QuickType插件生成，具体参考文档:https://plugins.jetbrains.com/plugin/18847-yapi-quicktype/documentation
 
+// ignore_for_file: non_constant_identifier_names, duplicate_ignore
+
 import 'dart:convert';
 
 TeacherProfile teacherProfileFromJson(String str) =>
@@ -66,10 +68,10 @@ class Data {
     required this.phoneNoCountryCode,
     required this.longitude,
     required this.parentUserId,
-    required this.userImage,
+    this.userImage,
     required this.extra_upload_1,
-    required this.extra_upload_2,
-    required this.extra_upload_3,
+    this.extra_upload_2,
+    this.extra_upload_3,
     required this.relationId,
     required this.socialId,
     required this.dob,
@@ -86,7 +88,7 @@ class Data {
   String roleText;
   String password;
   int roleId;
-  String extraParm3;
+  String? extraParm3;
   int primaryStatus;
   String? extraParm2;
   String? extraParm1;
@@ -94,13 +96,14 @@ class Data {
   String phoneNoCountryCode;
   String longitude;
   int parentUserId;
-  String userImage;
+  String? userImage;
+  // ignore: non_constant_identifier_names
   String? extra_upload_1;
   String? extra_upload_2;
   String? extra_upload_3;
   int relationId;
   int socialId;
-  DateTime dob;
+  DateTime? dob;
   String name;
   String location;
 
@@ -158,7 +161,7 @@ class Data {
         "relation_id": relationId,
         "social_id": socialId,
         "dob":
-            "${dob.year.toString().padLeft(4, '0')}-${dob.month.toString().padLeft(2, '0')}-${dob.day.toString().padLeft(2, '0')}",
+            "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
         "name": name,
         "location": location,
       };

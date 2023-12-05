@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:rich_readmore/rich_readmore.dart';
 import 'package:vida/screen/lead/provider/lead_provider.dart';
 import 'package:vida/utils/constimage.dart';
 import '../../utils/color.dart';
@@ -34,11 +33,11 @@ class _MyLeadState extends State<MyLead> {
       body: Consumer<LeadProvider>(
         builder: (context, provider, child) {
           return provider.isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : provider.leadlist == null
-                  ? Center(
+                  ? const Center(
                       child: Text("List not Found"),
                     )
                   : SafeArea(
@@ -75,7 +74,7 @@ class _MyLeadState extends State<MyLead> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(data.parentName ?? "",
+                                                Text(data.parentName,
                                                     style: GoogleFonts.roboto(
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -83,9 +82,9 @@ class _MyLeadState extends State<MyLead> {
                                                       color: Colors.white,
                                                     )),
                                                 const SizedBox(
-                                                  height: 15,
+                                                  height: 2,
                                                 ),
-                                                Row(
+                                                Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
@@ -99,7 +98,7 @@ class _MyLeadState extends State<MyLead> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            "Location: ",
+                                                            "Board: ${data.board}",
                                                             style: GoogleFonts
                                                                 .roboto(
                                                               color:
@@ -110,80 +109,48 @@ class _MyLeadState extends State<MyLead> {
                                                                       .w500,
                                                             ),
                                                           ),
+                                                        ]),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          // Text(
+                                                          //   "Location: ",
+                                                          //   style: GoogleFonts
+                                                          //       .roboto(
+                                                          //     color: Colors.white,
+                                                          //     fontSize: 14,
+                                                          //     fontWeight:
+                                                          //         FontWeight.w500,
+                                                          //   ),
+                                                          // ),
                                                           SizedBox(
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width -
-                                                                232,
-                                                            child:
-                                                                RichReadMoreText
-                                                                    .fromString(
-                                                              text:
-                                                                  data.parentLocation ??
-                                                                      "",
-                                                              textStyle:
-                                                                  GoogleFonts
-                                                                      .roboto(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontSize: 14,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                              settings:
-                                                                  LengthModeSettings(
-                                                                trimLength: 15,
-                                                                trimCollapsedText:
-                                                                    'show',
-                                                                trimExpandedText:
-                                                                    'hide',
-                                                                onPressReadMore:
-                                                                    () {
-                                                                  /// specific method to be called on press to show more
-                                                                },
-                                                                onPressReadLess:
-                                                                    () {
-                                                                  /// specific method to be called on press to show less
-                                                                },
-                                                                lessStyle: TextStyle(
-                                                                    color: Colors
-                                                                        .blue),
-                                                                moreStyle: TextStyle(
-                                                                    color: Colors
-                                                                        .blue),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ]),
-                                                    RichText(
-                                                        text: TextSpan(
-                                                            text: "Board: ",
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                            children: [
-                                                          TextSpan(
-                                                              text:
-                                                                  data.board ??
-                                                                      "",
+                                                                90,
+                                                            child: Text(
+                                                              "Location: ${data.parentLocation}",
                                                               style: GoogleFonts
                                                                   .roboto(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontSize: 14,
                                                                 color: Colors
                                                                     .white,
-                                                              ))
-                                                        ])),
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ]),
                                                   ],
                                                 ),
                                               ],
@@ -209,20 +176,25 @@ class _MyLeadState extends State<MyLead> {
                                               ),
                                               buildContainer(
                                                   "Class: ",
-                                                  data.datumClass ?? "",
+                                                  data.datumClass,
                                                   AssetImages.book),
                                               buildContainer(
                                                   "Subject: ",
-                                                  data.subject ?? "",
+                                                  data.subject,
                                                   AssetImages.pen),
                                               buildContainer(
                                                   "Teacher Preference: ",
-                                                  data.teacherPrefarence ?? "",
+                                                  data.teacherPrefarence == "M"
+                                                      ? "Male"
+                                                      : data.teacherPrefarence ==
+                                                              "F"
+                                                          ? "Female"
+                                                          : "ANY",
                                                   AssetImages.teacherhed),
-                                              buildContainer(
-                                                  "Message from parents: ",
-                                                  data.description ?? "",
-                                                  AssetImages.needteacher),
+                                              // buildContainer(
+                                              //     "Msg from parents: ",
+                                              //     data.description ?? "",
+                                              //     AssetImages.needteacher),
                                               const SizedBox(
                                                 height: 5,
                                               ),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vida/commonfun/tab_provider.dart';
@@ -83,11 +85,17 @@ class SideMenu extends StatelessWidget {
                     child: InkWell(
                       onTap: () async {
                         UserPrefs prefs = UserPrefs();
-                        await prefs.clearPrefs();
+
+                        await prefs.removeVal("mobile");
+                        await prefs.removeVal("rid");
+                        await prefs.removeVal("id");
+                        await prefs.removeVal("name");
+                        await prefs.removeVal("token");
+                        await prefs.removeVal("login");
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SelectRegister()));
+                                builder: (context) => const SelectRegister()));
                       },
                       child: Row(
                         children: [

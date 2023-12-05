@@ -7,8 +7,10 @@ import '../../utils/color.dart';
 import '../selectlocation/provider/tabprovider.dart';
 
 class GenderSelect extends StatelessWidget {
-  const GenderSelect({Key? key, required this.myfun}) : super(key: key);
+  const GenderSelect({Key? key, required this.myfun, this.header = "Gender"})
+      : super(key: key);
   final Function(int val) myfun;
+  final String header;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +35,7 @@ class GenderSelect extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Gender",
+            header,
             style: style16w500,
           ),
           const SizedBox(
@@ -44,7 +46,7 @@ class GenderSelect extends StatelessWidget {
             children: [
               radeoButton("Male", 0),
               radeoButton("Female", 1),
-              radeoButton("Any", 2),
+              radeoButton("Other", 2),
               Container(
                 width: 50,
               )

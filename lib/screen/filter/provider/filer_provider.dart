@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 
 import '../../../commonfun/dropdowndata.dart';
@@ -11,8 +9,8 @@ class FilterProvider extends ChangeNotifier {
 
   List<String> board = [];
 
-  List<String> teachergen = [];
-  List<String> teachergenvalue = ["Female", "Male", "Both"];
+  String? teachergen = null;
+  List<String> teachergenvalue = ["Female", "Male", "Any"];
   List<String> place = [];
 
   List<String> placelist = [];
@@ -29,19 +27,19 @@ class FilterProvider extends ChangeNotifier {
 
     if (id == 3) {
       bordlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         bordlist.add(element.propsTitle);
-      });
+      }
     } else if (id == 4) {
       classlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         classlist.add(element.propsTitle);
-      });
+      }
     } else {
       placelist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         placelist.add(element.propsTitle);
-      });
+      }
     }
     isLoding = false;
     notifyListeners();
@@ -75,27 +73,35 @@ class FilterProvider extends ChangeNotifier {
   }
 
   selectTeacher(String val) {
-    if (teachergen.contains(val) == true) {
-      teachergen.remove(val);
-    } else {
-      teachergen.add(val);
-    }
+    teachergen = val;
     notifyListeners();
   }
 
   filterSet() {
     final prefs = UserPrefs();
-    prefs.setData("filterclass", (slclass).join(","));
-    prefs.setData("filterboard", (board).join(","));
-    prefs.setData("filterplace", (place).join(","));
-    prefs.setData("filtergender", (teachergen).join(","));
+    prefs.removeVal("filterclass");
+    prefs.removeVal("filterboard");
+    prefs.removeVal("filterplace");
+    prefs.removeVal("filtergender");
+    if (slclass.isNotEmpty) {
+      prefs.setData("filterclass", (slclass).join(","));
+    }
+    if (board.isNotEmpty) {
+      prefs.setData("filterboard", (board).join(","));
+    }
+    if (place.isNotEmpty) {
+      prefs.setData("filterplace", (place).join(","));
+    }
+    if (teachergen != null) {
+      prefs.setData("filtergender", teachergen!);
+    }
   }
 
   getFilter() async {
     slclass = [];
     board = [];
     place = [];
-    teachergen = [];
+    teachergen = null;
     final prefs = UserPrefs();
     final cls = prefs.getData("filterclass");
     if (cls != null) {
@@ -120,9 +126,7 @@ class FilterProvider extends ChangeNotifier {
 
     final gen = prefs.getData("filtergender");
     if (gen != null) {
-      gen.split(",").forEach((element) {
-        teachergen.add(element);
-      });
+      teachergen = gen;
     }
   }
 
@@ -131,7 +135,7 @@ class FilterProvider extends ChangeNotifier {
     slclass = [];
     board = [];
     place = [];
-    teachergen = [];
+    teachergen = null;
     prefs.removeVal("filterclass");
     prefs.removeVal("filterboard");
     prefs.removeVal("filterplace");

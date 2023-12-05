@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -34,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void resetBackTimeout() {
     Future.delayed(const Duration(seconds: 2), () {
       onFirstBackPress = 1;
-      print("object");
     });
   }
 
@@ -52,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           Navigator.of(context).pop(true);
           exit(0);
-          return false;
         }
       },
       child: Scaffold(

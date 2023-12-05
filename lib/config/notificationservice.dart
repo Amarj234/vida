@@ -3,7 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
-  static final NotificationService _notificationService = NotificationService._internal();
+  static final NotificationService _notificationService =
+      NotificationService._internal();
 
   factory NotificationService() {
     return _notificationService;
@@ -14,16 +15,19 @@ class NotificationService {
 
   NotificationService._internal();
 
-  static const AndroidNotificationDetails _androidNotificationDetails = AndroidNotificationDetails(
+  static const AndroidNotificationDetails _androidNotificationDetails =
+      AndroidNotificationDetails(
     channelId,
     "amarjeeet",
-    channelDescription: "This channel is responsible for all the local notifications",
+    channelDescription:
+        "This channel is responsible for all the local notifications",
     playSound: true,
     priority: Priority.max,
     importance: Importance.max,
   );
 
-  static const DarwinNotificationDetails _iOSNotificationDetails = DarwinNotificationDetails();
+  static const DarwinNotificationDetails _iOSNotificationDetails =
+      DarwinNotificationDetails();
 
   final NotificationDetails notificationDetails = const NotificationDetails(
     android: _androidNotificationDetails,
@@ -35,7 +39,8 @@ class NotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
     // ios initialization
-    const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
+    const DarwinInitializationSettings initializationSettingsDarwin =
+        DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
@@ -44,15 +49,19 @@ class NotificationService {
     );
 
     flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
-    const InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsDarwin);
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsDarwin);
     // the initialization settings are initialized after they are setted
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) async {
         // ...
       },
       // onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
@@ -104,7 +113,9 @@ class NotificationService {
       const NotificationDetails(
         // Android details
         android: AndroidNotificationDetails('main_channel', 'Main Channel',
-            channelDescription: "amarjeet", importance: Importance.max, priority: Priority.max),
+            channelDescription: "amarjeet",
+            importance: Importance.max,
+            priority: Priority.max),
         // iOS details
         iOS: DarwinNotificationDetails(
           sound: 'default.wav',
@@ -150,8 +161,11 @@ class NotificationService {
                 progress: i);
         final NotificationDetails notificationDetails =
             NotificationDetails(android: androidNotificationDetails);
-        await flutterLocalNotificationsPlugin.show(progressId, 'progress notification title',
-            'progress notification body', notificationDetails,
+        await flutterLocalNotificationsPlugin.show(
+            progressId,
+            'progress notification title',
+            'progress notification body',
+            notificationDetails,
             payload: 'item x');
       });
     }

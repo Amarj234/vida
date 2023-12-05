@@ -12,7 +12,7 @@ class SelectClass extends StatelessWidget {
     return Consumer<FilterProvider>(
       builder: (context, provider, child) {
         return provider.isLoding
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : Column(
@@ -28,11 +28,11 @@ class SelectClass extends StatelessWidget {
                   ),
                   Heading("Class"),
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
                   Wrap(
                     alignment: WrapAlignment.start,
-                    spacing: -10.0, // Horizontal space.
+                    spacing: -15.0, // Horizontal space.
                     //runSpacing: 30.0, // gap between lines
                     children: provider.classlist.map((e) {
                       return InkWell(

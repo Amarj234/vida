@@ -104,7 +104,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
         child: Consumer<TeacherdetaildsProvider>(
           builder: (context, provider, child) {
             return provider.isLoading
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : provider.success
@@ -182,7 +182,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                 const SizedBox(
                                   height: 25,
                                 ),
-                                ProfileImage(),
+                                profileImage(),
                                 const SizedBox(
                                   height: 25,
                                 ),
@@ -330,7 +330,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                                   boxShadow: const [
                                                     BoxShadow(
                                                       color:
-                                                          Color(0xffCECBC9FF),
+                                                          Color(0xffcecbc9ff),
                                                       blurRadius: 10.0,
                                                     ),
                                                   ],
@@ -402,7 +402,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                                   boxShadow: const [
                                                     BoxShadow(
                                                       color:
-                                                          Color(0xffCECBC9FF),
+                                                          Color(0xffcecbc9ff),
                                                       blurRadius: 10.0,
                                                     ),
                                                   ],
@@ -585,7 +585,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
     );
   }
 
-  Stack ProfileImage() {
+  Stack profileImage() {
     return Stack(
       alignment: AlignmentDirectional.topCenter,
       children: [

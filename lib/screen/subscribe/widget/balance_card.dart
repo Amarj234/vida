@@ -4,7 +4,8 @@ import 'package:vida/utils/constimage.dart';
 import 'butto.dart';
 
 class BalanceCard extends StatelessWidget {
-  const BalanceCard({Key? key, required this.txt, this.myfun}) : super(key: key);
+  const BalanceCard({Key? key, required this.txt, this.myfun})
+      : super(key: key);
   final String txt;
   final Function()? myfun;
   @override
@@ -15,7 +16,8 @@ class BalanceCard extends StatelessWidget {
       height: 226,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(image: AssetImage(AssetImages.subsbackground), fit: BoxFit.fill)),
+          image: DecorationImage(
+              image: AssetImage(AssetImages.subsbackground), fit: BoxFit.fill)),
       child: Column(
         children: [
           const Text(
@@ -46,7 +48,7 @@ class BalanceCard extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          InkWell(onTap: myfun, child: appButton("UPGRADE NOW", context)),
+          InkWell(onTap: myfun, child: appButton("Pay NOW", context)),
         ],
       ),
     );

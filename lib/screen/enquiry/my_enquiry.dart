@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:vida/screen/enquiry/provider/teacher_enquiry_provider.dart';
-import 'package:vida/screen/enquiry/widget/visible_button.dart';
 import 'package:vida/utils/color.dart';
 
 import '../subscribe/widget/butto.dart';
@@ -33,7 +32,7 @@ class _MyEnquiryState extends State<MyEnquiry> {
       body: Consumer<TeacherEnquiryProvider>(
         builder: (context, provider, child) {
           return provider.isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SafeArea(
@@ -74,7 +73,7 @@ class _MyEnquiryState extends State<MyEnquiry> {
                           ),
                           Container(
                             child: provider.teacherEqList == null
-                                ? Center(
+                                ? const Center(
                                     child: Text("Data Not found"),
                                   )
                                 : ListView.builder(
@@ -107,16 +106,19 @@ class _MyEnquiryState extends State<MyEnquiry> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
-                                                  "Enquiry for ${data.board} Board",
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: AppColor.main),
+                                                SizedBox(
+                                                  width: 240,
+                                                  child: Text(
+                                                    "Enquiry for ${data.board} Board",
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: AppColor.main),
+                                                  ),
                                                 ),
                                                 Text(
-                                                  provider.Formatedate(data
+                                                  provider.formateDate(data
                                                       .createdAt
                                                       .toString()),
                                                   style: GoogleFonts.roboto(
@@ -135,7 +137,7 @@ class _MyEnquiryState extends State<MyEnquiry> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                  data.datumClass ?? "",
+                                                  data.datumClass,
                                                   style: GoogleFonts.roboto(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -153,7 +155,7 @@ class _MyEnquiryState extends State<MyEnquiry> {
                                                               0xffFFB396)),
                                                 ),
                                                 Text(
-                                                  data.subject ?? "",
+                                                  data.subject,
                                                   style: GoogleFonts.roboto(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -185,7 +187,7 @@ class _MyEnquiryState extends State<MyEnquiry> {
                                                             : data.teacherPrefarence ==
                                                                     "F"
                                                                 ? "Female"
-                                                                : "Any" ?? "",
+                                                                : "Any",
                                                         style:
                                                             GoogleFonts.roboto(
                                                           color: AppColor.main,
@@ -195,24 +197,24 @@ class _MyEnquiryState extends State<MyEnquiry> {
                                                         ),
                                                       ),
                                                     ])),
-                                            border(),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              data.description ?? "",
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400,
-                                                  color:
-                                                      const Color(0xff333333)),
-                                            ),
-                                            const SizedBox(
-                                              height: 30,
-                                            ),
-                                            const VisibleButton(
-                                                txt:
-                                                    "2 Teachers View Your Requirement"),
+                                            // border(),
+                                            // const SizedBox(
+                                            //   height: 10,
+                                            // ),
+                                            // Text(
+                                            //   data.description ?? "",
+                                            //   style: GoogleFonts.roboto(
+                                            //       fontSize: 16,
+                                            //       fontWeight: FontWeight.w400,
+                                            //       color:
+                                            //           const Color(0xff333333)),
+                                            // ),
+                                            // const SizedBox(
+                                            //   height: 30,
+                                            // ),
+                                            // const VisibleButton(
+                                            //     txt:
+                                            //         "2 Teachers View Your Requirement"),
                                             const SizedBox(
                                               height: 10,
                                             ),

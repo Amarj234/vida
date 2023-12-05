@@ -71,131 +71,135 @@ class _EditProfileState extends State<EditProfile> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: Form(
-              key: key,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 25,
+          child: Consumer<StudentProfileProvider>(
+            builder: (context, provider, child) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: Form(
+                  key: key,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      RegisterTextfields(
+                        isvalid: 0,
+                        mycon: studentProfileProvider!.name,
+                        tcolor: const Color(0xff421200),
+                        hint: 'Parent’s Name',
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      RegisterTextfields(
+                        readonly: true,
+                        myfun: () async {
+                          LocationData? locationData =
+                              await LocationSearch.show(
+                                  context: context,
+                                  lightAdress: false,
+                                  mode: Mode.overlay);
+                          studentProfileProvider!.location.text =
+                              locationData!.address;
+                        },
+                        isicon: true,
+                        isvalid: 0,
+                        mycon: studentProfileProvider!.location,
+                        tcolor: const Color(0xff421200),
+                        hint: 'Location',
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      RegisterTextfields(
+                        isvalid: 0,
+                        mycon: studentProfileProvider!.landmark,
+                        tcolor: const Color(0xff421200),
+                        hint: 'Landmark',
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      DropDown(
+                        dropdownState: studentProfileProvider!.dropdownState,
+                        hint: 'Board',
+                        list: studentProfileProvider!.bordlist,
+                        mayfun: (String val) {
+                          studentProfileProvider!.board = val;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      DropDown(
+                        dropdownState: studentProfileProvider!.dropdownState2,
+                        hint: 'Class',
+                        list: studentProfileProvider!.classlist,
+                        mayfun: (String val) {
+                          studentProfileProvider!.classs.text = val;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      GenderSelect(
+                        myfun: (int val) {
+                          studentProfileProvider!.gender = val;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      DropDown(
+                        dropdownState: studentProfileProvider!.dropdownState3,
+                        hint: 'Subject',
+                        list: studentProfileProvider!.subjectlist,
+                        mayfun: (String val) {
+                          studentProfileProvider!.subject.text = val;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      RegisterTextfields(
+                        readonly: true,
+                        isvalid: 2,
+                        mycon: studentProfileProvider!.mobile,
+                        tcolor: const Color(0xff421200),
+                        hint: 'Mobile',
+                      ),
+                      const SizedBox(height: 30),
+                      AppButton(
+                        texcolor: Colors.white,
+                        hight: 36,
+                        txt: 'SUBMIT',
+                        col: AppColor.main,
+                        myfun: () {
+                          if (key.currentState!.validate()) {
+                            studentProfileProvider!.register(context);
+                          }
+                          // Navigator.push(
+                          //     context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CancelButton(
+                        txt: 'Cancel',
+                        hight: 36,
+                        myfun: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ],
                   ),
-                  RegisterTextfields(
-                    isvalid: 0,
-                    mycon: studentProfileProvider!.name,
-                    tcolor: const Color(0xff421200),
-                    hint: 'Parent’s Name',
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  RegisterTextfields(
-                    readonly: true,
-                    myfun: () async {
-                      LocationData? locationData = await LocationSearch.show(
-                          context: context,
-                          lightAdress: false,
-                          mode: Mode.overlay);
-                      studentProfileProvider!.location.text =
-                          locationData!.address;
-                    },
-                    isicon: true,
-                    isvalid: 0,
-                    mycon: studentProfileProvider!.location,
-                    tcolor: const Color(0xff421200),
-                    hint: 'Location',
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  RegisterTextfields(
-                    isvalid: 0,
-                    mycon: studentProfileProvider!.landmark,
-                    tcolor: const Color(0xff421200),
-                    hint: 'Landmark',
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  DropDown(
-                    dropdownState: studentProfileProvider!.dropdownState,
-                    hint: 'Board',
-                    list: studentProfileProvider!.bordlist,
-                    mayfun: (String val) {
-                      studentProfileProvider!.board = val;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  DropDown(
-                    dropdownState: studentProfileProvider!.dropdownState2,
-                    hint: 'Class',
-                    list: studentProfileProvider!.classlist,
-                    mayfun: (String val) {
-                      studentProfileProvider!.classs.text = val;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  GenderSelect(
-                    myfun: (int val) {
-                      studentProfileProvider!.gender = val;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  DropDown(
-                    dropdownState: studentProfileProvider!.dropdownState3,
-                    hint: 'Subject',
-                    list: studentProfileProvider!.subjectlist,
-                    mayfun: (String val) {
-                      studentProfileProvider!.subject.text = val;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  RegisterTextfields(
-                    readonly: true,
-                    isvalid: 2,
-                    mycon: studentProfileProvider!.mobile,
-                    tcolor: const Color(0xff421200),
-                    hint: 'Mobile',
-                  ),
-                  const SizedBox(height: 30),
-                  AppButton(
-                    texcolor: Colors.white,
-                    hight: 36,
-                    txt: 'SUBMIT',
-                    col: AppColor.main,
-                    myfun: () {
-                      if (key.currentState!.validate()) {
-                        studentProfileProvider!.register(context);
-                      }
-                      ;
-                      // Navigator.push(
-                      //     context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CancelButton(
-                    txt: 'Cancel',
-                    hight: 36,
-                    myfun: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

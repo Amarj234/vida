@@ -26,6 +26,7 @@ class _OnboardingContentState extends State<OnboardingContent> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     // TODO: implement initState
     super.initState();
+
     Future.delayed(const Duration(seconds: 2), () {
       determineScreen();
       // Navigator.pushReplacement(context,
@@ -53,10 +54,9 @@ class _OnboardingContentState extends State<OnboardingContent> {
 
     log(" token : $token name: $name fcm $fcmtoken");
 //initAutoStart();
-    print("Screen check $login");
     if (login == "yes") {
       int? rid = int.parse(prefs.getData("rid").toString());
-      pro.changeUid(rid!);
+      pro.changeUid(rid);
 
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));

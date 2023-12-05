@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vida/utils/color.dart';
 import 'package:vida/utils/constimage.dart';
 
@@ -18,6 +21,17 @@ class SupportScreen extends StatefulWidget {
 class _SupportScreenState extends State<SupportScreen> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final search = TextEditingController();
+  String phone = "918382946376";
+  String message = "Support msg";
+
+  String url() {
+    //  if (Platform.isIOS) {
+    return "https://wa.me/$phone/?text=${Uri.encodeFull(message)}";
+    // } else {
+    return "whatsapp://send?phone=$phone&text=${Uri.encodeFull(message)}";
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +75,9 @@ class _SupportScreenState extends State<SupportScreen> {
               Text(
                 "Help and Support service hour",
                 style: GoogleFonts.roboto(
-                    fontSize: 16, fontWeight: FontWeight.w500, color: AppColor.main),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColor.main),
               ),
               const SizedBox(
                 height: 20,
@@ -74,17 +90,31 @@ class _SupportScreenState extends State<SupportScreen> {
               Text(
                 "Didn’t find the answer to your questions?",
                 style: GoogleFonts.roboto(
-                    fontSize: 16, fontWeight: FontWeight.w500, color: AppColor.main),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColor.main),
               ),
               const SizedBox(
                 height: 15,
               ),
               ButtonIcon(
-                image: AssetImages.email,
-                heigth: 36,
-                txt: "Email us            ",
-                myfun: () {},
-              ),
+                  image: AssetImages.email,
+                  heigth: 36,
+                  txt: "Email us            ",
+                  myfun: () async {
+                    String email = Uri.encodeComponent("amarj234@gmail.com");
+                    String subject = Uri.encodeComponent("Hello Flutter");
+                    String body =
+                        Uri.encodeComponent("Hi! I'm Flutter Developer");
+                    print(subject); //output: Hello%20Flutter
+                    Uri mail =
+                        Uri.parse("mailto:$email?subject=$subject&body=$body");
+                    if (await launchUrl(mail)) {
+                      //email app opened
+                    } else {
+                      //email app is not opened
+                    }
+                  }),
               const SizedBox(
                 height: 20,
               ),
@@ -92,7 +122,10 @@ class _SupportScreenState extends State<SupportScreen> {
                 image: AssetImages.whatsapp,
                 heigth: 36,
                 txt: "Connect with us",
-                myfun: () {},
+                myfun: () async {
+                  print(url());
+                  launchUrl(Uri.parse(url()));
+                },
               ),
               // const SizedBox(
               //   height: 20,
@@ -109,7 +142,9 @@ class _SupportScreenState extends State<SupportScreen> {
               Text(
                 "Your feedback is invaluable for us. It help us improve our app and services.",
                 style: GoogleFonts.roboto(
-                    fontSize: 16, fontWeight: FontWeight.w400, color: const Color(0xff333333)),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff333333)),
               ),
             ],
           ),
@@ -124,7 +159,8 @@ class _SupportScreenState extends State<SupportScreen> {
         Container(
           height: 6,
           width: 6,
-          decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColor.main),
+          decoration:
+              const BoxDecoration(shape: BoxShape.circle, color: AppColor.main),
         ),
         const SizedBox(
           width: 10,
@@ -133,8 +169,10 @@ class _SupportScreenState extends State<SupportScreen> {
           padding: const EdgeInsets.all(5.0),
           child: Text(
             txt,
-            style:
-                GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w400, color: AppColor.main),
+            style: GoogleFonts.roboto(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: AppColor.main),
           ),
         ),
       ],

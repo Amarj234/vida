@@ -3,10 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vida/utils/color.dart';
 import 'package:vida/utils/constimage.dart';
 
+import '../../commonfun/customAnimation.dart';
+import '../../commonfun/enums.dart';
 import '../../config/sharedPrefs.dart';
 import '../../utils/style.dart';
 import '../otplogin/login_screen.dart';
-import '../selectlocation/select_location.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({Key? key}) : super(key: key);
@@ -27,33 +28,53 @@ class IntroScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                "Advantage of Vida - To Parents",
-                style: GoogleFonts.roboto(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white),
+              CustomAnimation(
+                direction: Direction.up,
+                duration: const Duration(seconds: 2),
+                child: Text(
+                  "Advantage of Vida - To Parents",
+                  style: GoogleFonts.roboto(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
+                ),
               ),
               const SizedBox(
                 height: 25,
               ),
-              mainHeadin(context,
-                  "The fees of teachers is not very high as they are not needed to pay any amount to the consultancy or middlemen"),
+              CustomAnimation(
+                direction: Direction.right,
+                duration: const Duration(milliseconds: 500),
+                child: mainHeadin(context,
+                    "The fees of teachers is not very high as they are not needed to pay any amount to the consultancy or middlemen"),
+              ),
               const SizedBox(
                 height: 35,
               ),
-              mainHeadin(context,
-                  "Parent can choose a teacher as per their requirement from thousands of qualified and experienced teachers"),
+              CustomAnimation(
+                direction: Direction.right,
+                duration: const Duration(milliseconds: 1000),
+                child: mainHeadin(context,
+                    "Parent can choose a teacher as per their requirement from thousands of qualified and experienced teachers"),
+              ),
               const SizedBox(
                 height: 35,
               ),
-              mainHeadin(context,
-                  "Parents need to just put their requirements and they will get calls from the teachers"),
+              CustomAnimation(
+                direction: Direction.right,
+                duration: const Duration(milliseconds: 1500),
+                child: mainHeadin(context,
+                    "Parents need to just put their requirements and they will get calls from the teachers"),
+              ),
               const SizedBox(
                 height: 35,
               ),
-              mainHeadin(context,
-                  "Please do not uninstall the app. Let the app remain in your mobile. Everyday 100's of teachers are getting added. Wherever you need a teacher just fill few details and get calls from qualified and experienced teachers"),
+              CustomAnimation(
+                direction: Direction.right,
+                duration: const Duration(seconds: 2),
+                child: mainHeadin(context,
+                    "Please do not uninstall the app. Let the app remain in your mobile. Everyday 100's of teachers are getting added. Wherever you need a teacher just fill few details and get calls from qualified and experienced teachers"),
+              ),
             ],
           ),
         ),

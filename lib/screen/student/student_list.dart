@@ -29,6 +29,7 @@ class _StudentListState extends State<StudentList> {
     studentpro = Provider.of<StudentListProvider>(context, listen: false);
     studentpro!.getAddress();
     studentpro!.getlist(context);
+    studentpro!.getBalance(context);
   }
 
   @override
@@ -164,17 +165,21 @@ class _StudentListState extends State<StudentList> {
                                 builder: (context) => const SubscribePay()));
                       },
                       subscribe: 'SUBSCRIBE NOW',
-                      balance: '00',
+                      balance: provider.yourBalance == null
+                          ? "0.0"
+                          : provider.yourBalance!.d.data.numberOfView
+                                  .toString() ??
+                              "",
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     provider.isLoading
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(),
                           )
                         : provider.studentlist == null
-                            ? Center(
+                            ? const Center(
                                 child: Text("List not Found"),
                               )
                             : ListView.builder(
@@ -203,16 +208,16 @@ class _StudentListState extends State<StudentList> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(data.parentName ?? "",
+                                              Text(data.parentName,
                                                   style: GoogleFonts.roboto(
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 20,
                                                     color: Colors.white,
                                                   )),
                                               const SizedBox(
-                                                height: 15,
+                                                height: 2,
                                               ),
-                                              Row(
+                                              Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
@@ -226,7 +231,7 @@ class _StudentListState extends State<StudentList> {
                                                               .start,
                                                       children: [
                                                         Text(
-                                                          "Location: ",
+                                                          "Board: ${data.board}",
                                                           style: GoogleFonts
                                                               .roboto(
                                                             color: Colors.white,
@@ -235,77 +240,48 @@ class _StudentListState extends State<StudentList> {
                                                                 FontWeight.w500,
                                                           ),
                                                         ),
+                                                      ]),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        // Text(
+                                                        //   "Location: ",
+                                                        //   style: GoogleFonts
+                                                        //       .roboto(
+                                                        //     color: Colors.white,
+                                                        //     fontSize: 14,
+                                                        //     fontWeight:
+                                                        //         FontWeight.w500,
+                                                        //   ),
+                                                        // ),
                                                         SizedBox(
                                                           width: MediaQuery.of(
                                                                       context)
                                                                   .size
                                                                   .width -
-                                                              232,
-                                                          child:
-                                                              RichReadMoreText
-                                                                  .fromString(
-                                                            text:
-                                                                data.parentLocation ??
-                                                                    "",
-                                                            textStyle:
-                                                                GoogleFonts
-                                                                    .roboto(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontSize: 14,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            settings:
-                                                                LengthModeSettings(
-                                                              trimLength: 15,
-                                                              trimCollapsedText:
-                                                                  'show',
-                                                              trimExpandedText:
-                                                                  'hide',
-                                                              onPressReadMore:
-                                                                  () {
-                                                                /// specific method to be called on press to show more
-                                                              },
-                                                              onPressReadLess:
-                                                                  () {
-                                                                /// specific method to be called on press to show less
-                                                              },
-                                                              lessStyle: TextStyle(
-                                                                  color: Colors
-                                                                      .blue),
-                                                              moreStyle: TextStyle(
-                                                                  color: Colors
-                                                                      .blue),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ]),
-                                                  RichText(
-                                                      text: TextSpan(
-                                                          text: "Board: ",
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                            color: Colors.white,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                          children: [
-                                                        TextSpan(
-                                                            text: data.board ??
-                                                                "",
+                                                              90,
+                                                          child: Text(
+                                                            "Location: ${data.parentLocation}",
                                                             style: GoogleFonts
                                                                 .roboto(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontSize: 14,
                                                               color:
                                                                   Colors.white,
-                                                            ))
-                                                      ])),
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ]),
                                                 ],
                                               ),
                                             ],
@@ -331,20 +307,23 @@ class _StudentListState extends State<StudentList> {
                                             ),
                                             buildContainer(
                                                 "Class: ",
-                                                data.datumClass ?? "",
+                                                data.datumClass,
                                                 AssetImages.book),
-                                            buildContainer(
-                                                "Subject: ",
-                                                data.subject ?? "",
-                                                AssetImages.pen),
+                                            buildContainer("Subject: ",
+                                                data.subject, AssetImages.pen),
                                             buildContainer(
                                                 "Teacher Preference: ",
-                                                data.teacherPrefarence ?? "",
+                                                data.teacherPrefarence == "M"
+                                                    ? "Male"
+                                                    : data.teacherPrefarence ==
+                                                            "F"
+                                                        ? "Female"
+                                                        : "ANY",
                                                 AssetImages.teacherhed),
-                                            buildContainer(
-                                                "Msg from parents: ",
-                                                data.description ?? "",
-                                                AssetImages.needteacher),
+                                            // buildContainer(
+                                            //     "Msg from parents: ",
+                                            //     data.description ?? "",
+                                            //     AssetImages.needteacher),
                                             const SizedBox(
                                               height: 5,
                                             ),
@@ -374,8 +353,9 @@ class _StudentListState extends State<StudentList> {
                                                 : Column(
                                                     children: [
                                                       Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
                                                                 horizontal:
                                                                     20.0),
                                                         child: InkWell(
@@ -385,9 +365,9 @@ class _StudentListState extends State<StudentList> {
                                                                   context);
                                                             },
                                                             child:
-                                                                ContactButton()),
+                                                                const ContactButton()),
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 15,
                                                       ),
                                                     ],
@@ -496,8 +476,8 @@ class _StudentListState extends State<StudentList> {
                       onPressReadLess: () {
                         /// specific method to be called on press to show less
                       },
-                      lessStyle: TextStyle(color: Colors.blue),
-                      moreStyle: TextStyle(color: Colors.blue),
+                      lessStyle: const TextStyle(color: Colors.blue),
+                      moreStyle: const TextStyle(color: Colors.blue),
                     ),
                   ),
                 )

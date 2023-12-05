@@ -4,6 +4,8 @@ import 'package:vida/screen/splase/teacher_intro.dart';
 import 'package:vida/utils/color.dart';
 import 'package:vida/utils/constimage.dart';
 
+import '../../commonfun/customAnimation.dart';
+import '../../commonfun/enums.dart';
 import '../../config/sharedPrefs.dart';
 import '../../utils/style.dart';
 import 'intro_screen.dart';
@@ -16,7 +18,8 @@ class SelectRegister extends StatefulWidget {
   State<SelectRegister> createState() => _SelectRegisterState();
 }
 
-class _SelectRegisterState extends State<SelectRegister> {
+class _SelectRegisterState extends State<SelectRegister>
+    with TickerProviderStateMixin {
   final prefe = UserPrefs();
 
   @override
@@ -37,6 +40,7 @@ class _SelectRegisterState extends State<SelectRegister> {
                   // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    //SvgPicture.asset(AssetImages.vidasvg),
                     Image.asset(
                       AssetImages.vida,
                       height: 100,
@@ -92,60 +96,73 @@ class _SelectRegisterState extends State<SelectRegister> {
                       const SizedBox(
                         height: 25,
                       ),
-                      ContainerBtn(
-                        myfun: () {
-                          if (prefe.getData("pintro") == "yes") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const LoginScreen(uid: 1)));
-                          } else {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const IntroScreen()));
-                          }
-                        },
-                        text: 'PARENT',
-                        image: AssetImages.perent,
-                        col: AppColor.yello,
+                      CustomAnimation(
+                        direction: Direction.right,
+                        duration: const Duration(seconds: 2),
+                        child: ContainerBtn(
+                          myfun: () {
+                            if (prefe.getData("pintro") == "yes") {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen(uid: 1)));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const IntroScreen()));
+                            }
+                          },
+                          text: 'PARENT',
+                          image: AssetImages.perent,
+                          col: AppColor.yello,
+                        ),
                       ),
                       const SizedBox(
                         height: 16,
                       ),
-                      ContainerBtn(
-                        myfun: () {
-                          if (prefe.getData("tintro") == "yes") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const LoginScreen(uid: 1)));
-                          } else {
+                      CustomAnimation(
+                        direction: Direction.left,
+                        duration: const Duration(seconds: 2),
+                        child: ContainerBtn(
+                          myfun: () {
+                            // if (prefe.getData("tintro") == "yes") {
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               const LoginScreen(uid: 1)));
+                            // } else {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const TeacherIntro()));
-                          }
-                        },
-                        text: 'TEACHER',
-                        image: AssetImages.teacher,
-                        col: AppColor.oreng,
+                            //    }
+                          },
+                          text: 'TEACHER',
+                          image: AssetImages.teacher,
+                          col: AppColor.oreng,
+                        ),
                       ),
                       const SizedBox(
                         height: 30,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            AssetImages.trident,
-                            height: 130,
-                          ),
-                        ],
+                      CustomAnimation(
+                        direction: Direction.up,
+                        duration: const Duration(milliseconds: 1500),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              AssetImages.trident,
+                              height: 130,
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),

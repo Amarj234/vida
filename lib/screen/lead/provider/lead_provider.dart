@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import '../../../../commonfun/get_location.dart';
 import '../../../../config/baseUrl.dart';
 import '../../../../config/sharedPrefs.dart';
-import '../../../../model/enquiry_list.dart';
 import '../../../model/lead_list.dart';
 import '../../commonWidget/costum_snackbar.dart';
 
@@ -17,7 +16,6 @@ class LeadProvider extends ChangeNotifier {
 
   getAddress() async {
     LocationModel? data = await GetLocation().getLatLong();
-    print("mylocation234 $data");
     if (data != null) {
       culocation = data.locationname;
       longitude = data.long;
@@ -30,7 +28,6 @@ class LeadProvider extends ChangeNotifier {
   bool success = false;
 
   LeadList? leadlist;
-
   getlist(BuildContext context) async {
     isLoading = true;
     final prefs = UserPrefs();
@@ -47,7 +44,6 @@ class LeadProvider extends ChangeNotifier {
 
     final url = Uri.parse("${baseUrl}enquiry/user-leades");
 
-    print(url);
     try {
       final request = http.Request(
         'GET',
@@ -58,7 +54,6 @@ class LeadProvider extends ChangeNotifier {
 
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
-      print(response.statusCode);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
         LeadList res = LeadList.fromJson(json);
@@ -70,7 +65,6 @@ class LeadProvider extends ChangeNotifier {
 
         isLoading = false;
         success = true;
-        print(json);
       }
     } catch (e) {
       CostomSnackbar.show(context, "$e");

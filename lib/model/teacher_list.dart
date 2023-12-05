@@ -73,7 +73,7 @@ class Datum {
   });
 
   String phoneNo;
-  String extraParm6;
+  String? extraParm6;
   String? extraParm5;
   String? latitude;
   String? extraParm4;

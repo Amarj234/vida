@@ -61,7 +61,7 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
         child: Consumer<StudentinfoProvider>(
           builder: (context, provider, child) {
             return provider.isLoading
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : provider.success
@@ -213,7 +213,6 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                                 ),
                                 GenderSelect(
                                   myfun: (int val) {
-                                    print("gender val");
                                     sudentpro!.gender = val;
                                   },
                                 ),

@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Consumer<StudentProfileProvider>(
         builder: (context, provider, child) {
           return provider.isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
@@ -55,9 +55,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    toCapitalized(provider
-                                            .parentProfile!.d.data.name!) ??
-                                        "",
+                                    toCapitalized(
+                                        provider.parentProfile!.d.data.name),
                                     style: GoogleFonts.roboto(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w500,
@@ -92,9 +91,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     height: 70,
                                   ),
                                   NameFields(
-                                    txt: toCapitalized(provider
-                                            .parentProfile!.d.data.name!) ??
-                                        "",
+                                    txt: toCapitalized(
+                                        provider.parentProfile!.d.data.name),
                                     image: AssetImages.user,
                                   ),
                                   NameFields(

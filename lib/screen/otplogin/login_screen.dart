@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 15,
                           ),
                           Text(
-                            "We will send you 4 digit verification code to your register mobile number",
+                            "We will send you 4 digit verification code to your registered mobile number",
                             style: GoogleFonts.roboto(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                margin: const EdgeInsets.only(bottom: 20),
+                                margin: const EdgeInsets.only(bottom: 23),
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 11, horizontal: 15),
                                 decoration: BoxDecoration(
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 1,
                           ),
                           AppButton(
                             myfun: () {

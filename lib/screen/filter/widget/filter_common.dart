@@ -28,7 +28,7 @@ Chip myChip(String txt, bool isselect) {
                 : BorderRadius.circular(50),
             border: Border.all(color: const Color(0xffA3A3A3))),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
           child: Text(txt),
         )),
   );

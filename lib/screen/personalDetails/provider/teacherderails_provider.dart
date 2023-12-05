@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -76,7 +74,6 @@ class TeacherdetaildsProvider extends ChangeNotifier {
   double? latitude;
 
   teacherRegister(BuildContext context, String rid) async {
-    print("teacherRegister");
     final prefs = UserPrefs();
     var id = prefs.getData("id");
     isLoading = true;
@@ -91,8 +88,6 @@ class TeacherdetaildsProvider extends ChangeNotifier {
         headers: headers,
       ),
     );
-    final url = Uri.parse("${baseUrl}registration-teacher");
-    print("$url $id  $longitude ${exp.text} $profilepath");
 
     final tab = Provider.of<TabProvider>(context, listen: false);
 
@@ -143,7 +138,6 @@ class TeacherdetaildsProvider extends ChangeNotifier {
         options: dioClient.Options(
           followRedirects: false,
           validateStatus: (status) {
-            print("mystatus $status");
             return status! < 500;
           },
           method: 'post',
@@ -152,8 +146,6 @@ class TeacherdetaildsProvider extends ChangeNotifier {
         ),
       );
 
-      print("body msg  ${response.statusMessage}");
-      print("body msg  ${response.data}");
       if (response.statusCode == 200) {
         if (response.data['status'] == true) {
           success = true;
@@ -164,11 +156,9 @@ class TeacherdetaildsProvider extends ChangeNotifier {
         //CostomSnackbar.show(context, jsonDecode(response.data)['message'][0]);
       }
       isLoading = false;
-      print(response.data);
 
       // success = true;
     } catch (e) {
-      print("error $e");
       //Get.snackbar('Error', 'An error occurred');
     } finally {
       isLoading = false;
@@ -281,21 +271,21 @@ class TeacherdetaildsProvider extends ChangeNotifier {
 
     if (id == 3) {
       bordlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         bordlist.add(element.propsTitle);
-      });
+      }
       bordlist.add("Done");
     } else if (id == 4) {
       classlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         classlist.add(element.propsTitle);
-      });
+      }
       classlist.add("Done");
     } else {
       subjectlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         subjectlist.add(element.propsTitle);
-      });
+      }
       subjectlist.add("Done");
     }
     isLoding = false;

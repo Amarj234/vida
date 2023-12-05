@@ -38,7 +38,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
       body: Consumer<TeacherProfileProvider>(
         builder: (context, provider, child) {
           return provider.isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SafeArea(
@@ -57,8 +57,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                                 children: [
                                   Text(
                                     toCapitalized(teacherProfileProvider!
-                                            .teacherProfile!.d.data.name) ??
-                                        "",
+                                        .teacherProfile!.d.data.name),
                                     style: GoogleFonts.roboto(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w500,
@@ -94,14 +93,12 @@ class _TeacherProfileState extends State<TeacherProfile> {
                                   ),
                                   NameFields(
                                     txt: toCapitalized(teacherProfileProvider!
-                                            .teacherProfile!.d.data.name) ??
-                                        "",
+                                        .teacherProfile!.d.data.name),
                                     image: AssetImages.user,
                                   ),
                                   NameFields(
                                     txt: teacherProfileProvider!
-                                            .teacherProfile!.d.data.phoneNo ??
-                                        "",
+                                        .teacherProfile!.d.data.phoneNo,
                                     image: AssetImages.mobile,
                                   ),
                                   NameFields(
@@ -121,8 +118,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                                   ),
                                   NameFields(
                                     txt: teacherProfileProvider!
-                                            .teacherProfile!.d.data.location ??
-                                        "",
+                                        .teacherProfile!.d.data.location,
                                     image: AssetImages.pointlocation,
                                   ),
                                   NameFields(
@@ -139,11 +135,10 @@ class _TeacherProfileState extends State<TeacherProfile> {
                                   ),
                                   NameFields(
                                     txt: teacherProfileProvider!
-                                            .Formatedate(teacherProfileProvider!
-                                                .teacherProfile!.d.data.dob
-                                                .toString())
-                                            .toString() ??
-                                        "",
+                                        .formateDate(teacherProfileProvider!
+                                            .teacherProfile!.d.data.dob
+                                            .toString())
+                                        .toString(),
                                     image: AssetImages.cake,
                                   ),
                                   NameFields(

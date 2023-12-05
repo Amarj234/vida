@@ -5,7 +5,7 @@ import '../../../model/dropdown_data.dart';
 
 class TabProvider extends ChangeNotifier {
   List<String> tabval = [];
-  int selectradeo = 1;
+  int selectradeo = 4;
 
   List parents = [];
   // ignore: non_constant_identifier_names
@@ -24,9 +24,9 @@ class TabProvider extends ChangeNotifier {
     notifyListeners();
     DropdownData? res = await DropdownDatas().getdata(id);
     parents = [];
-    res!.data.forEach((element) {
+    for (var element in res!.data) {
       parents.add(element.propsTitle);
-    });
+    }
     isLoding = false;
     notifyListeners();
   }

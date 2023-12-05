@@ -7,8 +7,6 @@ import '../commonWidget/app_button.dart';
 import '../commonWidget/dropdown.dart';
 import '../commonWidget/gender_select.dart';
 import '../commonWidget/main_appbar.dart';
-import '../commonWidget/register_textfields.dart';
-import '../commonWidget/text_area.dart';
 
 import '../menu/side_menu.dart';
 import 'provider/teacher_enquiry_provider.dart';
@@ -60,7 +58,7 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
       body: Consumer<TeacherEnquiryProvider>(
         builder: (context, provider, child) {
           return provider.isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SafeArea(
@@ -114,6 +112,7 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
                               height: 15,
                             ),
                             GenderSelect(
+                              header: "Teacher Preference",
                               myfun: (int val) {
                                 provider.gender = val;
                               },
@@ -129,15 +128,15 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
                                 provider.subject.text = val;
                               },
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            TextArea(
-                              isvalid: 3,
-                              mycon: provider.massege,
-                              tcolor: const Color(0xff421200),
-                              hint: 'Write your Message',
-                            ),
+                            // const SizedBox(
+                            //   height: 15,
+                            // ),
+                            // TextArea(
+                            //   isvalid: 3,
+                            //   mycon: provider.massege,
+                            //   tcolor: const Color(0xff421200),
+                            //   hint: 'Write your Message',
+                            // ),
                             const SizedBox(
                               height: 30,
                             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rich_readmore/rich_readmore.dart';
@@ -11,6 +10,7 @@ import '../../utils/style.dart';
 import '../commonWidget/app_button.dart';
 import '../enquiry/teacher_enquiry.dart';
 import '../filter/filter_screen.dart';
+import '../splase/provider/appmessage_provider.dart';
 import '../subscribe/subscribe_pay.dart';
 import 'provider/teacherlist_provider.dart';
 import 'widget/contact_button.dart';
@@ -25,12 +25,17 @@ class TeacherList extends StatefulWidget {
 class _TeacherListState extends State<TeacherList> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   TeacherListProvider? techerpro;
+  AppmessageProvider? appmessageProvider;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    appmessageProvider =
+        Provider.of<AppmessageProvider>(context, listen: false);
+    appmessageProvider!.getlist(context);
     techerpro = Provider.of<TeacherListProvider>(context, listen: false);
     techerpro!.getAddress();
+    techerpro!.getBalance(context);
     techerpro!.getlist(context);
   }
 
@@ -93,12 +98,15 @@ class _TeacherListState extends State<TeacherList> {
                         Flexible(
                           flex: 4,
                           child: InkWell(
-                            onTap: () {
-                              Navigator.push(
+                            onTap: () async {
+                              final data = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const FilterScreen()));
+                              if (data == true) {
+                                techerpro!.getlist(context);
+                              }
                             },
                             child: Container(
                               //  width: 70,
@@ -139,24 +147,29 @@ class _TeacherListState extends State<TeacherList> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: const Color(0xffF3F3F3)),
-                      child: RichText(
-                          text: TextSpan(
-                              text: "Note: ",
-                              style: GoogleFonts.roboto(
-                                color: AppColor.main,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              children: [
-                            TextSpan(
-                                text:
-                                    "Note: If you don't want to pay subscription please wait for some time and you will get a call automatically as per your requirement. If you don't get a teacher in 24 hours please post the requirement again so that new teacher can contact you.",
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13,
-                                  color: AppColor.main,
-                                ))
-                          ])),
+                      child: Consumer<AppmessageProvider>(
+                        builder: (context, provider, child) {
+                          return provider.isLoading
+                              ? Container()
+                              : RichText(
+                                  text: TextSpan(
+                                      text: "Note: ",
+                                      style: GoogleFonts.roboto(
+                                        color: AppColor.main,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      children: [
+                                      TextSpan(
+                                          text: provider.appMessage ?? "",
+                                          style: GoogleFonts.roboto(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 13,
+                                            color: AppColor.main,
+                                          ))
+                                    ]));
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
@@ -170,7 +183,11 @@ class _TeacherListState extends State<TeacherList> {
                                 builder: (context) => const SubscribePay()));
                       },
                       subscribe: 'SUBSCRIBE NOW',
-                      balance: '00',
+                      balance: provider.yourBalance == null
+                          ? ""
+                          : provider.yourBalance!.d.data.numberOfView
+                                  .toString() ??
+                              "",
                     ),
                     const SizedBox(
                       height: 20,
@@ -178,259 +195,270 @@ class _TeacherListState extends State<TeacherList> {
                     Consumer<TeacherListProvider>(
                       builder: (context, provider, child) {
                         return provider.isLoading
-                            ? Center(
+                            ? const Center(
                                 child: CircularProgressIndicator(),
                               )
                             : provider.teacherList == null
-                                ? Center(
-                                    child: Text("List not Found"),
+                                ? const Center(
+                                    child: Text("List not Found 2"),
                                   )
-                                : ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount:
-                                        provider.teacherList!.data.length,
-                                    itemBuilder: (context, index) {
-                                      final data = provider.teacherList!.data;
-                                      return Column(
-                                        children: [
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.only(
-                                                    topRight:
-                                                        Radius.circular(10),
-                                                    topLeft:
-                                                        Radius.circular(10)),
-                                                color: AppColor.radiocolr),
-                                            child: Row(
-                                              children: [
-                                                // Image.asset(
-                                                //   AssetImages.ankita,
-                                                //   width: 85,
-                                                //   height: 91,
-                                                // ),
-                                                Container(
-                                                  width: 85,
-                                                  height: 91,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      image: DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: NetworkImage(
-                                                              "$baseImgUrl${data[index].userImage}"))),
-                                                ),
+                                : provider.teacherList!.data.isEmpty
+                                    ? const Center(
+                                        child: Text("List not Found"),
+                                      )
+                                    : ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount:
+                                            provider.teacherList!.data.length,
+                                        itemBuilder: (context, index) {
+                                          final data =
+                                              provider.teacherList!.data;
+                                          return Column(
+                                            children: [
+                                              Container(
+                                                decoration: const BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topRight: Radius
+                                                                .circular(10),
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    10)),
+                                                    color: AppColor.radiocolr),
+                                                child: Row(
+                                                  children: [
+                                                    // Image.asset(
+                                                    //   AssetImages.ankita,
+                                                    //   width: 85,
+                                                    //   height: 91,
+                                                    // ),
+                                                    Container(
+                                                      width: 85,
+                                                      height: 91,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          image: DecorationImage(
+                                                              fit: BoxFit.cover,
+                                                              image: NetworkImage(
+                                                                  "$baseImgUrl${data[index].userImage}"))),
+                                                    ),
 
-                                                const SizedBox(
-                                                  width: 15,
+                                                    const SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                            data[index].name ??
+                                                                "",
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 20,
+                                                              color:
+                                                                  Colors.white,
+                                                            )),
+                                                        const SizedBox(
+                                                          height: 15,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            SizedBox(
+                                                              width: (MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width /
+                                                                      2) -
+                                                                  60,
+                                                              child: RichText(
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  text: TextSpan(
+                                                                      text: "Experience: ",
+                                                                      style: GoogleFonts.roboto(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                      ),
+                                                                      children: [
+                                                                        TextSpan(
+                                                                            spellOut:
+                                                                                true,
+                                                                            text:
+                                                                                "${data[index].extraParm4 ?? ""} Years",
+                                                                            style:
+                                                                                GoogleFonts.roboto(
+                                                                              fontWeight: FontWeight.w400,
+                                                                              fontSize: 14,
+                                                                              color: Colors.white,
+                                                                            ))
+                                                                      ])),
+                                                            ),
+                                                            // SizedBox(
+                                                            //   width: MediaQuery.of(
+                                                            //               context)
+                                                            //           .size
+                                                            //           .width -
+                                                            //       300,
+                                                            //   child: RichText(
+                                                            //       overflow:
+                                                            //           TextOverflow
+                                                            //               .ellipsis,
+                                                            //       text: TextSpan(
+                                                            //           text: "Board: ",
+                                                            //           style: GoogleFonts.roboto(
+                                                            //             color: Colors
+                                                            //                 .white,
+                                                            //             fontSize:
+                                                            //                 14,
+                                                            //             fontWeight:
+                                                            //                 FontWeight.w500,
+                                                            //           ),
+                                                            //           children: [
+                                                            //             TextSpan(
+                                                            //                 spellOut:
+                                                            //                     true,
+                                                            //                 text: data[index].extraParm3 ??
+                                                            //                     "",
+                                                            //                 style:
+                                                            //                     GoogleFonts.roboto(
+                                                            //                   fontWeight: FontWeight.w400,
+                                                            //                   fontSize: 14,
+                                                            //                   color: Colors.white,
+                                                            //                 ))
+                                                            //           ])),
+                                                            // ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
                                                 ),
-                                                Column(
+                                              ),
+                                              Container(
+                                                decoration: const BoxDecoration(
+                                                    color: AppColor.textoreng2,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            bottomRight: Radius
+                                                                .circular(10),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    10))),
+                                                child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(data[index].name ?? "",
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 20,
-                                                          color: Colors.white,
-                                                        )),
                                                     const SizedBox(
-                                                      height: 15,
+                                                      height: 10,
                                                     ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        SizedBox(
-                                                          width: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  2) -
-                                                              60,
-                                                          child: RichText(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              text: TextSpan(
-                                                                  text:
-                                                                      "Experience: ",
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .roboto(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                                  children: [
-                                                                    TextSpan(
-                                                                        spellOut:
-                                                                            true,
-                                                                        text:
-                                                                            "${data[index].extraParm4 ?? ""} Years",
-                                                                        style: GoogleFonts
-                                                                            .roboto(
-                                                                          fontWeight:
-                                                                              FontWeight.w400,
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              Colors.white,
-                                                                        ))
-                                                                  ])),
-                                                        ),
-                                                        SizedBox(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width -
-                                                              300,
-                                                          child: RichText(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              text: TextSpan(
-                                                                  text:
-                                                                      "Board: ",
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .roboto(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                                  children: [
-                                                                    TextSpan(
-                                                                        spellOut:
-                                                                            true,
-                                                                        text: data[index].extraParm3 ??
-                                                                            "",
-                                                                        style: GoogleFonts
-                                                                            .roboto(
-                                                                          fontWeight:
-                                                                              FontWeight.w400,
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              Colors.white,
-                                                                        ))
-                                                                  ])),
-                                                        ),
-                                                      ],
+                                                    buildContainer(
+                                                        "Want to Teach: ",
+                                                        data[index]
+                                                                .extraParm5 ??
+                                                            "",
+                                                        AssetImages.book),
+                                                    buildContainer(
+                                                        "Subject: Science ",
+                                                        data[index]
+                                                                .extraParm6 ??
+                                                            "",
+                                                        AssetImages.pen),
+                                                    buildContainer(
+                                                        "Qualification: ",
+                                                        data[index]
+                                                                .extraParm2 ??
+                                                            "",
+                                                        AssetImages.medal),
+                                                    buildContainer(
+                                                        "Location: ",
+                                                        data[index].location ??
+                                                            "",
+                                                        AssetImages.location),
+                                                    const SizedBox(
+                                                      height: 5,
                                                     ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                                color: AppColor.textoreng2,
-                                                borderRadius: BorderRadius.only(
-                                                    bottomRight:
-                                                        Radius.circular(10),
-                                                    bottomLeft:
-                                                        Radius.circular(10))),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                buildContainer(
-                                                    "Want to Teach: ",
-                                                    data[index].extraParm5 ??
-                                                        "",
-                                                    AssetImages.book),
-                                                buildContainer(
-                                                    "Subject: Science ",
-                                                    data[index].extraParm6 ??
-                                                        "",
-                                                    AssetImages.pen),
-                                                buildContainer(
-                                                    "Qualification: ",
-                                                    data[index].extraParm2 ??
-                                                        "",
-                                                    AssetImages.medal),
-                                                buildContainer(
-                                                    "Location: ",
-                                                    data[index].location ?? "",
-                                                    AssetImages.location),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                provider.showContact.contains(
-                                                        data[index].id)
-                                                    ? Container(
-                                                        width: double.infinity,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal: 20,
-                                                                vertical: 20),
-                                                        decoration: const BoxDecoration(
-                                                            color:
-                                                                AppColor.main,
-                                                            borderRadius: BorderRadius.only(
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        10),
-                                                                bottomRight: Radius
-                                                                    .circular(
-                                                                        10))),
-                                                        child: Text(
-                                                          "Contact Number: ${data[index].phoneNo}",
-                                                          style: style18w500w,
-                                                        ),
-                                                      )
-                                                    : Column(
-                                                        children: [
-                                                          Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
+                                                    provider.showContact
+                                                            .contains(
+                                                                data[index].id)
+                                                        ? Container(
+                                                            width:
+                                                                double.infinity,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        20,
+                                                                    vertical:
+                                                                        20),
+                                                            decoration: const BoxDecoration(
+                                                                color: AppColor
+                                                                    .main,
+                                                                borderRadius: BorderRadius.only(
+                                                                    bottomLeft:
+                                                                        Radius.circular(
+                                                                            10),
+                                                                    bottomRight:
+                                                                        Radius.circular(
+                                                                            10))),
+                                                            child: Text(
+                                                              "Contact Number: ${data[index].phoneNo}",
+                                                              style:
+                                                                  style18w500w,
+                                                            ),
+                                                          )
+                                                        : Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
                                                                     horizontal:
                                                                         20.0),
-                                                            child: InkWell(
-                                                                onTap: () {
-                                                                  provider.addList(
-                                                                      data[index]
-                                                                          .id);
-                                                                },
-                                                                child:
-                                                                    ContactButton()),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                        ],
-                                                      )
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                        ],
-                                      );
-                                    });
+                                                                child: InkWell(
+                                                                    onTap: () {
+                                                                      provider.addList(
+                                                                          context,
+                                                                          data[index]
+                                                                              .id);
+                                                                    },
+                                                                    child:
+                                                                        const ContactButton()),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                            ],
+                                                          )
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                            ],
+                                          );
+                                        });
                       },
                     ),
                     const SizedBox(
@@ -513,8 +541,8 @@ class _TeacherListState extends State<TeacherList> {
                       onPressReadLess: () {
                         /// specific method to be called on press to show less
                       },
-                      lessStyle: TextStyle(color: Colors.blue),
-                      moreStyle: TextStyle(color: Colors.blue),
+                      lessStyle: const TextStyle(color: Colors.blue),
+                      moreStyle: const TextStyle(color: Colors.blue),
                     ),
                   ),
                 )

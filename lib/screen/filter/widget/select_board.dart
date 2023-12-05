@@ -12,7 +12,7 @@ class SelectBoard extends StatelessWidget {
     return Consumer<FilterProvider>(
       builder: (context, provider, child) {
         return provider.isLoding
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : Column(
@@ -20,7 +20,7 @@ class SelectBoard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
                   gBorder(),
                   const SizedBox(
@@ -28,10 +28,10 @@ class SelectBoard extends StatelessWidget {
                   ),
                   Heading("Board"),
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
                   Wrap(
-                    spacing: -10.0, // gap between lines
+                    spacing: -15.0, // gap between lines
                     children: provider.bordlist.map((e) {
                       return InkWell(
                           overlayColor: MaterialStateProperty.all(Colors.white),

@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -29,7 +31,6 @@ class StudentinfoProvider extends ChangeNotifier {
 
   getAddress() async {
     LocationModel? data = await GetLocation().getLatLong();
-    print("mylocation234 ${data}");
     if (data != null) {
       location.text = data.locationname;
       longitude = data.long;
@@ -48,19 +49,19 @@ class StudentinfoProvider extends ChangeNotifier {
 
     if (id == 3) {
       bordlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         bordlist.add(element.propsTitle);
-      });
+      }
     } else if (id == 4) {
       classlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         classlist.add(element.propsTitle);
-      });
+      }
     } else {
       subjectlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         subjectlist.add(element.propsTitle);
-      });
+      }
     }
     isLoding = false;
     notifyListeners();
@@ -84,7 +85,7 @@ class StudentinfoProvider extends ChangeNotifier {
       "location": location.text,
       "landmark": landmark.text,
       "board": board,
-      "class": 12,
+      "class": classs.text,
       "list": (tab.tabval).join(","),
       "teacherPrefarence": gender == 0
           ? "M"
@@ -97,28 +98,23 @@ class StudentinfoProvider extends ChangeNotifier {
       "phoneNumber": mobile.text
     };
 
-    print("${url} ${classs.text}");
-
     try {
       final response =
           await http.post(url, body: jsonEncode(data), headers: headers);
-      print(response.body);
+
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        print(jsonDecode(response.body)['status']);
-        if (jsonDecode(response.body)['status'] == true) {
+
+        if (json['status'] == true) {
           // RegisterRes res = RegisterRes.fromJson(json);
           success = true;
           // }
         }
         isLoading = false;
-
-        print(json);
       } else {
-        CostomSnackbar.show(context, jsonDecode(response.body)['message'][0]);
+        CostomSnackbar.show(context, (jsonDecode(response.body))['message'][0]);
       }
     } catch (e) {
-      print("object $e");
       CostomSnackbar.show(context, "$e");
     } finally {
       isLoading = false;

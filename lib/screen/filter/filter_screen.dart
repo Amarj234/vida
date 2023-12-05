@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:vida/screen/filter/widget/select_board.dart';
 import 'package:vida/screen/filter/widget/select_class.dart';
@@ -7,7 +9,6 @@ import '../../commonfun/tab_provider.dart';
 import '../../utils/style.dart';
 import '../commonWidget/app_button.dart';
 import '../commonWidget/cancel_button.dart';
-import '../commonWidget/costum_snackbar.dart';
 import '../commonWidget/main_appbar.dart';
 import '../menu/side_menu.dart';
 import 'provider/filer_provider.dart';
@@ -68,9 +69,6 @@ class _FilterScreenState extends State<FilterScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
                       child: Row(
@@ -106,16 +104,9 @@ class _FilterScreenState extends State<FilterScreen> {
                         txt: 'APPLY',
                         col: const Color(0xff421200),
                         myfun: () async {
-                          if (filter!.slclass.isEmpty ||
-                              filter!.board.isEmpty ||
-                              filter!.place.isEmpty ||
-                              filter!.teachergen.isEmpty) {
-                            CostomSnackbar.show(
-                                context, "Please select all Details",
-                                color: Colors.black);
-                          } else {
-                            await filter!.filterSet();
-                          }
+                          await filter!.filterSet();
+                          Navigator.pop(context, true);
+
                           // Navigator.push(
                           //     context, MaterialPageRoute(builder: (context) => PersonalDetaild()));
                         },

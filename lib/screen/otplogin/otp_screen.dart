@@ -83,7 +83,7 @@ class _OtpScreenState extends State<OtpScreen> {
       body: Consumer<LoginProvider>(
         builder: (context, provider, child) {
           return provider.isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : Container(

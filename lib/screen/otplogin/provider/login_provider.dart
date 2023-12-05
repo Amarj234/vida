@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -15,8 +17,6 @@ import '../../../model/register_res.dart';
 import '../../../model/verify_otp.dart';
 import '../../commonWidget/costum_snackbar.dart';
 import '../../home_screen.dart';
-import '../../personalDetails/personal_details.dart';
-import '../../personalDetails/teacher_personaldetails.dart';
 import '../../selectlocation/provider/tabprovider.dart';
 import '../../selectlocation/select_location.dart';
 import '../otp_screen.dart';
@@ -49,18 +49,15 @@ class LoginProvider extends ChangeNotifier {
   }
 
   void sendCode(BuildContext context, String mobile) async {
-    UserPrefs prefs = UserPrefs();
     isLoading = true;
     //final fcmToken = "fghjjkl;';";
     final fcmToken = await FirebaseMessaging.instance.getToken();
 
     final url = Uri.parse("${baseUrl}otp");
 
-    print(url);
     final prot = Provider.of<HometabProvider>(context, listen: false);
 
     startTimer();
-    print("objectval ${prot.uid}   $fcmToken");
     try {
       final response = await http.post(url, body: {
         "phone_number": mobile,
@@ -69,7 +66,6 @@ class LoginProvider extends ChangeNotifier {
         "longitude": '1',
         "latitude": '1',
       });
-      print(response.body);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
@@ -90,13 +86,11 @@ class LoginProvider extends ChangeNotifier {
                         uid: prot.uid,
                       )));
 
-          print(userId);
           isLoading = false;
           startTimer();
         }
       }
     } catch (e) {
-      print("$e");
       // Get.snackbar('Error', 'An error occurred');
     } finally {
       isLoading = false;
@@ -105,18 +99,15 @@ class LoginProvider extends ChangeNotifier {
   }
 
   void resendCode(BuildContext context, String mobile) async {
-    UserPrefs prefs = UserPrefs();
     isLoading = true;
     //final fcmToken = "fghjjkl;';";
     final fcmToken = await FirebaseMessaging.instance.getToken();
 
     final url = Uri.parse("${baseUrl}otp");
 
-    print(url);
     final prot = Provider.of<HometabProvider>(context, listen: false);
     final tab = Provider.of<TabProvider>(context, listen: false);
     startTimer();
-    print("objectval ${prot.uid}  ${tab.tabval} $fcmToken");
     try {
       final response = await http.post(url, body: {
         "phone_number": mobile,
@@ -126,7 +117,6 @@ class LoginProvider extends ChangeNotifier {
         "longitude": '1',
         "latitude": '1',
       });
-      print(response.body);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
@@ -138,13 +128,11 @@ class LoginProvider extends ChangeNotifier {
           stopTimer();
           //
           otpController.text = authReponse.d.otp.toString();
-          print(userId);
           isLoading = false;
           startTimer();
         }
       }
     } catch (e) {
-      print("$e");
       // Get.snackbar('Error', 'An error occurred');
     } finally {
       isLoading = false;
@@ -157,7 +145,6 @@ class LoginProvider extends ChangeNotifier {
     isLoading = true;
     final prefs = UserPrefs();
     final url = Uri.parse("${baseUrl}otp-varification");
-    print("url:- $url $mobile $otp");
     final response =
         await http.post(url, body: {"phone_number": mobile, "otp": otp});
     if (kDebugMode) {
@@ -174,7 +161,6 @@ class LoginProvider extends ChangeNotifier {
         if (otpResponse.status) {
           //  responce:- {"status":true,"d":{"id":3,"rid":1,"tid":0},"message":"otp is correct"}
           prefs.setData("id", otpResponse.d.id.toString());
-          print("updateans  ${prefs.getData('updateans')}");
 
           if (uid == 1) {
             Navigator.push(
@@ -207,8 +193,8 @@ class LoginProvider extends ChangeNotifier {
           prefs.setData("name", res.d.data.name);
           prefs.setData("token", res.d.token);
           prefs.setData("login", "yes");
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
         } else {
           CostomSnackbar.show(context, res.message);
         }

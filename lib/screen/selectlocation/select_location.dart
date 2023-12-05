@@ -7,7 +7,6 @@ import '../../utils/color.dart';
 import '../../utils/constimage.dart';
 import '../commonWidget/app_button.dart';
 import '../commonWidget/costum_snackbar.dart';
-import '../otplogin/login_screen.dart';
 import '../personalDetails/personal_details.dart';
 import '../personalDetails/teacher_personaldetails.dart';
 import 'provider/tabprovider.dart';
@@ -75,7 +74,7 @@ class _SelectLocationState extends State<SelectLocation> {
                     Consumer<TabProvider>(
                       builder: (context, provider, child) {
                         return provider.isLoding
-                            ? Center(
+                            ? const Center(
                                 child: CircularProgressIndicator(),
                               )
                             : Column(
@@ -112,7 +111,7 @@ class _SelectLocationState extends State<SelectLocation> {
           children: [
             AppButton(
               myfun: () {
-                if (tabProvider!.tabval.length > 0) {
+                if (tabProvider!.tabval.isNotEmpty) {
                   if (widget.uid == 1) {
                     Navigator.push(
                         context,

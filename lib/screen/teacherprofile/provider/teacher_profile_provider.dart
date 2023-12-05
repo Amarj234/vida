@@ -1,10 +1,10 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as dioClient;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,17 +43,15 @@ class TeacherProfileProvider extends ChangeNotifier {
   bool success = false;
   final picker = ImagePicker();
 
-  String Formatedate(String date) {
-    DateTime parseDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+  String formateDate(String date) {
+    DateTime parseDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM-dd-yyyy');
     var outputFormat2 = DateFormat('yyyy-MM-dd');
     var outputDate = outputFormat2.format(inputDate);
     return outputDate;
   }
 
   teacherRegister(BuildContext context) async {
-    print("teacherRegister");
     final prefs = UserPrefs();
     var id = prefs.getData("id");
     isLoading = true;
@@ -69,8 +67,6 @@ class TeacherProfileProvider extends ChangeNotifier {
         headers: headers,
       ),
     );
-    final url = Uri.parse("${baseUrl}user/profile-update-teacher");
-    print("$url $id  $gender ${mobile.text} $profilepath");
 
     //  try {
     final formData = <String, dynamic>{
@@ -118,7 +114,6 @@ class TeacherProfileProvider extends ChangeNotifier {
       options: dioClient.Options(
         followRedirects: false,
         validateStatus: (status) {
-          print("mystatus $status");
           return status! < 500;
         },
         method: 'post',
@@ -162,7 +157,6 @@ class TeacherProfileProvider extends ChangeNotifier {
     var id = prefs.getData("id");
     final url = Uri.parse("${baseUrl}user/user-profile?id=$id");
 
-    print(url);
     var token = prefs.getData("token");
     Map<String, String> headers = {
       "x-access-token": "$token",
@@ -172,7 +166,7 @@ class TeacherProfileProvider extends ChangeNotifier {
     final json = jsonDecode(response.body);
     TeacherProfile res = TeacherProfile.fromJson(json);
     if (res.status == true) {
-      teacherProfile = res!;
+      teacherProfile = res;
       isLoading = false;
 
       setData(res.d.data);
@@ -188,16 +182,15 @@ class TeacherProfileProvider extends ChangeNotifier {
     exp.text = "${data.extraParm4} ";
     qualification.text = data.extraParm2!;
     mobile.text = data.phoneNo;
-    teacherclass.text = data.extraParm5!;
-    subject.text = data.extraParm6!;
-    dob.text = Formatedate(data.dob.toString());
+    teacherclass.text = data.extraParm6!;
+    subject.text = data.extraParm5!;
+    dob.text = formateDate(data.dob.toString());
     slclass = [];
     slsubject = [];
-
-    data.extraParm5!.split(",").forEach((element) {
+    data.extraParm6!.split(",").forEach((element) {
       slclass.add(element);
     });
-    data.extraParm6!.split(",").forEach((element) {
+    data.extraParm5!.split(",").forEach((element) {
       slsubject.add(element);
     });
   }
@@ -205,7 +198,7 @@ class TeacherProfileProvider extends ChangeNotifier {
   Future<void> pickImageFromSource(ImageSource source, int side) async {
     final image = await picker.pickImage(source: source);
 
-    if (image!.path != null) {
+    if (image!.path.isNotEmpty) {
       if (side == 1) {
         frontpath = (image.path);
       } else if (side == 2) {
@@ -231,21 +224,21 @@ class TeacherProfileProvider extends ChangeNotifier {
 
     if (id == 3) {
       bordlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         bordlist.add(element.propsTitle);
-      });
+      }
       bordlist.add("Done");
     } else if (id == 4) {
       classlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         classlist.add(element.propsTitle);
-      });
+      }
       classlist.add("Done");
     } else {
       subjectlist = [];
-      res!.data.forEach((element) {
+      for (var element in res!.data) {
         subjectlist.add(element.propsTitle);
-      });
+      }
       subjectlist.add("Done");
     }
     isLoding = false;

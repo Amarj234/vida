@@ -12,8 +12,10 @@ import '../screen/profile/provider/student_profile_provider.dart';
 import '../screen/selectlocation/provider/tabprovider.dart';
 import '../screen/splase/provider/appmessage_provider.dart';
 import '../screen/student/provider/student_list_provider.dart';
+import '../screen/subscribe/provider/subscribe_provider.dart';
 import '../screen/teacherprofile/provider/teacher_profile_provider.dart';
 import '../screen/teachers/provider/teacherlist_provider.dart';
+import 'balance_provider.dart';
 
 class AppProvider {
   AppProvider._();
@@ -35,6 +37,8 @@ class AppProvider {
       ChangeNotifierProvider(create: (_) => TeacherEnquiryProvider()),
       ChangeNotifierProvider(create: (_) => LeadProvider()),
       ChangeNotifierProvider(create: (_) => AppmessageProvider()),
+      ChangeNotifierProvider(create: (_) => BalanceProvider()),
+      ChangeNotifierProvider(create: (_) => SubscribeProvider()),
     ];
   }
 }

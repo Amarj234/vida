@@ -24,9 +24,10 @@ class CommonTextFields extends StatelessWidget {
   final LoginProvider? log;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 70,
+    return SizedBox(
+      height: 73,
       child: TextFormField(
+        maxLength: 10,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         controller: mycon,
         keyboardType: isvalid == 1
@@ -66,6 +67,10 @@ class CommonTextFields extends StatelessWidget {
                       },
         style: TextStyle(fontSize: 16.0, color: tcolor),
         decoration: InputDecoration(
+            counterText: "",
+            counterStyle: const TextStyle(
+              height: double.minPositive,
+            ),
             fillColor: Colors.white,
             filled: true,
             contentPadding: const EdgeInsets.only(top: 1, bottom: 1, left: 10),
@@ -91,7 +96,7 @@ class CommonTextFields extends StatelessWidget {
               fontSize: 18,
               fontWeight: FontWeight.w400,
             ),
-            errorStyle: TextStyle(color: AppColor.main),
+            errorStyle: const TextStyle(color: AppColor.main),
             labelStyle: TextStyle(color: tcolor, fontSize: 16.0),
             hintText: hint,
             enabledBorder: OutlineInputBorder(
