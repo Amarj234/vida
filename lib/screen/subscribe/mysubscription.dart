@@ -68,15 +68,10 @@ class _MySubscriptionState extends State<MySubscription> {
                           ),
                           BalanceCard(
                             myfun: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SubscribePay()));
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const SubscribePay()));
                             },
-                            txt: provider.yourBalance!.d.data.numberOfView
-                                    .toString() ??
-                                "",
+                            txt: provider.yourBalance!.d.data.numberOfView.toString() ?? "",
                           ),
                           const SizedBox(
                             height: 20,
@@ -107,8 +102,7 @@ class _MySubscriptionState extends State<MySubscription> {
                                       )
                                     : Table(
                                         border: TableBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(10),
                                             horizontalInside: const BorderSide(
                                                 width: 2,
                                                 color: Color(0xffFFF8F6),
@@ -121,34 +115,27 @@ class _MySubscriptionState extends State<MySubscription> {
                                             tableHead("Payment "),
                                           ]),
                                           for (int i = 0;
-                                              i <
-                                                  provider.paymentHistory!.data
-                                                      .length;
+                                              i < provider.paymentHistory!.data.length;
                                               i++) ...[
                                             TableRow(children: [
                                               bodyHed(
                                                   provider.formateDate(provider
-                                                      .paymentHistory!
-                                                      .data[i]
-                                                      .createdAt
+                                                      .paymentHistory!.data[i].createdAt
                                                       .toString()),
                                                   false),
                                               bodyHed(
-                                                  provider
-                                                          .paymentHistory!
-                                                          .data[i]
-                                                          .totalAmount ??
+                                                  provider.paymentHistory!.data[i].totalAmount ??
                                                       "",
                                                   false),
                                               bodyHed("Paid", true),
                                               bodyHed(
-                                                  provider
-                                                              .paymentHistory!
-                                                              .data[i]
-                                                              .modeOfPayment ==
-                                                          1
-                                                      ? "Cash"
-                                                      : "Credit Card",
+                                                  // provider
+                                                  //             .paymentHistory!
+                                                  //             .data[i]
+                                                  //             .modeOfPayment ==
+                                                  //         1
+                                                  //     ?
+                                                  "Cash",
                                                   false),
                                             ]),
                                           ]
@@ -187,9 +174,7 @@ class _MySubscriptionState extends State<MySubscription> {
       child: Text(
         txt,
         style: GoogleFonts.roboto(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: const Color(0xffA3A3A3)),
+            fontSize: 14, fontWeight: FontWeight.w400, color: const Color(0xffA3A3A3)),
       ),
     );
   }

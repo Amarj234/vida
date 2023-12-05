@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "217568551564",
+    "project_id": "vida-app-5992b",
+    "storage_bucket": "vida-app-5992b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217568551564:android:a2cae8a8ab4bc6d195d1a9",
+        "android_client_info": {
+          "package_name": "com.aquarious.vida"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb6dy1AFDP8UZyrTvGNnZLPVAxqvGsEv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
