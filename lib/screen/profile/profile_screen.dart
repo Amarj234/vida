@@ -22,8 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
 
-    studentProfileProvider =
-        Provider.of<StudentProfileProvider>(context, listen: false);
+    studentProfileProvider = Provider.of<StudentProfileProvider>(context, listen: false);
 
     studentProfileProvider!.getdata(context);
   }
@@ -55,8 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    toCapitalized(
-                                        provider.parentProfile!.d.data.name),
+                                    toCapitalized(provider.parentProfile!.d.data.name),
                                     style: GoogleFonts.roboto(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w500,
@@ -69,8 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(10),
-                                    topLeft: Radius.circular(10)),
+                                    topRight: Radius.circular(10), topLeft: Radius.circular(10)),
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
@@ -91,54 +88,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     height: 70,
                                   ),
                                   NameFields(
-                                    txt: toCapitalized(
-                                        provider.parentProfile!.d.data.name),
+                                    txt: toCapitalized(provider.parentProfile!.d.data.name),
                                     image: AssetImages.user,
                                   ),
                                   NameFields(
-                                    txt: provider.parentProfile!.d.data.location
-                                        .toString(),
+                                    txt: provider.parentProfile!.d.data.location.toString(),
                                     image: AssetImages.pointlocation,
                                   ),
                                   NameFields(
-                                    txt: provider
-                                        .parentProfile!.d.data.extraParm1
-                                        .toString(),
+                                    txt: provider.parentProfile!.d.data.extraParm1.toString(),
                                     image: AssetImages.pointlocation,
                                   ),
                                   NameFields(
-                                    txt: provider
-                                        .parentProfile!.d.data.extraParm2
-                                        .toString(),
+                                    txt: provider.parentProfile!.d.data.extraParm2.toString(),
                                     image: AssetImages.book,
                                   ),
                                   NameFields(
-                                    txt: provider
-                                        .parentProfile!.d.data.extraParm3
-                                        .toString(),
+                                    txt: provider.parentProfile!.d.data.extraParm3.toString(),
                                     image: AssetImages.medal,
                                   ),
                                   NameFields(
-                                    txt: provider.parentProfile!.d.data
-                                                .extraParm4 ==
-                                            "M"
+                                    txt: provider.parentProfile!.d.data.extraParm4 == "M"
                                         ? "Male"
-                                        : provider.parentProfile!.d.data
-                                                    .extraParm4 ==
-                                                "F"
+                                        : provider.parentProfile!.d.data.extraParm4 == "F"
                                             ? "Female"
                                             : "Any",
                                     image: AssetImages.gender,
                                   ),
                                   NameFields(
-                                    txt: provider
-                                        .parentProfile!.d.data.extraParm5
-                                        .toString(),
+                                    txt: provider.parentProfile!.d.data.extraParm5.toString(),
                                     image: AssetImages.pen,
                                   ),
                                   NameFields(
-                                    txt: provider.parentProfile!.d.data.phoneNo
-                                        .toString(),
+                                    txt: provider.parentProfile!.d.data.phoneNo.toString(),
                                     image: AssetImages.mobile,
                                   ),
                                   const SizedBox(
@@ -153,8 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const EditProfile()));
+                                              builder: (context) => const EditProfile()));
                                     },
                                   ),
                                   const SizedBox(
@@ -171,8 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Container(
                             alignment: Alignment.center,
                             decoration: const BoxDecoration(
-                                color: AppColor.appbarcolor,
-                                shape: BoxShape.circle),
+                                color: AppColor.appbarcolor, shape: BoxShape.circle),
                             height: 96,
                             width: 96,
                             child: Text(

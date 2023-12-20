@@ -1,29 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:vida/model/getlocation_model.dart';
 import 'package:http/http.dart' as http;
-import '../../../../commonfun/get_location.dart';
 import '../../../../config/baseUrl.dart';
 import '../../../../config/sharedPrefs.dart';
 import '../../../model/lead_list.dart';
 import '../../commonWidget/costum_snackbar.dart';
 
-class LeadProvider extends ChangeNotifier {
-  String? culocation = "";
-
-  double latitude = 0;
-  double longitude = 0;
-
-  getAddress() async {
-    LocationModel? data = await GetLocation().getLatLong();
-    if (data != null) {
-      culocation = data.locationname;
-      longitude = data.long;
-      latitude = data.lat;
-      notifyListeners();
-    }
-  }
-
+class NotificationProvider extends ChangeNotifier {
   bool isLoading = true;
   bool success = false;
 
@@ -37,10 +20,10 @@ class LeadProvider extends ChangeNotifier {
       "x-access-token": "$token",
       //  "Content-type": "application/json"
     };
-    Map data = {
-      "latitude": latitude,
-      "longitude": longitude,
-    };
+    // Map data = {
+    //   "latitude": latitude,
+    //   "longitude": longitude,
+    // };
 
     final url = Uri.parse("${baseUrl}enquiry/user-leades");
 
@@ -49,7 +32,7 @@ class LeadProvider extends ChangeNotifier {
         'GET',
         url,
       );
-      request.body = jsonEncode(data);
+      request.body = jsonEncode("data");
       request.headers.addAll(headers);
 
       final streamedResponse = await request.send();

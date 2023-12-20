@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_location_search/flutter_location_search.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rich_readmore/rich_readmore.dart';
@@ -26,10 +27,12 @@ class _StudentListState extends State<StudentList> {
     // TODO: implement initState
 
     super.initState();
-    studentpro = Provider.of<StudentListProvider>(context, listen: false);
-    studentpro!.getAddress();
-    studentpro!.getlist(context);
-    studentpro!.getBalance(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      studentpro = Provider.of<StudentListProvider>(context, listen: false);
+      //studentpro!.getAddress();
+      studentpro!.getlist(context);
+      studentpro!.getBalance(context);
+    });
   }
 
   @override
@@ -53,8 +56,7 @@ class _StudentListState extends State<StudentList> {
                         Flexible(
                           flex: 11,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: const Color(0xffFFF0DC)),
@@ -65,8 +67,7 @@ class _StudentListState extends State<StudentList> {
                                   width: 5,
                                 ),
                                 SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.2,
+                                  width: MediaQuery.of(context).size.width / 2.2,
                                   child: Text(
                                     overflow: TextOverflow.ellipsis,
                                     "${provider.culocation}",
@@ -79,7 +80,19 @@ class _StudentListState extends State<StudentList> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Image.asset(AssetImages.location),
+                                InkWell(
+                                    onTap: () async {
+                                      print("LocationData");
+                                      LocationData? locationData = await LocationSearch.show(
+                                          context: context, lightAdress: false, mode: Mode.overlay);
+                                      if (locationData != null) {
+                                        provider.culocation = locationData.address;
+                                        provider.longitude = locationData.longitude;
+                                        provider.latitude = locationData.latitude;
+                                        provider.getlist(context);
+                                      }
+                                    },
+                                    child: Image.asset(AssetImages.location)),
                               ],
                             ),
                           ),
@@ -90,17 +103,16 @@ class _StudentListState extends State<StudentList> {
                         Flexible(
                           flex: 4,
                           child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const FilterScreen()));
+                            onTap: () async {
+                              final data = await Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const FilterScreen()));
+                              if (data == true) {
+                                studentpro!.getlist(context);
+                              }
                             },
                             child: Container(
                               //  width: 70,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: AppColor.radiocolr),
@@ -160,16 +172,12 @@ class _StudentListState extends State<StudentList> {
                       balanceFun: () {},
                       subscribeFun: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SubscribePay()));
+                            context, MaterialPageRoute(builder: (context) => const SubscribePay()));
                       },
                       subscribe: 'SUBSCRIBE NOW',
                       balance: provider.yourBalance == null
                           ? "0.0"
-                          : provider.yourBalance!.d.data.numberOfView
-                                  .toString() ??
-                              "",
+                          : provider.yourBalance!.d.data.numberOfView.toString(),
                     ),
                     const SizedBox(
                       height: 15,
@@ -179,208 +187,253 @@ class _StudentListState extends State<StudentList> {
                             child: CircularProgressIndicator(),
                           )
                         : provider.studentlist == null
-                            ? const Center(
-                                child: Text("List not Found"),
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    Image.asset(AssetImages.empty),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Text("List not Found"),
+                                  ],
+                                ),
                               )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: provider.studentlist!.data.length,
-                                itemBuilder: (context, index) {
-                                  final data =
-                                      provider.studentlist!.data[index];
-                                  return Column(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20),
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(10),
-                                                topLeft: Radius.circular(10)),
-                                            color: AppColor.radiocolr),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(data.parentName,
-                                                  style: GoogleFonts.roboto(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 20,
-                                                    color: Colors.white,
-                                                  )),
-                                              const SizedBox(
-                                                height: 2,
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                            : provider.studentlist!.data.length == 0
+                                ? Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 25,
+                                        ),
+                                        Image.asset(AssetImages.empty),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Text("List not Found"),
+                                      ],
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: provider.studentlist!.data.length,
+                                    itemBuilder: (context, index) {
+                                      final data = provider.studentlist!.data[index];
+                                      return Column(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(vertical: 20),
+                                            decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                    topRight: Radius.circular(10),
+                                                    topLeft: Radius.circular(10)),
+                                                color: AppColor.radiocolr),
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "Board: ${data.board}",
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                            color: Colors.white,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ]),
+                                                  Text(data.parentName,
+                                                      style: GoogleFonts.roboto(
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 20,
+                                                        color: Colors.white,
+                                                      )),
                                                   const SizedBox(
-                                                    height: 5,
+                                                    height: 2,
                                                   ),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        // Text(
-                                                        //   "Location: ",
-                                                        //   style: GoogleFonts
-                                                        //       .roboto(
-                                                        //     color: Colors.white,
-                                                        //     fontSize: 14,
-                                                        //     fontWeight:
-                                                        //         FontWeight.w500,
-                                                        //   ),
-                                                        // ),
-                                                        SizedBox(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width -
-                                                              90,
-                                                          child: Text(
-                                                            "Location: ${data.parentLocation}",
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment.start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              "Board: ${data.board}",
+                                                              style: GoogleFonts.roboto(
+                                                                color: Colors.white,
+                                                                fontSize: 14,
+                                                                fontWeight: FontWeight.w500,
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ),
-                                                      ]),
+                                                          ]),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment.start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment.start,
+                                                          children: [
+                                                            // Text(
+                                                            //   "Location: ",
+                                                            //   style: GoogleFonts
+                                                            //       .roboto(
+                                                            //     color: Colors.white,
+                                                            //     fontSize: 14,
+                                                            //     fontWeight:
+                                                            //         FontWeight.w500,
+                                                            //   ),
+                                                            // ),
+                                                            SizedBox(
+                                                              width: MediaQuery.of(context)
+                                                                      .size
+                                                                      .width -
+                                                                  90,
+                                                              child: Text(
+                                                                "Location: ${data.parentLocation}",
+                                                                style: GoogleFonts.roboto(
+                                                                  color: Colors.white,
+                                                                  fontSize: 14,
+                                                                  fontWeight: FontWeight.w500,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                            color: AppColor.textoreng2,
-                                            borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                                bottomLeft:
-                                                    Radius.circular(10))),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            buildContainer(
-                                                "Class: ",
-                                                data.datumClass,
-                                                AssetImages.book),
-                                            buildContainer("Subject: ",
-                                                data.subject, AssetImages.pen),
-                                            buildContainer(
-                                                "Teacher Preference: ",
-                                                data.teacherPrefarence == "M"
-                                                    ? "Male"
-                                                    : data.teacherPrefarence ==
-                                                            "F"
-                                                        ? "Female"
-                                                        : "ANY",
-                                                AssetImages.teacherhed),
-                                            // buildContainer(
-                                            //     "Msg from parents: ",
-                                            //     data.description ?? "",
-                                            //     AssetImages.needteacher),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            provider.showContact
-                                                    .contains(data.id)
-                                                ? Container(
-                                                    width: double.infinity,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 20,
-                                                        vertical: 20),
-                                                    decoration: const BoxDecoration(
-                                                        color: AppColor.main,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        10),
-                                                                bottomRight: Radius
-                                                                    .circular(
-                                                                        10))),
-                                                    child: Text(
-                                                      "Contact Number: ${data.parentPhoneNumber}",
-                                                      style: style18w500w,
-                                                    ),
-                                                  )
-                                                : Column(
+                                          Container(
+                                            decoration: const BoxDecoration(
+                                                color: AppColor.textoreng2,
+                                                borderRadius: BorderRadius.only(
+                                                    bottomRight: Radius.circular(10),
+                                                    bottomLeft: Radius.circular(10))),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                buildContainer(
+                                                    "Class: ", data.datumClass, AssetImages.book),
+                                                buildContainer(
+                                                    "Subject: ", data.subject, AssetImages.pen),
+                                                buildContainer(
+                                                    "Teacher Preference: ",
+                                                    data.teacherPrefarence == "M"
+                                                        ? "Male"
+                                                        : data.teacherPrefarence == "F"
+                                                            ? "Female"
+                                                            : "ANY",
+                                                    AssetImages.teacherhed),
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(
+                                                      vertical: 10, horizontal: 20),
+                                                  child: Row(
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                    20.0),
-                                                        child: InkWell(
-                                                            onTap: () {
-                                                              provider.addList(
-                                                                  data.id,
-                                                                  context);
-                                                            },
-                                                            child:
-                                                                const ContactButton()),
+                                                      Image.asset(
+                                                        AssetImages.eye,
+                                                        width: 18,
+                                                        height: 18,
+                                                        color: Color(0xffD25C2E),
                                                       ),
                                                       const SizedBox(
-                                                        height: 15,
+                                                        width: 10,
                                                       ),
+                                                      // RichText(
+                                                      //     text: TextSpan(
+                                                      //         text: txt1,
+                                                      //         style: GoogleFonts.roboto(
+                                                      //           color: const Color(0xff421200),
+                                                      //           fontSize: 14,
+                                                      //           fontWeight: FontWeight.w500,
+                                                      //         ),
+                                                      //         children: [
+                                                      //       TextSpan(
+                                                      //           text: txt2,
+                                                      //           style: GoogleFonts.roboto(
+                                                      //             fontWeight: FontWeight.w400,
+                                                      //             fontSize: 14,
+                                                      //             color: const Color(0xff421200),
+                                                      //           ))
+                                                      //     ])),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment.start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              "${data.totalView} Of 4 Teachers Viewed This",
+                                                              style: GoogleFonts.roboto(
+                                                                color: const Color(0xff421200),
+                                                                fontSize: 14,
+                                                                fontWeight: FontWeight.w500,
+                                                              ),
+                                                            ),
+                                                          ]),
                                                     ],
-                                                  )
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                    ],
-                                  );
-                                }),
+                                                  ),
+                                                ),
+                                                // Padding(
+                                                //   padding: const EdgeInsets.symmetric(
+                                                //       horizontal: 18.0, vertical: 5),
+                                                //   child: VisibleButton(
+                                                //       txt:
+                                                //           "${data.totalView} Teachers View Your Requirement"),
+                                                // ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                provider.showContact.contains(data.id)
+                                                    ? Container(
+                                                        width: double.infinity,
+                                                        padding: const EdgeInsets.symmetric(
+                                                            horizontal: 20, vertical: 20),
+                                                        decoration: const BoxDecoration(
+                                                            color: AppColor.main,
+                                                            borderRadius: BorderRadius.only(
+                                                                bottomLeft: Radius.circular(10),
+                                                                bottomRight: Radius.circular(10))),
+                                                        child: Text(
+                                                          "Contact Number: ${data.parentPhoneNumber}",
+                                                          style: style18w500w,
+                                                        ),
+                                                      )
+                                                    : Column(
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.symmetric(
+                                                                horizontal: 20.0),
+                                                            child: InkWell(
+                                                                onTap: () {
+                                                                  provider.addList(
+                                                                      data.id, context);
+                                                                },
+                                                                child: const ContactButton()),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                        ],
+                                                      )
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      );
+                                    }),
 
                     const SizedBox(
                       height: 30,
@@ -422,8 +475,9 @@ class _StudentListState extends State<StudentList> {
         children: [
           Image.asset(
             image,
-            width: 18, height: 18,
-            //  color: Color(0xffD25C2E),
+            width: 18,
+            height: 18,
+            color: Color(0xffD25C2E),
           ),
           const SizedBox(
             width: 10,

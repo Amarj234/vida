@@ -29,7 +29,7 @@ class StudentListProvider extends ChangeNotifier {
     }
   }
 
-  bool isLoading = false;
+  bool isLoading = true;
   bool success = false;
 
   EnquiryList? studentlist;
@@ -58,41 +58,56 @@ class StudentListProvider extends ChangeNotifier {
       CostomSnackbar.show(context, "$e");
       //Get.snackbar('Error', 'An error occurred');
     } finally {
-      isLoading = false;
+      // isLoading = false;
     }
     notifyListeners();
   }
 
   getlist(BuildContext context) async {
-    isLoading = true;
+    if (longitude == 0 && latitude == 0) {
+      await getAddress();
+    } else {
+      // notifyListeners();
+    }
     final prefs = UserPrefs();
     var token = prefs.getData("token");
 
-    Map<String, String> headers = {
-      "x-access-token": "$token",
-      "Content-type": "application/json"
-    };
+    Map<String, String> headers = {"x-access-token": "$token", "Content-type": "application/json"};
     Map data = {
-      "latitude": latitude,
-      "longitude": longitude,
+      "latitude": latitude.toString(),
+      "longitude": longitude.toString(),
+      // "filter_board": "ICSC,CBSC",
+      // "filter_class": "XI- Class X",
+      // "filter_place": "At My Place,At Teachers Place",
+      // "filter_teacher": "M"
     };
-
+    if (prefs.getData("filterclass") != null) {
+      data['filter_class'] = prefs.getData("filterclass");
+    }
+    if (prefs.getData("filterboard") != null) {
+      data['filter_board'] = prefs.getData("filterboard");
+    }
+    if (prefs.getData("filterplace") != null) {
+      data['filter_place'] = prefs.getData("filterplace");
+    }
+    if (prefs.getData("filtergender") != null) {
+      data['filter_teacher'] = prefs.getData("filtergender") == "Male"
+          ? "M"
+          : prefs.getData("filtergender") == "Female"
+              ? "F"
+              : "ANY";
+    }
     final url = Uri.parse("${baseUrl}enquiry/get-all-enquiry");
 
     try {
-      final request = http.Request(
-        'GET',
-        url,
-      );
-      request.body = jsonEncode(data);
-      request.headers.addAll(headers);
-
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
+      final response = await http.post(url, body: json.encode(data), headers: headers);
+      print(response.body);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        EnquiryList res = EnquiryList.fromJson(json);
-        studentlist = res;
+        if (json['status'] == true) {
+          EnquiryList res = EnquiryList.fromJson(json);
+          studentlist = res;
+        }
         // if (loginResponse.status!) {
         // } else {
         //   CostomSnackbar.show(context, "ahow");
@@ -102,7 +117,7 @@ class StudentListProvider extends ChangeNotifier {
         success = true;
       }
     } catch (e) {
-      CostomSnackbar.show(context, "$e");
+      // CostomSnackbar.show(context, "$e");
       //Get.snackbar('Error', 'An error occurred');
     } finally {
       isLoading = false;
@@ -133,8 +148,7 @@ class StudentListProvider extends ChangeNotifier {
         getBalance(context);
       } else {
         CostomSnackbar.show(context, json['message']);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SubscribePay()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const SubscribePay()));
       }
     } catch (e) {
       CostomSnackbar.show(context, "$e");

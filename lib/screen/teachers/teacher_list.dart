@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_location_search/flutter_location_search.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rich_readmore/rich_readmore.dart';
@@ -30,13 +31,13 @@ class _TeacherListState extends State<TeacherList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    appmessageProvider =
-        Provider.of<AppmessageProvider>(context, listen: false);
-    appmessageProvider!.getlist(context);
-    techerpro = Provider.of<TeacherListProvider>(context, listen: false);
-    techerpro!.getAddress();
-    techerpro!.getBalance(context);
-    techerpro!.getlist(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      appmessageProvider = Provider.of<AppmessageProvider>(context, listen: false);
+      appmessageProvider!.getlist(context);
+      techerpro = Provider.of<TeacherListProvider>(context, listen: false);
+      techerpro!.getBalance(context);
+      techerpro!.getlist(context);
+    });
   }
 
   String toCapitalized(String s) => s[0].toUpperCase() + s.substring(1);
@@ -61,8 +62,7 @@ class _TeacherListState extends State<TeacherList> {
                         Flexible(
                           flex: 11,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: const Color(0xffFFF0DC)),
@@ -73,8 +73,7 @@ class _TeacherListState extends State<TeacherList> {
                                   width: 5,
                                 ),
                                 SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.2,
+                                  width: MediaQuery.of(context).size.width / 2.2,
                                   child: Text(
                                     overflow: TextOverflow.ellipsis,
                                     "${provider.culocation}",
@@ -87,7 +86,19 @@ class _TeacherListState extends State<TeacherList> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Image.asset(AssetImages.location),
+                                InkWell(
+                                    onTap: () async {
+                                      print("LocationData");
+                                      LocationData? locationData = await LocationSearch.show(
+                                          context: context, lightAdress: false, mode: Mode.overlay);
+                                      if (locationData != null) {
+                                        provider.culocation = locationData.address;
+                                        provider.longitude = locationData.longitude;
+                                        provider.latitude = locationData.latitude;
+                                        provider.getlist(context);
+                                      }
+                                    },
+                                    child: Image.asset(AssetImages.location)),
                               ],
                             ),
                           ),
@@ -99,19 +110,15 @@ class _TeacherListState extends State<TeacherList> {
                           flex: 4,
                           child: InkWell(
                             onTap: () async {
-                              final data = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const FilterScreen()));
+                              final data = await Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const FilterScreen()));
                               if (data == true) {
                                 techerpro!.getlist(context);
                               }
                             },
                             child: Container(
                               //  width: 70,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: AppColor.radiocolr),
@@ -142,11 +149,9 @@ class _TeacherListState extends State<TeacherList> {
                       height: 20,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color(0xffF3F3F3)),
+                          borderRadius: BorderRadius.circular(10), color: const Color(0xffF3F3F3)),
                       child: Consumer<AppmessageProvider>(
                         builder: (context, provider, child) {
                           return provider.isLoading
@@ -178,16 +183,12 @@ class _TeacherListState extends State<TeacherList> {
                       balanceFun: () {},
                       subscribeFun: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SubscribePay()));
+                            context, MaterialPageRoute(builder: (context) => const SubscribePay()));
                       },
                       subscribe: 'SUBSCRIBE NOW',
                       balance: provider.yourBalance == null
                           ? ""
-                          : provider.yourBalance!.d.data.numberOfView
-                                  .toString() ??
-                              "",
+                          : provider.yourBalance!.d.data.numberOfView.toString() ?? "",
                     ),
                     const SizedBox(
                       height: 20,
@@ -199,33 +200,52 @@ class _TeacherListState extends State<TeacherList> {
                                 child: CircularProgressIndicator(),
                               )
                             : provider.teacherList == null
-                                ? const Center(
-                                    child: Text("List not Found 2"),
+                                ? Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 25,
+                                        ),
+                                        Image.asset(AssetImages.empty),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Text("List not Found"),
+                                      ],
+                                    ),
                                   )
-                                : provider.teacherList!.data.isEmpty
-                                    ? const Center(
-                                        child: Text("List not Found"),
+                                : provider.teacherList!.data!.isEmpty
+                                    ? Center(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 25,
+                                            ),
+                                            Image.asset(AssetImages.empty),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            Text("List not Found"),
+                                          ],
+                                        ),
                                       )
                                     : ListView.builder(
                                         shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount:
-                                            provider.teacherList!.data.length,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemCount: provider.teacherList!.data!.length,
                                         itemBuilder: (context, index) {
-                                          final data =
-                                              provider.teacherList!.data;
+                                          final data = provider.teacherList!.data;
                                           return Column(
                                             children: [
                                               Container(
                                                 decoration: const BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topRight: Radius
-                                                                .circular(10),
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    10)),
+                                                    borderRadius: BorderRadius.only(
+                                                        topRight: Radius.circular(10),
+                                                        topLeft: Radius.circular(10)),
                                                     color: AppColor.radiocolr),
                                                 child: Row(
                                                   children: [
@@ -238,76 +258,57 @@ class _TeacherListState extends State<TeacherList> {
                                                       width: 85,
                                                       height: 91,
                                                       decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
+                                                          borderRadius: BorderRadius.circular(10),
                                                           image: DecorationImage(
                                                               fit: BoxFit.cover,
                                                               image: NetworkImage(
-                                                                  "$baseImgUrl${data[index].userImage}"))),
+                                                                  "$baseImgUrl${data![index].userImage}"))),
                                                     ),
 
                                                     const SizedBox(
                                                       width: 15,
                                                     ),
                                                     Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text(
-                                                            data[index].name ??
-                                                                "",
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                        Text(data[index].name ?? "",
+                                                            style: GoogleFonts.roboto(
+                                                              fontWeight: FontWeight.w500,
                                                               fontSize: 20,
-                                                              color:
-                                                                  Colors.white,
+                                                              color: Colors.white,
                                                             )),
                                                         const SizedBox(
                                                           height: 15,
                                                         ),
                                                         Row(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                              MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             SizedBox(
-                                                              width: (MediaQuery.of(
-                                                                              context)
+                                                              width: (MediaQuery.of(context)
                                                                           .size
                                                                           .width /
                                                                       2) -
                                                                   60,
                                                               child: RichText(
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
+                                                                  overflow: TextOverflow.ellipsis,
                                                                   text: TextSpan(
                                                                       text: "Experience: ",
                                                                       style: GoogleFonts.roboto(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
+                                                                        color: Colors.white,
+                                                                        fontSize: 14,
+                                                                        fontWeight: FontWeight.w500,
                                                                       ),
                                                                       children: [
                                                                         TextSpan(
-                                                                            spellOut:
-                                                                                true,
+                                                                            spellOut: true,
                                                                             text:
                                                                                 "${data[index].extraParm4 ?? ""} Years",
                                                                             style:
                                                                                 GoogleFonts.roboto(
-                                                                              fontWeight: FontWeight.w400,
+                                                                              fontWeight:
+                                                                                  FontWeight.w400,
                                                                               fontSize: 14,
                                                                               color: Colors.white,
                                                                             ))
@@ -357,93 +358,62 @@ class _TeacherListState extends State<TeacherList> {
                                               Container(
                                                 decoration: const BoxDecoration(
                                                     color: AppColor.textoreng2,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            bottomRight: Radius
-                                                                .circular(10),
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    10))),
+                                                    borderRadius: BorderRadius.only(
+                                                        bottomRight: Radius.circular(10),
+                                                        bottomLeft: Radius.circular(10))),
                                                 child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     const SizedBox(
                                                       height: 10,
                                                     ),
                                                     buildContainer(
                                                         "Want to Teach: ",
-                                                        data[index]
-                                                                .extraParm5 ??
-                                                            "",
+                                                        data[index].extraParm5 ?? "",
                                                         AssetImages.book),
                                                     buildContainer(
                                                         "Subject: Science ",
-                                                        data[index]
-                                                                .extraParm6 ??
-                                                            "",
+                                                        data[index].extraParm6 ?? "",
                                                         AssetImages.pen),
                                                     buildContainer(
                                                         "Qualification: ",
-                                                        data[index]
-                                                                .extraParm2 ??
-                                                            "",
+                                                        data[index].extraParm2 ?? "",
                                                         AssetImages.medal),
                                                     buildContainer(
                                                         "Location: ",
-                                                        data[index].location ??
-                                                            "",
+                                                        data[index].location ?? "",
                                                         AssetImages.location),
                                                     const SizedBox(
                                                       height: 5,
                                                     ),
-                                                    provider.showContact
-                                                            .contains(
-                                                                data[index].id)
+                                                    provider.showContact.contains(data[index].id)
                                                         ? Container(
-                                                            width:
-                                                                double.infinity,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        20,
-                                                                    vertical:
-                                                                        20),
+                                                            width: double.infinity,
+                                                            padding: const EdgeInsets.symmetric(
+                                                                horizontal: 20, vertical: 20),
                                                             decoration: const BoxDecoration(
-                                                                color: AppColor
-                                                                    .main,
+                                                                color: AppColor.main,
                                                                 borderRadius: BorderRadius.only(
-                                                                    bottomLeft:
-                                                                        Radius.circular(
-                                                                            10),
+                                                                    bottomLeft: Radius.circular(10),
                                                                     bottomRight:
-                                                                        Radius.circular(
-                                                                            10))),
+                                                                        Radius.circular(10))),
                                                             child: Text(
                                                               "Contact Number: ${data[index].phoneNo}",
-                                                              style:
-                                                                  style18w500w,
+                                                              style: style18w500w,
                                                             ),
                                                           )
                                                         : Column(
                                                             children: [
                                                               Padding(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        20.0),
+                                                                padding: const EdgeInsets.symmetric(
+                                                                    horizontal: 20.0),
                                                                 child: InkWell(
                                                                     onTap: () {
                                                                       provider.addList(
-                                                                          context,
-                                                                          data[index]
-                                                                              .id);
+                                                                          context, data[index].id!);
                                                                     },
-                                                                    child:
-                                                                        const ContactButton()),
+                                                                    child: const ContactButton()),
                                                               ),
                                                               const SizedBox(
                                                                 height: 15,
@@ -485,9 +455,7 @@ class _TeacherListState extends State<TeacherList> {
               col: AppColor.buttoncolor,
               myfun: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TeacherEnquiry()));
+                    context, MaterialPageRoute(builder: (context) => const TeacherEnquiry()));
               },
             ),
           ],

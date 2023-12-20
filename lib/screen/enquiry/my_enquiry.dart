@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:vida/screen/enquiry/provider/teacher_enquiry_provider.dart';
 import 'package:vida/utils/color.dart';
-
+import '../../utils/constimage.dart';
 import '../subscribe/widget/butto.dart';
 import 'teacher_enquiry.dart';
 
@@ -20,9 +20,10 @@ class _MyEnquiryState extends State<MyEnquiry> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    teacherEnquiryProvider =
-        Provider.of<TeacherEnquiryProvider>(context, listen: false);
-    teacherEnquiryProvider!.getlist(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      teacherEnquiryProvider = Provider.of<TeacherEnquiryProvider>(context, listen: false);
+      teacherEnquiryProvider!.getlist(context);
+    });
   }
 
   @override
@@ -52,20 +53,16 @@ class _MyEnquiryState extends State<MyEnquiry> {
                               Text(
                                 "My Enquiry",
                                 style: GoogleFonts.roboto(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
+                                    fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),
                               ),
                               InkWell(
                                   onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const TeacherEnquiry()));
+                                            builder: (context) => const TeacherEnquiry()));
                                   },
-                                  child:
-                                      appButton("SUBMIT YOUR QUERY", context)),
+                                  child: appButton("SUBMIT YOUR QUERY", context)),
                             ],
                           ),
                           const SizedBox(
@@ -73,155 +70,158 @@ class _MyEnquiryState extends State<MyEnquiry> {
                           ),
                           Container(
                             child: provider.teacherEqList == null
-                                ? const Center(
-                                    child: Text("Data Not found"),
+                                ? Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset(AssetImages.empty),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Text(
+                                          "List not Found",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   )
-                                : ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount:
-                                        provider.teacherEqList!.data.length,
-                                    itemBuilder: (context, index) {
-                                      final data =
-                                          provider.teacherEqList!.data[index];
-                                      return Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 20),
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                36,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20, horizontal: 20),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
+                                : provider.teacherEqList!.data.isEmpty
+                                    ? Center(
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: 240,
-                                                  child: Text(
-                                                    "Enquiry for ${data.board} Board",
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: AppColor.main),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  provider.formateDate(data
-                                                      .createdAt
-                                                      .toString()),
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: const Color(
-                                                          0xffA3A3A3)),
-                                                ),
-                                              ],
+                                            Image.asset(AssetImages.empty),
+                                            SizedBox(
+                                              height: 15,
                                             ),
-                                            border(),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  data.datumClass,
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: AppColor.main),
-                                                ),
-                                                Container(
-                                                  width: 9,
-                                                  height: 9,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: Color(
-                                                              0xffFFB396)),
-                                                ),
-                                                Text(
-                                                  data.subject,
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: AppColor.main),
-                                                ),
-                                                Container(
-                                                  width: 20,
-                                                )
-                                              ],
-                                            ),
-                                            border(),
-                                            RichText(
-                                                textAlign: TextAlign.center,
-                                                text: TextSpan(
-                                                    text:
-                                                        "Teacher Preference: ",
-                                                    style: GoogleFonts.roboto(
-                                                      color: AppColor.main,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: data.teacherPrefarence ==
-                                                                "M"
-                                                            ? "Male"
-                                                            : data.teacherPrefarence ==
-                                                                    "F"
-                                                                ? "Female"
-                                                                : "Any",
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                          color: AppColor.main,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ])),
-                                            // border(),
-                                            // const SizedBox(
-                                            //   height: 10,
-                                            // ),
-                                            // Text(
-                                            //   data.description ?? "",
-                                            //   style: GoogleFonts.roboto(
-                                            //       fontSize: 16,
-                                            //       fontWeight: FontWeight.w400,
-                                            //       color:
-                                            //           const Color(0xff333333)),
-                                            // ),
-                                            // const SizedBox(
-                                            //   height: 30,
-                                            // ),
-                                            // const VisibleButton(
-                                            //     txt:
-                                            //         "2 Teachers View Your Requirement"),
-                                            const SizedBox(
-                                              height: 10,
+                                            Text(
+                                              "List not Found",
+                                              style: TextStyle(color: Colors.white),
                                             ),
                                           ],
                                         ),
-                                      );
-                                    }),
+                                      )
+                                    : ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemCount: provider.teacherEqList!.data.length,
+                                        itemBuilder: (context, index) {
+                                          final data = provider.teacherEqList!.data[index];
+                                          return Container(
+                                            margin: const EdgeInsets.only(bottom: 20),
+                                            width: MediaQuery.of(context).size.width - 36,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 20, horizontal: 20),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(10)),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 240,
+                                                      child: Text(
+                                                        "Enquiry for ${data.board} Board",
+                                                        style: GoogleFonts.roboto(
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.w500,
+                                                            color: AppColor.main),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      provider
+                                                          .formateDate(data.createdAt.toString()),
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w400,
+                                                          color: const Color(0xffA3A3A3)),
+                                                    ),
+                                                  ],
+                                                ),
+                                                border(),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      data.datumClass,
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w400,
+                                                          color: AppColor.main),
+                                                    ),
+                                                    Container(
+                                                      width: 9,
+                                                      height: 9,
+                                                      decoration: const BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                          color: Color(0xffFFB396)),
+                                                    ),
+                                                    Text(
+                                                      data.subject,
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w400,
+                                                          color: AppColor.main),
+                                                    ),
+                                                    Container(
+                                                      width: 20,
+                                                    )
+                                                  ],
+                                                ),
+                                                border(),
+                                                RichText(
+                                                    textAlign: TextAlign.center,
+                                                    text: TextSpan(
+                                                        text: "Teacher Preference: ",
+                                                        style: GoogleFonts.roboto(
+                                                          color: AppColor.main,
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w500,
+                                                        ),
+                                                        children: [
+                                                          TextSpan(
+                                                            text: data.teacherPrefarence == "M"
+                                                                ? "Male"
+                                                                : data.teacherPrefarence == "F"
+                                                                    ? "Female"
+                                                                    : "Any",
+                                                            style: GoogleFonts.roboto(
+                                                              color: AppColor.main,
+                                                              fontSize: 15,
+                                                              fontWeight: FontWeight.w400,
+                                                            ),
+                                                          ),
+                                                        ])),
+                                                // border(),
+                                                // const SizedBox(
+                                                //   height: 10,
+                                                // ),
+                                                // Text(
+                                                //   data.description ?? "",
+                                                //   style: GoogleFonts.roboto(
+                                                //       fontSize: 16,
+                                                //       fontWeight: FontWeight.w400,
+                                                //       color:
+                                                //           const Color(0xff333333)),
+                                                // ),
+                                                // const SizedBox(
+                                                //   height: 30,
+                                                // ),
+                                                // const VisibleButton(
+                                                //     txt:
+                                                //         "2 Teachers View Your Requirement"),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }),
                           ),
                         ],
                       ),

@@ -20,7 +20,7 @@ class TeacherListProvider extends ChangeNotifier {
   YourBalance? yourBalance;
   double latitude = 0;
   double longitude = 0;
-  List<int> showContact = [];
+  List<num> showContact = [];
   getAddress() async {
     LocationModel? data = await GetLocation().getLatLong();
     if (data != null) {
@@ -31,19 +31,15 @@ class TeacherListProvider extends ChangeNotifier {
     }
   }
 
-  addList(BuildContext context, int id) async {
+  addList(BuildContext context, num id) async {
     final prefs = UserPrefs();
     var token = prefs.getData("token");
-    Map<String, String> headers = {
-      "x-access-token": "$token",
-      "Content-type": "application/json"
-    };
+    Map<String, String> headers = {"x-access-token": "$token", "Content-type": "application/json"};
     Map data = {"id": id};
     try {
       final url = Uri.parse("${baseUrl}pay/exp-view");
       print("$id $url");
-      final response =
-          await http.post(headers: headers, url, body: json.encode(data));
+      final response = await http.post(headers: headers, url, body: json.encode(data));
       print("$url $id  ${response.body}");
       final jsons = jsonDecode(response.body);
       if (jsons['status'] == true) {
@@ -51,8 +47,7 @@ class TeacherListProvider extends ChangeNotifier {
         getBalance(context);
       } else {
         CostomSnackbar.show(context, jsons['message']);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SubscribePay()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const SubscribePay()));
       }
     } catch (e) {
       CostomSnackbar.show(context, "$e");
@@ -90,14 +85,16 @@ class TeacherListProvider extends ChangeNotifier {
   }
 
   getlist(BuildContext context) async {
+    // isLoading = true;
     if (longitude == 0 && latitude == 0) {
       await getAddress();
-    }
+    } else {}
     final prefs = UserPrefs();
     var token = prefs.getData("token");
 
     Map<String, String> headers = {
       "x-access-token": "$token",
+      'Content-type': 'application/json',
     };
 
     Map data = {
@@ -128,12 +125,18 @@ class TeacherListProvider extends ChangeNotifier {
     final url = Uri.parse("${baseUrl}user/get-teacher-list");
 
     try {
-      final response = await http.post(url, body: data, headers: headers);
+      final response = await http.post(url, body: json.encode(data), headers: headers);
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        TeacherList res = TeacherList.fromJson(json);
-        teacherList = res;
+        if (json['status'] == true) {
+          TeacherList res = TeacherList.fromJson(json);
+          teacherList = res;
+
+          for (var elm in teacherList!.dataView!) {
+            showContact.add(elm.viewId!);
+          }
+        }
         isLoading = false;
         success = true;
       }

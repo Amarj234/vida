@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../../../commonfun/dropdowndata.dart';
+import '../../../commonfun/get_location.dart';
 import '../../../config/baseUrl.dart';
 import '../../../config/sharedPrefs.dart';
 import '../../../model/dropdown_data.dart';
+import '../../../model/getlocation_model.dart';
 import '../../../model/teacher_enquirylist.dart';
 import '../../commonWidget/costum_snackbar.dart';
 import '../../home_screen.dart';
@@ -21,8 +23,24 @@ class TeacherEnquiryProvider extends ChangeNotifier {
   final dropdownState = GlobalKey<FormFieldState>();
   final dropdownState2 = GlobalKey<FormFieldState>();
   final dropdownState3 = GlobalKey<FormFieldState>();
-  bool isLoading = false;
+  bool isLoading = true;
   bool success = false;
+
+  String? culocation = "";
+
+  double latitude = 0;
+  double longitude = 0;
+
+  getAddress() async {
+    print("address call");
+    LocationModel? data = await GetLocation().getLatLong();
+    if (data != null) {
+      culocation = data.locationname;
+      longitude = data.long;
+      latitude = data.lat;
+    }
+  }
+
   savaEnquiry(BuildContext context) async {
     isLoading = true;
     notifyListeners();
@@ -41,6 +59,8 @@ class TeacherEnquiryProvider extends ChangeNotifier {
       final response = await http.post(url,
           body: {
             "userID": id,
+            "latitude": latitude.toString(),
+            "longitude": longitude.toString(),
             "board": board.text,
             "class": classs.text,
             "teacherPrefarence": gender == 0
@@ -49,8 +69,7 @@ class TeacherEnquiryProvider extends ChangeNotifier {
                     ? "F"
                     : "ANY",
             "subject": subject.text,
-            "description":
-                "This is the auto message that the parent has submited the enquiry."
+            "description": "This is the auto message that the parent has submited the enquiry."
           },
           headers: headers);
 
@@ -91,14 +110,10 @@ class TeacherEnquiryProvider extends ChangeNotifier {
   }
 
   getlist(BuildContext context) async {
-    isLoading = true;
     final prefs = UserPrefs();
     var token = prefs.getData("token");
 
-    Map<String, String> headers = {
-      "x-access-token": "$token",
-      "Content-type": "application/json"
-    };
+    Map<String, String> headers = {"x-access-token": "$token", "Content-type": "application/json"};
     final url = Uri.parse("${baseUrl}enquiry/get-all-my-enquiry");
 
     try {

@@ -145,10 +145,12 @@ class TeacherdetaildsProvider extends ChangeNotifier {
           responseType: ResponseType.json,
         ),
       );
-
+      print(response.data);
       if (response.statusCode == 200) {
         if (response.data['status'] == true) {
           success = true;
+        } else {
+          CostomSnackbar.show(context, jsonDecode(response.data)['message']);
         }
         isLoading = false;
       } else {

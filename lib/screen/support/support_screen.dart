@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,7 +26,7 @@ class _SupportScreenState extends State<SupportScreen> {
     //  if (Platform.isIOS) {
     return "https://wa.me/$phone/?text=${Uri.encodeFull(message)}";
     // } else {
-    return "whatsapp://send?phone=$phone&text=${Uri.encodeFull(message)}";
+    // return "whatsapp://send?phone=$phone&text=${Uri.encodeFull(message)}";
     // }
   }
 
@@ -75,9 +73,7 @@ class _SupportScreenState extends State<SupportScreen> {
               Text(
                 "Help and Support service hour",
                 style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColor.main),
+                    fontSize: 16, fontWeight: FontWeight.w500, color: AppColor.main),
               ),
               const SizedBox(
                 height: 20,
@@ -90,9 +86,7 @@ class _SupportScreenState extends State<SupportScreen> {
               Text(
                 "Didn’t find the answer to your questions?",
                 style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColor.main),
+                    fontSize: 16, fontWeight: FontWeight.w500, color: AppColor.main),
               ),
               const SizedBox(
                 height: 15,
@@ -104,11 +98,9 @@ class _SupportScreenState extends State<SupportScreen> {
                   myfun: () async {
                     String email = Uri.encodeComponent("amarj234@gmail.com");
                     String subject = Uri.encodeComponent("Hello Flutter");
-                    String body =
-                        Uri.encodeComponent("Hi! I'm Flutter Developer");
+                    String body = Uri.encodeComponent("Hi! I'm Flutter Developer");
                     print(subject); //output: Hello%20Flutter
-                    Uri mail =
-                        Uri.parse("mailto:$email?subject=$subject&body=$body");
+                    Uri mail = Uri.parse("mailto:$email?subject=$subject&body=$body");
                     if (await launchUrl(mail)) {
                       //email app opened
                     } else {
@@ -142,9 +134,7 @@ class _SupportScreenState extends State<SupportScreen> {
               Text(
                 "Your feedback is invaluable for us. It help us improve our app and services.",
                 style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xff333333)),
+                    fontSize: 16, fontWeight: FontWeight.w400, color: const Color(0xff333333)),
               ),
             ],
           ),
@@ -159,8 +149,7 @@ class _SupportScreenState extends State<SupportScreen> {
         Container(
           height: 6,
           width: 6,
-          decoration:
-              const BoxDecoration(shape: BoxShape.circle, color: AppColor.main),
+          decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColor.main),
         ),
         const SizedBox(
           width: 10,
@@ -169,10 +158,8 @@ class _SupportScreenState extends State<SupportScreen> {
           padding: const EdgeInsets.all(5.0),
           child: Text(
             txt,
-            style: GoogleFonts.roboto(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: AppColor.main),
+            style:
+                GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w400, color: AppColor.main),
           ),
         ),
       ],

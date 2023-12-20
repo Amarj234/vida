@@ -99,9 +99,8 @@ class StudentinfoProvider extends ChangeNotifier {
     };
 
     try {
-      final response =
-          await http.post(url, body: jsonEncode(data), headers: headers);
-
+      final response = await http.post(url, body: jsonEncode(data), headers: headers);
+      print(jsonDecode(response.body));
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
@@ -109,6 +108,9 @@ class StudentinfoProvider extends ChangeNotifier {
           // RegisterRes res = RegisterRes.fromJson(json);
           success = true;
           // }
+        } else {
+          print(jsonDecode(response.body)['message']);
+          CostomSnackbar.show(context, jsonDecode(response.body)['message']);
         }
         isLoading = false;
       } else {

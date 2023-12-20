@@ -18,8 +18,7 @@ class SelectRegister extends StatefulWidget {
   State<SelectRegister> createState() => _SelectRegisterState();
 }
 
-class _SelectRegisterState extends State<SelectRegister>
-    with TickerProviderStateMixin {
+class _SelectRegisterState extends State<SelectRegister> {
   final prefe = UserPrefs();
 
   @override
@@ -33,9 +32,7 @@ class _SelectRegisterState extends State<SelectRegister>
               flex: 6,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 13,
-                    left: 25,
-                    right: 25),
+                    top: MediaQuery.of(context).size.height / 13, left: 25, right: 25),
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,8 +62,7 @@ class _SelectRegisterState extends State<SelectRegister>
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      topLeft: Radius.circular(10)),
+                      topRight: Radius.circular(10), topLeft: Radius.circular(10)),
                   color: AppColor.appbarcolor,
                   boxShadow: [
                     BoxShadow(
@@ -98,21 +94,17 @@ class _SelectRegisterState extends State<SelectRegister>
                       ),
                       CustomAnimation(
                         direction: Direction.right,
-                        duration: const Duration(seconds: 2),
+                        duration: const Duration(seconds: 1),
                         child: ContainerBtn(
                           myfun: () {
                             if (prefe.getData("pintro") == "yes") {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LoginScreen(uid: 1)));
+                                      builder: (context) => const LoginScreen(uid: 1)));
                             } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const IntroScreen()));
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const IntroScreen()));
                             }
                           },
                           text: 'PARENT',
@@ -125,22 +117,18 @@ class _SelectRegisterState extends State<SelectRegister>
                       ),
                       CustomAnimation(
                         direction: Direction.left,
-                        duration: const Duration(seconds: 2),
+                        duration: const Duration(seconds: 1),
                         child: ContainerBtn(
                           myfun: () {
-                            // if (prefe.getData("tintro") == "yes") {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //           builder: (context) =>
-                            //               const LoginScreen(uid: 1)));
-                            // } else {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const TeacherIntro()));
-                            //    }
+                            if (prefe.getData("tintro") == "yes") {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(uid: 2)));
+                            } else {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const TeacherIntro()));
+                            }
                           },
                           text: 'TEACHER',
                           image: AssetImages.teacher,
@@ -152,7 +140,7 @@ class _SelectRegisterState extends State<SelectRegister>
                       ),
                       CustomAnimation(
                         direction: Direction.up,
-                        duration: const Duration(milliseconds: 1500),
+                        duration: const Duration(milliseconds: 700),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,

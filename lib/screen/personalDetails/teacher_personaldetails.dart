@@ -23,8 +23,7 @@ import '../otplogin/login_screen.dart';
 class TeacherPersonalDetaild extends StatefulWidget {
   final String rid;
   final String mobile;
-  const TeacherPersonalDetaild(
-      {Key? key, required this.rid, required this.mobile})
+  const TeacherPersonalDetaild({Key? key, required this.rid, required this.mobile})
       : super(key: key);
   @override
   State<TeacherPersonalDetaild> createState() => _TeacherPersonalDetaildState();
@@ -39,8 +38,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
     // TODO: implement initState
     super.initState();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
-    teacherdetaildsProvider =
-        Provider.of<TeacherdetaildsProvider>(context, listen: false);
+    teacherdetaildsProvider = Provider.of<TeacherdetaildsProvider>(context, listen: false);
     final pro = Provider.of<HometabProvider>(context, listen: false);
     pro.changeUid(2);
     teacherdetaildsProvider!.getAddress();
@@ -73,8 +71,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
               title: const Text('Take Photo'),
               onTap: () {
                 Navigator.pop(context);
-                teacherdetaildsProvider!
-                    .pickImageFromSource(ImageSource.camera, side);
+                teacherdetaildsProvider!.pickImageFromSource(ImageSource.camera, side);
               },
             ),
             ListTile(
@@ -85,8 +82,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
               title: const Text('Pick from Gallery'),
               onTap: () {
                 Navigator.pop(context);
-                teacherdetaildsProvider!
-                    .pickImageFromSource(ImageSource.gallery, side);
+                teacherdetaildsProvider!.pickImageFromSource(ImageSource.gallery, side);
               },
             ),
           ],
@@ -110,13 +106,13 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                 : provider.success
                     ? Center(
                         child: SizedBox(
-                          height: size.height * 0.25,
+                          height: size.height * 0.5,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                AssetImages.thumbsup,
-                                height: size.height * 0.08,
+                                AssetImages.success,
+                                height: size.height * .2,
                               ),
                               const SizedBox(
                                 height: 20,
@@ -131,14 +127,13 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: size.width * 0.2)),
+                                    backgroundColor: AppColor.main,
+                                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.2)),
                                 onPressed: () {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginScreen(
+                                          builder: (context) => const LoginScreen(
                                                 uid: 2,
                                               )));
                                 },
@@ -147,7 +142,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColor.main),
+                                      color: Colors.white),
                                 ),
                               )
                             ],
@@ -155,8 +150,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                         ),
                       )
                     : Padding(
-                        padding: const EdgeInsets.only(
-                            top: 68.0, left: 18, right: 18),
+                        padding: const EdgeInsets.only(top: 68.0, left: 18, right: 18),
                         child: SingleChildScrollView(
                           child: Form(
                             key: key,
@@ -216,17 +210,11 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                 RegisterTextfields(
                                   readonly: true,
                                   myfun: () async {
-                                    LocationData? locationData =
-                                        await LocationSearch.show(
-                                            context: context,
-                                            lightAdress: false,
-                                            mode: Mode.overlay);
-                                    teacherdetaildsProvider!.location.text =
-                                        locationData!.address;
-                                    teacherdetaildsProvider!.longitude =
-                                        locationData.longitude;
-                                    teacherdetaildsProvider!.latitude =
-                                        locationData.latitude;
+                                    LocationData? locationData = await LocationSearch.show(
+                                        context: context, lightAdress: false, mode: Mode.overlay);
+                                    teacherdetaildsProvider!.location.text = locationData!.address;
+                                    teacherdetaildsProvider!.longitude = locationData.longitude;
+                                    teacherdetaildsProvider!.latitude = locationData.latitude;
                                   },
                                   isicon: true,
                                   isvalid: 3,
@@ -272,8 +260,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                     );
 
                                     teacherdetaildsProvider!.dob.text =
-                                        DateFormat('yyyy-MM-dd')
-                                            .format(pickedDate!);
+                                        DateFormat('yyyy-MM-dd').format(pickedDate!);
                                   },
                                   isvalid: 3,
                                   mycon: teacherdetaildsProvider!.dob,
@@ -308,8 +295,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                           isvalid: 3,
                                           mycon: provider.subject,
                                           tcolor: const Color(0xffA3A3A3),
-                                          hint:
-                                              'What Subject do you want to teach ',
+                                          hint: 'What Subject do you want to teach ',
                                         ),
                                         const SizedBox(
                                           height: 8,
@@ -317,45 +303,32 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                         Visibility(
                                             visible: provider.isshowsub,
                                             child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  40,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 10),
+                                              width: MediaQuery.of(context).size.width - 40,
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 5, vertical: 10),
                                               decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   boxShadow: const [
                                                     BoxShadow(
-                                                      color:
-                                                          Color(0xffcecbc9ff),
+                                                      color: Color(0xffcecbc9ff),
                                                       blurRadius: 10.0,
                                                     ),
                                                   ],
                                                   // border: Border.all(color: AppColor.oreng.withOpacity(.5)),
 
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                                  borderRadius: BorderRadius.circular(10)),
                                               child: Wrap(
                                                 alignment: WrapAlignment.start,
-                                                spacing:
-                                                    -10.0, // Horizontal space.
+                                                spacing: -10.0, // Horizontal space.
                                                 //runSpacing: 30.0, // gap between lines
-                                                children: provider.subjectlist
-                                                    .map((e) {
+                                                children: provider.subjectlist.map((e) {
                                                   return InkWell(
                                                       //   overlayColor: MaterialStateProperty.all(Colors.white),
                                                       onTap: () {
-                                                        provider
-                                                            .selectSubject(e);
+                                                        provider.selectSubject(e);
                                                       },
                                                       child: myChip(
-                                                          e,
-                                                          provider.slsubject
-                                                              .contains(e)));
+                                                          e, provider.slsubject.contains(e)));
                                                 }).toList(),
                                               ),
                                             )),
@@ -380,8 +353,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                           isvalid: 3,
                                           mycon: provider.teacherclass,
                                           tcolor: const Color(0xffA3A3A3),
-                                          hint:
-                                              'What Categories do you want to teach ',
+                                          hint: 'What Categories do you want to teach ',
                                         ),
                                         const SizedBox(
                                           height: 8,
@@ -389,44 +361,32 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                         Visibility(
                                             visible: provider.isshow,
                                             child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  40,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 10),
+                                              width: MediaQuery.of(context).size.width - 40,
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 5, vertical: 10),
                                               decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   boxShadow: const [
                                                     BoxShadow(
-                                                      color:
-                                                          Color(0xffcecbc9ff),
+                                                      color: Color(0xffcecbc9ff),
                                                       blurRadius: 10.0,
                                                     ),
                                                   ],
                                                   // border: Border.all(color: AppColor.oreng.withOpacity(.5)),
 
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                                  borderRadius: BorderRadius.circular(10)),
                                               child: Wrap(
                                                 alignment: WrapAlignment.start,
-                                                spacing:
-                                                    -10.0, // Horizontal space.
+                                                spacing: -10.0, // Horizontal space.
                                                 //runSpacing: 30.0, // gap between lines
-                                                children:
-                                                    provider.classlist.map((e) {
+                                                children: provider.classlist.map((e) {
                                                   return InkWell(
                                                       //   overlayColor: MaterialStateProperty.all(Colors.white),
                                                       onTap: () {
                                                         provider.selectClass(e);
                                                       },
-                                                      child: myChip(
-                                                          e,
-                                                          provider.slclass
-                                                              .contains(e)));
+                                                      child:
+                                                          myChip(e, provider.slclass.contains(e)));
                                                 }).toList(),
                                               ),
                                             )),
@@ -444,8 +404,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                       child: Column(
                                         children: [
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "Upload Document",
@@ -457,16 +416,14 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                             height: 10,
                                           ),
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 "Aadhar/Voter/College ID/Driving Licence/School ID ",
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 13,
                                                     fontWeight: FontWeight.w400,
-                                                    color: const Color(
-                                                        0xff707070)),
+                                                    color: const Color(0xff707070)),
                                               ),
                                             ],
                                           ),
@@ -474,64 +431,49 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                             height: 20,
                                           ),
                                           Consumer<TeacherdetaildsProvider>(
-                                            builder:
-                                                (context, provider, child) {
+                                            builder: (context, provider, child) {
                                               return Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   InkWell(
                                                     onTap: () {
                                                       showImagePickerOptions(1);
                                                     },
-                                                    child:
-                                                        provider.frontpath ==
-                                                                null
-                                                            ? SvgPicture.asset(
-                                                                AssetImages
-                                                                    .frontside,
-                                                                width: (MediaQuery.of(context)
-                                                                            .size
-                                                                            .width /
+                                                    child: provider.frontpath == null
+                                                        ? SvgPicture.asset(
+                                                            AssetImages.frontside,
+                                                            width:
+                                                                (MediaQuery.of(context).size.width /
                                                                         2) -
                                                                     30,
-                                                              )
-                                                            : Image.file(
-                                                                File(provider
-                                                                    .frontpath!),
-                                                                width: (MediaQuery.of(context)
-                                                                            .size
-                                                                            .width /
+                                                          )
+                                                        : Image.file(
+                                                            File(provider.frontpath!),
+                                                            width:
+                                                                (MediaQuery.of(context).size.width /
                                                                         2) -
                                                                     30,
-                                                              ),
+                                                          ),
                                                   ),
                                                   InkWell(
                                                     onTap: () {
                                                       showImagePickerOptions(2);
                                                     },
-                                                    child:
-                                                        provider.backpath ==
-                                                                null
-                                                            ? SvgPicture.asset(
-                                                                AssetImages
-                                                                    .backside,
-                                                                width: (MediaQuery.of(context)
-                                                                            .size
-                                                                            .width /
+                                                    child: provider.backpath == null
+                                                        ? SvgPicture.asset(
+                                                            AssetImages.backside,
+                                                            width:
+                                                                (MediaQuery.of(context).size.width /
                                                                         2) -
                                                                     30,
-                                                              )
-                                                            : Image.file(
-                                                                File(provider
-                                                                    .backpath!),
-                                                                width: (MediaQuery.of(context)
-                                                                            .size
-                                                                            .width /
+                                                          )
+                                                        : Image.file(
+                                                            File(provider.backpath!),
+                                                            width:
+                                                                (MediaQuery.of(context).size.width /
                                                                         2) -
                                                                     30,
-                                                              ),
+                                                          ),
                                                   ),
                                                 ],
                                               );
@@ -553,16 +495,13 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
                                       if (provider.backpath == null ||
                                           provider.frontpath == null ||
                                           provider.profilepath == null) {
-                                        CostomSnackbar.show(
-                                            context, "Please Upload Document");
-                                      } else if (provider.name.text.length <
-                                          10) {
+                                        CostomSnackbar.show(context, "Please Upload Document");
+                                      } else if (provider.name.text.length < 10) {
                                         CostomSnackbar.show(context,
                                             "fullName must be longer than or equal to 10 characters");
                                       } else {
                                         teacherdetaildsProvider!
-                                            .teacherRegister(
-                                                context, widget.rid);
+                                            .teacherRegister(context, widget.rid);
                                       }
                                     }
                                     // Navigator.push(
@@ -597,8 +536,7 @@ class _TeacherPersonalDetaildState extends State<TeacherPersonalDetaild> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   image: provider.profilepath == null
-                      ? DecorationImage(
-                          image: AssetImage(AssetImages.profileimage))
+                      ? DecorationImage(image: AssetImage(AssetImages.profileimage))
                       : DecorationImage(
                           image: FileImage(
                             File(provider.profilepath!),

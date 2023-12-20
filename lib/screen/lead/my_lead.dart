@@ -21,8 +21,10 @@ class _MyLeadState extends State<MyLead> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    leadProvider = Provider.of<LeadProvider>(context, listen: false);
-    leadProvider!.getlist(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      leadProvider = Provider.of<LeadProvider>(context, listen: false);
+      leadProvider!.getlist(context);
+    });
   }
 
   @override
@@ -37,204 +39,195 @@ class _MyLeadState extends State<MyLead> {
                   child: CircularProgressIndicator(),
                 )
               : provider.leadlist == null
-                  ? const Center(
-                      child: Text("List not Found"),
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(AssetImages.empty),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text("List not Found"),
+                        ],
+                      ),
                     )
-                  : SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                        child: SingleChildScrollView(
+                  : provider.leadlist!.data.isEmpty
+                      ? Center(
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const SizedBox(
-                                height: 20,
+                              Image.asset(AssetImages.empty),
+                              SizedBox(
+                                height: 15,
                               ),
-                              ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: provider.leadlist!.data.length,
-                                  itemBuilder: (context, index) {
-                                    final data = provider.leadlist!.data[index];
-                                    return Column(
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 20),
-                                          decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(10),
-                                                  topLeft: Radius.circular(10)),
-                                              color: AppColor.radiocolr),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(data.parentName,
-                                                    style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                    )),
-                                                const SizedBox(
-                                                  height: 2,
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            "Board: ${data.board}",
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ]),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          // Text(
-                                                          //   "Location: ",
-                                                          //   style: GoogleFonts
-                                                          //       .roboto(
-                                                          //     color: Colors.white,
-                                                          //     fontSize: 14,
-                                                          //     fontWeight:
-                                                          //         FontWeight.w500,
-                                                          //   ),
-                                                          // ),
-                                                          SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                90,
-                                                            child: Text(
-                                                              "Location: ${data.parentLocation}",
-                                                              style: GoogleFonts
-                                                                  .roboto(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ]),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: const BoxDecoration(
-                                              color: AppColor.textoreng2,
-                                              borderRadius: BorderRadius.only(
-                                                  bottomRight:
-                                                      Radius.circular(10),
-                                                  bottomLeft:
-                                                      Radius.circular(10))),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              buildContainer(
-                                                  "Class: ",
-                                                  data.datumClass,
-                                                  AssetImages.book),
-                                              buildContainer(
-                                                  "Subject: ",
-                                                  data.subject,
-                                                  AssetImages.pen),
-                                              buildContainer(
-                                                  "Teacher Preference: ",
-                                                  data.teacherPrefarence == "M"
-                                                      ? "Male"
-                                                      : data.teacherPrefarence ==
-                                                              "F"
-                                                          ? "Female"
-                                                          : "ANY",
-                                                  AssetImages.teacherhed),
-                                              // buildContainer(
-                                              //     "Msg from parents: ",
-                                              //     data.description ?? "",
-                                              //     AssetImages.needteacher),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 20,
-                                                        vertical: 20),
-                                                decoration: const BoxDecoration(
-                                                    color: AppColor.main,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            bottomLeft: Radius
-                                                                .circular(10),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    10))),
-                                                child: Text(
-                                                  "Contact Number: ${data.parentPhoneNumber}",
-                                                  style: style18w500w,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                      ],
-                                    );
-                                  }),
-                              const SizedBox(
-                                height: 30,
-                              ),
+                              Text("List not Found"),
                             ],
                           ),
-                        ),
-                      ),
-                    );
+                        )
+                      : SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: provider.leadlist!.data.length,
+                                      itemBuilder: (context, index) {
+                                        final data = provider.leadlist!.data[index];
+                                        return Column(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(vertical: 20),
+                                              decoration: const BoxDecoration(
+                                                  borderRadius: BorderRadius.only(
+                                                      topRight: Radius.circular(10),
+                                                      topLeft: Radius.circular(10)),
+                                                  color: AppColor.radiocolr),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(horizontal: 20.0),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(data.parentName,
+                                                        style: GoogleFonts.roboto(
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 20,
+                                                          color: Colors.white,
+                                                        )),
+                                                    const SizedBox(
+                                                      height: 2,
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment.start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                "Board: ${data.board}",
+                                                                style: GoogleFonts.roboto(
+                                                                  color: Colors.white,
+                                                                  fontSize: 14,
+                                                                  fontWeight: FontWeight.w500,
+                                                                ),
+                                                              ),
+                                                            ]),
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment.start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment.start,
+                                                            children: [
+                                                              // Text(
+                                                              //   "Location: ",
+                                                              //   style: GoogleFonts
+                                                              //       .roboto(
+                                                              //     color: Colors.white,
+                                                              //     fontSize: 14,
+                                                              //     fontWeight:
+                                                              //         FontWeight.w500,
+                                                              //   ),
+                                                              // ),
+                                                              SizedBox(
+                                                                width: MediaQuery.of(context)
+                                                                        .size
+                                                                        .width -
+                                                                    90,
+                                                                child: Text(
+                                                                  "Location: ${data.parentLocation}",
+                                                                  style: GoogleFonts.roboto(
+                                                                    color: Colors.white,
+                                                                    fontSize: 14,
+                                                                    fontWeight: FontWeight.w500,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ]),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: const BoxDecoration(
+                                                  color: AppColor.textoreng2,
+                                                  borderRadius: BorderRadius.only(
+                                                      bottomRight: Radius.circular(10),
+                                                      bottomLeft: Radius.circular(10))),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  buildContainer(
+                                                      "Class: ", data.datumClass, AssetImages.book),
+                                                  buildContainer(
+                                                      "Subject: ", data.subject, AssetImages.pen),
+                                                  buildContainer(
+                                                      "Teacher Preference: ",
+                                                      data.teacherPrefarence == "M"
+                                                          ? "Male"
+                                                          : data.teacherPrefarence == "F"
+                                                              ? "Female"
+                                                              : "ANY",
+                                                      AssetImages.teacherhed),
+                                                  // buildContainer(
+                                                  //     "Msg from parents: ",
+                                                  //     data.description ?? "",
+                                                  //     AssetImages.needteacher),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding: const EdgeInsets.symmetric(
+                                                        horizontal: 20, vertical: 20),
+                                                    decoration: const BoxDecoration(
+                                                        color: AppColor.main,
+                                                        borderRadius: BorderRadius.only(
+                                                            bottomLeft: Radius.circular(10),
+                                                            bottomRight: Radius.circular(10))),
+                                                    child: Text(
+                                                      "Contact Number: ${data.parentPhoneNumber}",
+                                                      style: style18w500w,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                          ],
+                                        );
+                                      }),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
         },
       ),
     );

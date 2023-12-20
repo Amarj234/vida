@@ -4,46 +4,31 @@ import 'package:flutter/material.dart';
 
 import 'enums.dart';
 
-/// A widget that applies a slide-in animation to its child from a specified direction.
 class CustomAnimation extends StatefulWidget {
   final Widget child;
 
-  /// The widget to be animated.
   final Direction direction;
 
-  /// The direction from which the child should slide in.
   final Duration duration;
 
-  /// The duration of the slide-in animation.
   final Offset? offset;
 
-  /// Custom offset for the slide animation (optional).
-
-  /// Constructor for the SlideInAnimation widget.
   const CustomAnimation({
     Key? key,
     required this.child,
     this.direction = Direction.left,
-
-    /// Default direction is from the left.
     this.offset,
     this.duration = const Duration(milliseconds: 500),
-
-    /// Default animation duration.
   }) : super(key: key);
 
   @override
   State<CustomAnimation> createState() => _SlideInAnimationState();
 }
 
-class _SlideInAnimationState extends State<CustomAnimation>
-    with SingleTickerProviderStateMixin {
+class _SlideInAnimationState extends State<CustomAnimation> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  /// Controller for managing the animation.
   late Animation<Offset> _animation;
-
-  /// Animation object for tracking animation progress.
 
   @override
   void initState() {
@@ -56,7 +41,6 @@ class _SlideInAnimationState extends State<CustomAnimation>
     Offset beginOffset = Offset.zero;
     Offset endOffset;
 
-    // Determine the end offset based on the specified direction or custom offset.
     switch (widget.direction) {
       case Direction.left:
         endOffset = widget.offset ?? const Offset(-1.12, 0.0);
@@ -78,15 +62,12 @@ class _SlideInAnimationState extends State<CustomAnimation>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     _controller.forward();
-
-    /// Start the slide-in animation.
   }
 
   @override
   void dispose() {
     _controller.dispose();
 
-    /// Dispose of the animation controller when the widget is removed.
     super.dispose();
   }
 
@@ -94,8 +75,6 @@ class _SlideInAnimationState extends State<CustomAnimation>
   Widget build(BuildContext context) {
     return SlideTransition(
       position: _animation,
-
-      /// Apply the slide-in animation to the child using SlideTransition.
       child: widget.child,
     );
   }

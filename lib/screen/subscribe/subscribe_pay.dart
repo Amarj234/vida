@@ -47,8 +47,7 @@ class _SubscribePayState extends State<SubscribePay> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 30, horizontal: 20),
+                            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: const Color(0xff5D1934),
@@ -111,8 +110,7 @@ class _SubscribePayState extends State<SubscribePay> {
                           Container(
                             decoration: BoxDecoration(
                                 // borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: const Color(0xff9A5A74))),
+                                border: Border.all(color: const Color(0xff9A5A74))),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,19 +123,15 @@ class _SubscribePayState extends State<SubscribePay> {
                                 ),
                                 const SizedBox(height: 15),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                                   child: Form(
                                     // key: formKey,
                                     child: Column(
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xff9A5A74))),
+                                              borderRadius: BorderRadius.circular(10),
+                                              border: Border.all(color: const Color(0xff9A5A74))),
                                           child: FMHolderField(
                                             // controller: holder,
                                             style: GoogleFonts.roboto(
@@ -149,16 +143,12 @@ class _SubscribePayState extends State<SubscribePay> {
                                               hintStyle: GoogleFonts.roboto(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
-                                                  color:
-                                                      const Color(0xff9A5A74)),
+                                                  color: const Color(0xff9A5A74)),
                                               errorBorder: InputBorder.none,
                                               focusedBorder: InputBorder.none,
                                               enabledBorder: InputBorder.none,
-                                              focusedErrorBorder:
-                                                  InputBorder.none,
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                      left: 12),
+                                              focusedErrorBorder: InputBorder.none,
+                                              contentPadding: const EdgeInsets.only(left: 12),
                                               //labelText: "Card Holder Name",
                                               hintText: "Card Holder Name",
                                             ),
@@ -167,11 +157,8 @@ class _SubscribePayState extends State<SubscribePay> {
                                         const SizedBox(height: 15),
                                         Container(
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xff9A5A74))),
+                                              borderRadius: BorderRadius.circular(10),
+                                              border: Border.all(color: const Color(0xff9A5A74))),
                                           child: FMNumberField(
                                             //controller: number,
                                             style: GoogleFonts.roboto(
@@ -183,18 +170,14 @@ class _SubscribePayState extends State<SubscribePay> {
                                               hintStyle: GoogleFonts.roboto(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
-                                                  color:
-                                                      const Color(0xff9A5A74)),
+                                                  color: const Color(0xff9A5A74)),
                                               errorBorder: InputBorder.none,
 
                                               focusedBorder: InputBorder.none,
-                                              focusedErrorBorder:
-                                                  InputBorder.none,
+                                              focusedErrorBorder: InputBorder.none,
                                               enabledBorder: InputBorder.none,
 
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                      left: 12),
+                                              contentPadding: const EdgeInsets.only(left: 12),
                                               //labelText: "Card Holder Name",
                                               hintText: "Card Number",
                                             ),
@@ -202,45 +185,31 @@ class _SubscribePayState extends State<SubscribePay> {
                                         ),
                                         const SizedBox(height: 15),
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Flexible(
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border: Border.all(
-                                                        color: const Color(
-                                                            0xff9A5A74))),
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    border:
+                                                        Border.all(color: const Color(0xff9A5A74))),
                                                 child: FMValidThruField(
                                                   style: GoogleFonts.roboto(
                                                       fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                                      fontWeight: FontWeight.w400,
                                                       color: Colors.white),
                                                   //    controller: validThru,
                                                   cursorColor: Colors.white,
                                                   decoration: InputDecoration(
-                                                    hintStyle:
-                                                        GoogleFonts.roboto(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color: const Color(
-                                                                0xff9A5A74)),
-                                                    focusedErrorBorder:
-                                                        InputBorder.none,
-                                                    focusedBorder:
-                                                        InputBorder.none,
-                                                    errorBorder:
-                                                        InputBorder.none,
-                                                    enabledBorder:
-                                                        InputBorder.none,
-                                                    contentPadding:
-                                                        const EdgeInsets.only(
-                                                            left: 12),
+                                                    hintStyle: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w400,
+                                                        color: const Color(0xff9A5A74)),
+                                                    focusedErrorBorder: InputBorder.none,
+                                                    focusedBorder: InputBorder.none,
+                                                    errorBorder: InputBorder.none,
+                                                    enabledBorder: InputBorder.none,
+                                                    contentPadding: const EdgeInsets.only(left: 12),
                                                     //labelText: "Card Holder Name",
                                                     hintText: "Expiry Date",
                                                   ),
@@ -251,39 +220,26 @@ class _SubscribePayState extends State<SubscribePay> {
                                             Flexible(
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border: Border.all(
-                                                        color: const Color(
-                                                            0xff9A5A74))),
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    border:
+                                                        Border.all(color: const Color(0xff9A5A74))),
                                                 child: FMCvvField(
                                                   // controller: cvv,
                                                   cursorColor: Colors.white,
                                                   style: GoogleFonts.roboto(
                                                       fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                                      fontWeight: FontWeight.w400,
                                                       color: Colors.white),
                                                   decoration: InputDecoration(
-                                                    hintStyle:
-                                                        GoogleFonts.roboto(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color: const Color(
-                                                                0xff9A5A74)),
-                                                    errorBorder:
-                                                        InputBorder.none,
-                                                    focusedErrorBorder:
-                                                        InputBorder.none,
-                                                    focusedBorder:
-                                                        InputBorder.none,
-                                                    enabledBorder:
-                                                        InputBorder.none,
-                                                    contentPadding:
-                                                        const EdgeInsets.only(
-                                                            left: 12),
+                                                    hintStyle: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w400,
+                                                        color: const Color(0xff9A5A74)),
+                                                    errorBorder: InputBorder.none,
+                                                    focusedErrorBorder: InputBorder.none,
+                                                    focusedBorder: InputBorder.none,
+                                                    enabledBorder: InputBorder.none,
+                                                    contentPadding: const EdgeInsets.only(left: 12),
                                                     //labelText: "Card Holder Name",
                                                     hintText: "CVV",
                                                   ),
@@ -298,8 +254,7 @@ class _SubscribePayState extends State<SubscribePay> {
                                 ),
                                 const SizedBox(height: 15),
                                 InkWell(
-                                  overlayColor:
-                                      MaterialStateProperty.all(AppColor.main),
+                                  overlayColor: MaterialStateProperty.all(AppColor.main),
                                   onTap: () {
                                     provider.saveCard();
                                   },
@@ -317,10 +272,8 @@ class _SubscribePayState extends State<SubscribePay> {
                                                     : Colors.black)),
                                         child: provider.issavecard
                                             ? Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Image.asset(
-                                                    AssetImages.right),
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: Image.asset(AssetImages.right),
                                               )
                                             : Container(),
                                       ),
@@ -369,7 +322,7 @@ class _SubscribePayState extends State<SubscribePay> {
                                 ),
                                 const SizedBox(height: 20),
                                 const RadeoButton(
-                                  txt: 'Cash ON',
+                                  txt: 'Cash On',
                                   isselect: 4,
                                   val: 20,
                                 ),
@@ -387,13 +340,11 @@ class _SubscribePayState extends State<SubscribePay> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                provider.uid == 1
-                                    ? "Total: ₹ 300 +GST "
-                                    : "Total: ₹ 400 +GST ",
+                                // provider.uid == 1 ? "Total: ₹ 300 +GST " :
+
+                                "Total: ₹ 400 +GST ",
                                 style: GoogleFonts.roboto(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white),
+                                    fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
                               ),
                             ],
                           ),
@@ -407,8 +358,7 @@ class _SubscribePayState extends State<SubscribePay> {
                               if (tabProvider!.selectradeo == 4) {
                                 stud.payAmount(context);
                               } else {
-                                CostomSnackbar.show(
-                                    context, "Please Select Cash Option");
+                                CostomSnackbar.show(context, "Please Select Cash Option");
                               }
                             },
                           ),

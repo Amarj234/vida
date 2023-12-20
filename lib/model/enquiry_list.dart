@@ -2,8 +2,7 @@
 
 import 'dart:convert';
 
-EnquiryList enquiryListFromJson(String str) =>
-    EnquiryList.fromJson(json.decode(str));
+EnquiryList enquiryListFromJson(String str) => EnquiryList.fromJson(json.decode(str));
 
 String enquiryListToJson(EnquiryList data) => json.encode(data.toJson());
 
@@ -55,6 +54,7 @@ class Datum {
     required this.teacherPrefarence,
     required this.userId,
     required this.id,
+    required this.totalView,
     required this.datumClass,
     required this.parentLocation,
     required this.board,
@@ -69,6 +69,7 @@ class Datum {
   int type;
   String teacherPrefarence;
   int userId;
+  int totalView;
   int id;
   String datumClass;
   String parentLocation;
@@ -85,6 +86,7 @@ class Datum {
         teacherPrefarence: json["teacher_prefarence"],
         userId: json["user_id"],
         id: json["id"],
+        totalView: json["total_view"],
         datumClass: json["class"],
         parentLocation: json["parent_location"],
         board: json["board"],
@@ -101,6 +103,7 @@ class Datum {
         "teacher_prefarence": teacherPrefarence,
         "user_id": userId,
         "id": id,
+        "total_view": totalView,
         "class": datumClass,
         "parent_location": parentLocation,
         "board": board,

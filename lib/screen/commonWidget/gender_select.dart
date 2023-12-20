@@ -7,8 +7,7 @@ import '../../utils/color.dart';
 import '../selectlocation/provider/tabprovider.dart';
 
 class GenderSelect extends StatelessWidget {
-  const GenderSelect({Key? key, required this.myfun, this.header = "Gender"})
-      : super(key: key);
+  const GenderSelect({Key? key, required this.myfun, this.header = "Gender"}) : super(key: key);
   final Function(int val) myfun;
   final String header;
   @override
@@ -20,13 +19,11 @@ class GenderSelect extends StatelessWidget {
           //color: provider.tabval.contains(val) ? Colors.white : AppColor.appbackground2,
           // border: Border.all(color: AppColor.oreng.withOpacity(.5)),
           border: const GradientBoxBorder(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xffF5A925),
-                  Color(0xffED6237),
-                ]),
+            gradient:
+                LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
+              Color(0xffF5A925),
+              Color(0xffED6237),
+            ]),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(10)),
@@ -46,7 +43,7 @@ class GenderSelect extends StatelessWidget {
             children: [
               radeoButton("Male", 0),
               radeoButton("Female", 1),
-              radeoButton("Other", 2),
+              radeoButton(header == "Gender" ? "Other" : "Any", 2),
               Container(
                 width: 50,
               )
@@ -78,9 +75,7 @@ class GenderSelect extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: provider.selectradeo == isselect
-                          ? AppColor.radiocolr
-                          : Colors.white,
+                      color: provider.selectradeo == isselect ? AppColor.radiocolr : Colors.white,
                     ),
                     height: 12,
                     width: 12,

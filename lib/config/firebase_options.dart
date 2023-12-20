@@ -46,11 +46,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAUPbmKqcMEMfsQ2RC20JNEiZMcYJWcPPg',
-    appId: '1:363711052423:android:efaf0599669784c0459622',
-    messagingSenderId: '363711052423',
-    projectId: 'ceremonial-buddha',
-    storageBucket: 'ceremonial-buddha.appspot.com',
+    apiKey: 'AIzaSyBb6dy1AFDP8UZyrTvGNnZLPVAxqvGsEv8',
+    appId: '1:217568551564:android:a2cae8a8ab4bc6d195d1a9',
+    messagingSenderId: '217568551564',
+    projectId: 'vida-app-5992b',
+    storageBucket: 'vida-app-5992b.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

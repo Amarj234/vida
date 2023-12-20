@@ -49,8 +49,10 @@ class AssetImages {
   static String needteacher = "assets/icons/needteacher.png";
   static String teacherhed = "assets/icons/teacherhed.png";
   static String course = "assets/icons/course.png";
+  static String empty = "assets/icons/empty.png";
+  static String success = "assets/icons/success.png";
   static String cake = "assets/icons/cake.png";
-  static String thumbsup = "assets/icons/thumbsup.gif";
+  static String eye = "assets/icons/eye.png";
 
   //============
   static String backgroung = "assets/images/background.jpg";

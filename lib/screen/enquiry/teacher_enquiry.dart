@@ -26,8 +26,8 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    teacherEnquiry =
-        Provider.of<TeacherEnquiryProvider>(context, listen: false);
+    teacherEnquiry = Provider.of<TeacherEnquiryProvider>(context, listen: false);
+    teacherEnquiry!.getAddress();
     teacherEnquiry!.setdata(3);
     teacherEnquiry!.setdata(4);
     teacherEnquiry!.setdata(5);
@@ -64,8 +64,7 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
               : SafeArea(
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 18.0, vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 20),
                       child: Form(
                         key: key,
                         child: Column(
@@ -74,9 +73,7 @@ class _TeacherEnquiryState extends State<TeacherEnquiry> {
                             Text(
                               "Enquiry For Teachers",
                               style: GoogleFonts.roboto(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColor.main),
+                                  fontSize: 20, fontWeight: FontWeight.w500, color: AppColor.main),
                             ),
                             // const SizedBox(
                             //   height: 10,

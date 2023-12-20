@@ -51,9 +51,7 @@ class SideMenu extends StatelessWidget {
                   menuitem("My Subscription", () {
                     Navigator.pop(context);
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MySubscription()));
+                        context, MaterialPageRoute(builder: (context) => const MySubscription()));
                   }),
                   menuitem(provider.uid == 1 ? "My Enquiry" : "My Lead", () {
                     Navigator.pushReplacement(
@@ -66,16 +64,12 @@ class SideMenu extends StatelessWidget {
                   menuitem("Support", () {
                     Navigator.pop(context);
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SupportScreen()));
+                        context, MaterialPageRoute(builder: (context) => const SupportScreen()));
                   }),
                   menuitem("Notification", () {
                     Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const NotificationScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const NotificationScreen()));
                   }),
                   const SizedBox(
                     height: 50,
@@ -86,16 +80,18 @@ class SideMenu extends StatelessWidget {
                       onTap: () async {
                         UserPrefs prefs = UserPrefs();
 
+                        await prefs.removeVal("filtergender");
+                        await prefs.removeVal("filterplace");
+                        await prefs.removeVal("filterboard");
+                        await prefs.removeVal("filterclass");
                         await prefs.removeVal("mobile");
                         await prefs.removeVal("rid");
                         await prefs.removeVal("id");
                         await prefs.removeVal("name");
                         await prefs.removeVal("token");
                         await prefs.removeVal("login");
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SelectRegister()));
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => const SelectRegister()));
                       },
                       child: Row(
                         children: [

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:vida/utils/color.dart';
 import 'package:vida/utils/constimage.dart';
 import '../commonWidget/app_button.dart';
+import '../commonWidget/costum_snackbar.dart';
 import '../commonWidget/dropdown.dart';
 import '../commonWidget/gender_select.dart';
 import '../commonWidget/register_textfields.dart';
@@ -13,8 +14,7 @@ import '../otplogin/login_screen.dart';
 import 'provider/studentinfo_provider.dart';
 
 class PersonalDetaild extends StatefulWidget {
-  const PersonalDetaild({Key? key, required this.rid, required this.mobile})
-      : super(key: key);
+  const PersonalDetaild({Key? key, required this.rid, required this.mobile}) : super(key: key);
   final String rid;
   final String mobile;
 
@@ -67,13 +67,13 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                 : provider.success
                     ? Center(
                         child: SizedBox(
-                          height: size.height * 0.25,
+                          height: size.height * 0.5,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                AssetImages.thumbsup,
-                                height: size.height * 0.08,
+                                AssetImages.success,
+                                height: size.height * .2,
                               ),
                               const SizedBox(
                                 height: 20,
@@ -88,14 +88,13 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: size.width * 0.2)),
+                                    backgroundColor: AppColor.main,
+                                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.2)),
                                 onPressed: () {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginScreen(
+                                          builder: (context) => const LoginScreen(
                                                 uid: 1,
                                               )));
                                 },
@@ -104,7 +103,7 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColor.main),
+                                      color: Colors.white),
                                 ),
                               )
                             ],
@@ -112,8 +111,7 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                         ),
                       )
                     : Padding(
-                        padding: const EdgeInsets.only(
-                            top: 68.0, left: 18, right: 18),
+                        padding: const EdgeInsets.only(top: 68.0, left: 18, right: 18),
                         child: SingleChildScrollView(
                           child: Form(
                             key: key,
@@ -133,8 +131,7 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                                           style: GoogleFonts.roboto(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
-                                            color: AppColor.textcolor
-                                                .withOpacity(.6),
+                                            color: AppColor.textcolor.withOpacity(.6),
                                           ))
                                     ])),
                                 const SizedBox(
@@ -152,15 +149,10 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                                 RegisterTextfields(
                                   readonly: true,
                                   myfun: () async {
-                                    LocationData? locationData =
-                                        await LocationSearch.show(
-                                            context: context,
-                                            lightAdress: false,
-                                            mode: Mode.overlay);
-                                    sudentpro!.location.text =
-                                        locationData!.address;
-                                    sudentpro!.longitude =
-                                        locationData.longitude;
+                                    LocationData? locationData = await LocationSearch.show(
+                                        context: context, lightAdress: false, mode: Mode.overlay);
+                                    sudentpro!.location.text = locationData!.address;
+                                    sudentpro!.longitude = locationData.longitude;
                                     sudentpro!.latitude = locationData.latitude;
                                   },
                                   isicon: true,
@@ -212,6 +204,7 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                                   height: 15,
                                 ),
                                 GenderSelect(
+                                  header: "Preference Teacher",
                                   myfun: (int val) {
                                     sudentpro!.gender = val;
                                   },
@@ -248,10 +241,14 @@ class _PersonalDetaildState extends State<PersonalDetaild> {
                                   txt: 'SUBMIT',
                                   col: AppColor.main,
                                   myfun: () {
-                                    if (key.currentState!.validate()) {
-                                      sudentpro!.register(context, widget.rid);
+                                    if (sudentpro!.name.text.length > 10) {
+                                      if (key.currentState!.validate()) {
+                                        sudentpro!.register(context, widget.rid);
+                                      }
+                                    } else {
+                                      CostomSnackbar.show(context,
+                                          "parentName must be longer than or equal to 10 characters");
                                     }
-
                                     // Navigator.push(
                                     //     context, MaterialPageRoute(builder: (context) => const HomeScreen()));
                                   },

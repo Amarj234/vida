@@ -25,8 +25,7 @@ class _EditProfileState extends State<EditProfile> {
     // TODO: implement initState
     super.initState();
 
-    studentProfileProvider =
-        Provider.of<StudentProfileProvider>(context, listen: false);
+    studentProfileProvider = Provider.of<StudentProfileProvider>(context, listen: false);
     Future.delayed(const Duration(milliseconds: 500), () {
       studentProfileProvider!.dropdownState.currentState
           ?.didChange(studentProfileProvider!.parentProfile!.d.data.extraParm2);
@@ -94,13 +93,9 @@ class _EditProfileState extends State<EditProfile> {
                       RegisterTextfields(
                         readonly: true,
                         myfun: () async {
-                          LocationData? locationData =
-                              await LocationSearch.show(
-                                  context: context,
-                                  lightAdress: false,
-                                  mode: Mode.overlay);
-                          studentProfileProvider!.location.text =
-                              locationData!.address;
+                          LocationData? locationData = await LocationSearch.show(
+                              context: context, lightAdress: false, mode: Mode.overlay);
+                          studentProfileProvider!.location.text = locationData!.address;
                         },
                         isicon: true,
                         isvalid: 0,
@@ -143,6 +138,7 @@ class _EditProfileState extends State<EditProfile> {
                         height: 15,
                       ),
                       GenderSelect(
+                        header: "Preference Teacher",
                         myfun: (int val) {
                           studentProfileProvider!.gender = val;
                         },
